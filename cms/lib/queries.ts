@@ -19,5 +19,6 @@ export const postBySlugQuery = groq`
     _id,
     slug,
     title,
+    body
   }
 `

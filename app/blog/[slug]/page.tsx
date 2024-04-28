@@ -1,24 +1,17 @@
-import client from '@/client';
-import { postsQuery, postBySlugQuery } from '@/cms/lib/queries';
-import { useQuery } from '@/cms/loader/useQuery';
 import { loadPost } from '@/cms/loader/loadQuery';
 import Post from '@/components/post';
-import { PostPayload } from '@/types';
+import { generateStaticSlugs } from '@/cms/loader/generateStaticSlugs';
 
-const PostPage = (props) => {
-  const post = loadPost(props.params.slug);
-  
-  return <Post data={props} />
+const PostPage = async (props: { params: { slug: string }}) => {
+  const post = await loadPost(props.params.slug);
+
+  return <Post data={post.data} />
 };
 
 export async function generateStaticParams() {
-  const posts = await client.fetch(postsQuery);
+  const posts = generateStaticSlugs('post');
 
-  console.log(`What are posts ${JSON.stringify(posts)}`);
-
-  return posts.map((post) => ({
-    slug: post.slug?.current
-  }));
+  return posts;
 }
 
 export default PostPage;

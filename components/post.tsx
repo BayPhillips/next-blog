@@ -1,11 +1,17 @@
-'use client';
 import { PostPayload } from "@/types";
+import { CustomPortableText } from "./shared/CustomPortableText";
 
 export default (props: { data: PostPayload }) => {
-  console.log(`What is props ${JSON.stringify(props)}`);
+  const post = props.data;
   return (
     <article>
-      Blog post: {props.slug}
+      <h1>{post.title}</h1>
+      {post.body && (
+        <CustomPortableText
+          paragraphClasses="font-serif max-w-3xl text-gray-600 text-xl"
+          value={post.body}
+        />
+      )}
     </article>
   );
 };
