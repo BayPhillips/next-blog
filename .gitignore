@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+/studio/node_modules
 /.pnp
 .pnp.js
 .yarn/install-state.gz
@@ -13,8 +14,9 @@
 /.next/
 /out/
 
-# production
-/build
+# sanity
+/.sanity/
+/dist/
 
 # misc
 .DS_Store
@@ -34,3 +36,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Env files created by scripts for working locally
+.env
+.env.local
