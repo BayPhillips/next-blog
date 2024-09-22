@@ -1,9 +1,9 @@
 import "../globals.css";
 
-import { Inter } from "next/font/google";
+import { Nunito_Sans } from "next/font/google";
 
-const inter = Inter({
-  variable: "--font-inter",
+const nuninto_sans = Nunito_Sans({
+  variable: "--font-nunito-sans",
   subsets: ["latin"],
   display: "swap",
 });
@@ -16,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en" className={nuninto_sans.variable}>
       <body className="min-h-screen">{children}</body>
     </html>
   );

@@ -5,7 +5,6 @@ import Avatar from "./avatar";
 import CoverImage from "./cover-image";
 import DateComponent from "./date";
 import MoreStories from "./more-stories";
-import Onboarding from "./onboarding";
 import PortableText from "./portable-text";
 
 import type { HeroQueryResult } from "@/sanity.types";
@@ -20,7 +19,7 @@ function Intro(props: { title: string | null | undefined; description: any }) {
     : demo.description;
   return (
     <section className="mt-16 mb-16 flex flex-col items-center lg:mb-12 lg:flex-row lg:justify-between">
-      <h1 className="text-balance text-6xl font-bold leading-tight tracking-tighter lg:pr-8 lg:text-8xl">
+      <h1 className="font-serif text-balance text-6xl font-bold leading-tight tracking-tighter lg:pr-8 lg:text-8xl">
         {title || demo.title}
       </h1>
       <h2 className="text-pretty mt-5 text-center text-lg lg:pl-8 lg:text-left">
@@ -51,7 +50,7 @@ function HeroPost({
       </Link>
       <div className="mb-20 md:mb-28 md:grid md:grid-cols-2 md:gap-x-16 lg:gap-x-8">
         <div>
-          <h3 className="text-pretty mb-4 text-4xl leading-tight lg:text-6xl">
+          <h3 className="font-serif text-pretty mb-4 text-4xl leading-tight lg:text-6xl">
             <Link href={`/posts/${slug}`} className="hover:underline">
               {title}
             </Link>
@@ -93,13 +92,11 @@ export default async function Page() {
           date={heroPost.date}
           author={heroPost.author}
         />
-      ) : (
-        <Onboarding />
-      )}
+      ) : null}
       {heroPost?._id && (
         <aside>
-          <h2 className="mb-8 text-6xl font-bold leading-tight tracking-tighter md:text-7xl">
-            More Stories
+          <h2 className="font-serif mb-8 text-6xl font-semibold leading-tight tracking-tighter md:text-7xl">
+            All Posts
           </h2>
           <Suspense>
             <MoreStories skip={heroPost._id} limit={100} />

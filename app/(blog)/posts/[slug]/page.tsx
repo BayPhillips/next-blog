@@ -62,7 +62,7 @@ export default async function PostPage({ params }: Props) {
 
   return (
     <div className="container mx-auto px-5">
-      <h2 className="mb-16 mt-10 text-2xl font-bold leading-tight tracking-tight md:text-4xl md:tracking-tighter">
+      <h2 className="font-serif mb-16 mt-10 text-2xl font-bold leading-tight tracking-tight md:text-4xl md:tracking-tighter">
         <Link href="/" className="hover:underline">
           {settings?.title || demo.title}
         </Link>
@@ -100,8 +100,8 @@ export default async function PostPage({ params }: Props) {
       </article>
       <aside>
         <hr className="border-accent-2 mb-24 mt-28" />
-        <h2 className="mb-8 text-6xl font-bold leading-tight tracking-tighter md:text-7xl">
-          Recent Stories
+        <h2 className="font-serif mb-8 text-6xl font-semibold leading-tight tracking-tighter md:text-7xl">
+          Recent Posts
         </h2>
         <Suspense>
           <MoreStories skip={post._id} limit={2} />

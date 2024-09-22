@@ -6,7 +6,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["var(--font-inter)"],
+        serif: ["Lora", "var(--font-lora)"],
+        sans: ["Nunito", "var(--font-nunito-sans)"],
       },
     },
   },
