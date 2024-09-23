@@ -27,7 +27,7 @@ export default function CustomPortableText({
   value: PortableTextBlock[];
 }) {
   const client = createClient({ projectId, dataset, apiVersion, useCdn: false});
-  const ImageComponent = ({ value, isInline }) => {
+  const ImageComponent = ({ value, isInline } : any) => {
     return (
       <Image
         className="h-auto w-full"
