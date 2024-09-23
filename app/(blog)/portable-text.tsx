@@ -13,6 +13,11 @@ import {
   type PortableTextComponents,
   type PortableTextBlock,
 } from "next-sanity";
+import { createClient } from "next-sanity";
+import { apiVersion, dataset, projectId  } from "@/sanity/lib/api";
+import { Image } from "next-sanity/image";
+import { urlForImage } from "@/sanity/lib/utils";
+import CodeBlock from "./code-block";
 
 export default function CustomPortableText({
   className,
@@ -21,6 +26,20 @@ export default function CustomPortableText({
   className?: string;
   value: PortableTextBlock[];
 }) {
+  const client = createClient({ projectId, dataset, apiVersion, useCdn: false});
+  const ImageComponent = ({ value, isInline }) => {
+    return (
+      <Image
+        className="h-auto w-full"
+        width={2000}
+        height={1000}
+        alt={value?.alt || ""}
+        src={urlForImage(value)?.height(1000).width(2000).url() as string}
+        sizes="100vw"
+        priority={false}
+      /> 
+    );
+  }
   const components: PortableTextComponents = {
     block: {
       h5: ({ children }) => (
@@ -29,6 +48,12 @@ export default function CustomPortableText({
       h6: ({ children }) => (
         <h6 className="mb-1 text-xs font-semibold">{children}</h6>
       ),
+    },
+    types: {
+      image: ImageComponent,
+      code: ({ value }: any) => (
+        <CodeBlock value={value} />
+      )
     },
     marks: {
       link: ({ children, value }) => {
