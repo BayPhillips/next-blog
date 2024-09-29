@@ -46,9 +46,8 @@ export async function generateMetadata(
 }
 
 export default async function PostPage({ params }: Props) {
-  const [post, settings] = await Promise.all([
+  const [post] = await Promise.all([
     sanityFetch({ query: postQuery, params }),
-    sanityFetch({ query: settingsQuery }),
   ]);
 
   if (!post?._id) {
