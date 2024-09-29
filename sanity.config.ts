@@ -19,8 +19,10 @@ import { assistWithPresets } from "@/sanity/plugins/assist";
 import author from "@/sanity/schemas/documents/author";
 import post from "@/sanity/schemas/documents/post";
 import settings from "@/sanity/schemas/singletons/settings";
+import about from "@/sanity/schemas/singletons/about";
 import { resolveHref } from "@/sanity/lib/utils";
 import { codeInput } from "@sanity/code-input";
+
 
 const homeLocation = {
   title: "Home",
@@ -35,6 +37,7 @@ export default defineConfig({
     types: [
       // Singletons
       settings,
+      about,
       // Documents
       post,
       author,

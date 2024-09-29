@@ -1,21 +1,15 @@
 import { defineQuery } from "next-sanity";
 import type { Metadata, ResolvingMetadata } from "next";
 import { type PortableTextBlock } from "next-sanity";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-
-import Avatar from "../../avatar";
 import CoverImage from "../../cover-image";
 import DateComponent from "../../date";
 import MoreStories from "../../more-stories";
 import PortableText from "../../components/portable-text";
-
-import * as demo from "@/sanity/lib/demo";
 import { sanityFetch } from "@/sanity/lib/fetch";
 import { postQuery, settingsQuery } from "@/sanity/lib/queries";
 import { resolveOpenGraphImage } from "@/sanity/lib/utils";
-import Header from "../../components/header";
 
 type Props = {
   params: { slug: string };
@@ -71,11 +65,6 @@ export default async function PostPage({ params }: Props) {
           <CoverImage image={post.coverImage} priority />
         </div>
         <div className="mx-auto">
-          <div className="mb-6 block md:hidden">
-            {post.author && (
-              <Avatar name={post.author.name} picture={post.author.picture} />
-            )}
-          </div>
           <div className="mb-6 text-lg">
             <div className="mb-4 text-lg">
               <DateComponent dateString={post.date} />
