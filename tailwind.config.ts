@@ -5,6 +5,13 @@ export default {
   content: ["./app/**/*.{ts,tsx}", "./sanity/**/*.{ts,tsx}"],
   theme: {
     extend: {
+      typography: {
+        DEFAULT: {
+          css: {
+            maxWidth: '100%',
+          }
+        }
+      },
       fontFamily: {
         serif: ["Lora", "var(--font-lora)"],
         sans: ["Nunito", "var(--font-nunito-sans)"],
