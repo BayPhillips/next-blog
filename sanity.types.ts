@@ -181,6 +181,11 @@ export type Settings = {
     _type: "block";
     _key: string;
   }>;
+  navigation?: Array<{
+    title?: string;
+    path?: string;
+    _key: string;
+  }>;
   footer?: Array<{
     children?: Array<{
       marks?: Array<string>;
@@ -428,6 +433,11 @@ export type SettingsQueryResult = {
     }>;
     level?: number;
     _type: "block";
+    _key: string;
+  }>;
+  navigation?: Array<{
+    title?: string;
+    path?: string;
     _key: string;
   }>;
   footer?: Array<{

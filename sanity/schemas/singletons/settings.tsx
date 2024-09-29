@@ -51,6 +51,21 @@ export default defineType({
       ],
     }),
     defineField({
+      name: "navigation",
+      description: "Navigation links",
+      title: "Navigation Links",
+      type: "array",
+      of: [
+        defineArrayMember({
+          type: "object",
+          fields: [
+            { type: 'string', name: 'title', title: 'Title' },
+            { type: 'string', name: 'path', title: 'Path' },
+          ]
+        }),
+      ]
+    }),
+    defineField({
       name: "footer",
       description:
         "This is a block of text that will be displayed at the bottom of the page.",
