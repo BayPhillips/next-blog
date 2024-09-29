@@ -17,7 +17,7 @@ import { createClient } from "next-sanity";
 import { apiVersion, dataset, projectId  } from "@/sanity/lib/api";
 import { Image } from "next-sanity/image";
 import { urlForImage } from "@/sanity/lib/utils";
-import CodeBlock from "./code-block";
+import CodeBlock from "../code-block";
 
 export default function CustomPortableText({
   className,

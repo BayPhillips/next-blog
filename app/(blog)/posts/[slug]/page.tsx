@@ -9,12 +9,13 @@ import Avatar from "../../avatar";
 import CoverImage from "../../cover-image";
 import DateComponent from "../../date";
 import MoreStories from "../../more-stories";
-import PortableText from "../../portable-text";
+import PortableText from "../../components/portable-text";
 
 import * as demo from "@/sanity/lib/demo";
 import { sanityFetch } from "@/sanity/lib/fetch";
 import { postQuery, settingsQuery } from "@/sanity/lib/queries";
 import { resolveOpenGraphImage } from "@/sanity/lib/utils";
+import Header from "../../components/header";
 
 type Props = {
   params: { slug: string };
@@ -61,21 +62,11 @@ export default async function PostPage({ params }: Props) {
   }
 
   return (
-    <div className="container mx-auto px-5">
-      <h2 className="font-serif mb-16 mt-10 text-2xl font-bold leading-tight tracking-tight md:text-4xl md:tracking-tighter">
-        <Link href="/" className="hover:underline">
-          {settings?.title || demo.title}
-        </Link>
-      </h2>
+    <>
       <article>
-        <h1 className="text-balance mb-12 text-6xl font-bold leading-tight tracking-tighter md:text-7xl md:leading-none lg:text-8xl">
+        <h2 className="text-balance mb-12 font-2xl font-serif leading-tight tracking-tighter md:text-7xl md:leading-none">
           {post.title}
-        </h1>
-        <div className="hidden md:mb-12 md:block">
-          {post.author && (
-            <Avatar name={post.author.name} picture={post.author.picture} />
-          )}
-        </div>
+        </h2>
         <div className="mb-8 sm:mx-0 md:mb-16">
           <CoverImage image={post.coverImage} priority />
         </div>
@@ -107,6 +98,6 @@ export default async function PostPage({ params }: Props) {
           <MoreStories skip={post._id} limit={2} />
         </Suspense>
       </aside>
-    </div>
+    </>
   );
 }

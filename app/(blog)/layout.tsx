@@ -12,12 +12,15 @@ import { draftMode } from "next/headers";
 import { Suspense } from "react";
 
 import AlertBanner from "./alert-banner";
-import PortableText from "./portable-text";
+import PortableText from "./components/portable-text";
 
 import * as demo from "@/sanity/lib/demo";
 import { sanityFetch } from "@/sanity/lib/fetch";
 import { settingsQuery } from "@/sanity/lib/queries";
 import { resolveOpenGraphImage } from "@/sanity/lib/utils";
+import { SettingsQueryResult } from "@/sanity.types";
+import settings from "@/sanity/schemas/singletons/settings";
+import Header from "./components/header";
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await sanityFetch({
@@ -63,9 +66,9 @@ const lora = Lora({
 });
 
 
-async function Footer() {
-  const data = await sanityFetch({ query: settingsQuery });
-  const footer = data?.footer || [];
+async function Footer(props: { settings: SettingsQueryResult }) {
+  const { settings } = props;
+  const footer = settings?.footer || [];
 
   return (
     <footer className="bg-accent-1 border-accent-2 border-t">
@@ -81,19 +84,21 @@ async function Footer() {
   );
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const settings = await sanityFetch({ query: settingsQuery });
   return (
     <html lang="en" className={`${nunito.variable} ${lora.variable} bg-white text-black`}>
       <body>
-        <section className="min-h-screen">
+        <section className="min-h-screen container mx-auto px-5">
           {draftMode().isEnabled && <AlertBanner />}
+          <Header settings={settings} />
           <main>{children}</main>
           <Suspense>
-            <Footer />
+            <Footer settings={settings} />
           </Suspense>
         </section>
         {draftMode().isEnabled && <VisualEditing />}
