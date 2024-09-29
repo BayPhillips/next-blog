@@ -5,7 +5,7 @@ import PortableText from "@/app/(blog)/components/portable-text";
 import { PortableTextBlock } from 'next-sanity';
 
 export default async function AboutPage() {
-  const aboutData: About = await sanityFetch({ query: aboutQuery});
+  const aboutData = await sanityFetch({ query: aboutQuery});
 
   return (
     <article>
