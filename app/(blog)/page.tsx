@@ -18,11 +18,11 @@ function Intro(props: { title: string | null | undefined; description: any }) {
     ? props.description
     : demo.description;
   return (
-    <section className="mt-16 mb-16 flex flex-col items-center lg:mb-12 lg:flex-row lg:justify-between">
-      <h1 className="font-serif text-balance text-6xl font-bold leading-tight tracking-tighter lg:pr-8 lg:text-8xl">
+    <section className="mt-16 mb-16 flex flex-col items-left lg:mb-12 lg:flex-column lg:justify-between">
+      <h1 className="font-serif text-balance text-6xl font-bold leading-tight tracking-tighter lg:text-8xl">
         {title || demo.title}
       </h1>
-      <h2 className="text-pretty mt-5 text-center text-lg lg:pl-8 lg:text-left">
+      <h2 className="text-pretty mt-5 text-left text-lg">
         <PortableText
           className="prose-lg"
           value={description?.length ? description : demo.description}
@@ -45,9 +45,6 @@ function HeroPost({
 >) {
   return (
     <article>
-      <Link className="group mb-8 block md:mb-16" href={`/posts/${slug}`}>
-        <CoverImage image={coverImage} priority />
-      </Link>
       <div className="mb-20 md:mb-28 md:grid md:grid-cols-2 md:gap-x-16 lg:gap-x-8">
         <div>
           <h3 className="font-serif text-pretty mb-4 text-4xl leading-tight lg:text-6xl">
@@ -65,7 +62,6 @@ function HeroPost({
               {excerpt}
             </p>
           )}
-          {author && <Avatar name={author.name} picture={author.picture} />}
         </div>
       </div>
     </article>
@@ -93,11 +89,9 @@ export default async function Page() {
           author={heroPost.author}
         />
       ) : null}
+      <hr className="mb-16" />
       {heroPost?._id && (
         <aside>
-          <h2 className="font-serif mb-8 text-6xl font-semibold leading-tight tracking-tighter md:text-7xl">
-            All Posts
-          </h2>
           <Suspense>
             <MoreStories skip={heroPost._id} limit={100} />
           </Suspense>
