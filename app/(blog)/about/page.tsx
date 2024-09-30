@@ -9,7 +9,7 @@ export default async function AboutPage() {
 
   return (
     <article>
-      {aboutData?.content?.length ?? 0 > 0 ? <PortableText value={aboutData.content as PortableTextBlock[]} /> : null }
+      {(aboutData?.content ?? []).length > 0 ? <PortableText value={aboutData?.content as PortableTextBlock[]} /> : null }
     </article>
   )
 }
