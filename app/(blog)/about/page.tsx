@@ -9,6 +9,7 @@ export default async function AboutPage() {
 
   return (
     <article>
+      <h1 className="text-balance font-serif leading-tight tracking-tighter text-2xl mb-8">{aboutData?.title}</h1>
       {(aboutData?.content ?? []).length > 0 ? <PortableText value={aboutData?.content as PortableTextBlock[]} /> : null }
     </article>
   )
