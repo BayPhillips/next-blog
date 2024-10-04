@@ -4,6 +4,8 @@ export const settingsQuery = defineQuery(`*[_type == "settings"][0]`);
 
 export const aboutQuery = defineQuery(`*[_type == "about"][0]`);
 
+export const contactQuery = defineQuery(`*[_type == "contact"][0]`);
+
 const postFields = /* groq */ `
   _id,
   "status": select(_originalId in path("drafts.**") => "draft", "published"),

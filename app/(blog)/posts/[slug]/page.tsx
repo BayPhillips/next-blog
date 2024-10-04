@@ -57,9 +57,9 @@ export default async function PostPage({ params }: Props) {
   return (
     <>
       <article>
-        <h2 className="text-pretty mb-12 text-4xl font-serif leading-tight tracking-tighter md:text-7xl md:leading-none">
+        <h1 className="text-pretty mb-12 text-4xl font-serif leading-tight tracking-tighter md:text-7xl md:leading-none">
           {post.title}
-        </h2>
+        </h1>
         <div className="mb-8 sm:mx-0 md:mb-16">
           <CoverImage image={post.coverImage} priority />
         </div>

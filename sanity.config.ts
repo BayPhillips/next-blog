@@ -20,6 +20,7 @@ import author from "@/sanity/schemas/documents/author";
 import post from "@/sanity/schemas/documents/post";
 import settings from "@/sanity/schemas/singletons/settings";
 import about from "@/sanity/schemas/singletons/about";
+import contact from "@/sanity/schemas/singletons/contact";
 import { resolveHref } from "@/sanity/lib/utils";
 import { codeInput } from "@sanity/code-input";
 
@@ -38,6 +39,7 @@ export default defineConfig({
       // Singletons
       settings,
       about,
+      contact,
       // Documents
       post,
       author,
