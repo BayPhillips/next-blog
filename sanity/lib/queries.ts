@@ -36,3 +36,9 @@ export const postQuery = defineQuery(`
     ${postFields}
   }
 `);
+
+export const postsQuery = defineQuery(`
+  *[_type == "post"] {
+    ${postFields}
+  }
+`);
