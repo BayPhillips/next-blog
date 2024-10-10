@@ -6,9 +6,7 @@ import MoreStories from "./more-stories";
 
 import type { HeroQueryResult } from "@/sanity.types";
 import { sanityFetch } from "@/sanity/lib/fetch";
-import { heroQuery, settingsQuery } from "@/sanity/lib/queries";
-import Navigation from "./components/navigation";
-import Header from "./components/header";
+import { heroQuery } from "@/sanity/lib/queries";
 
 function HeroPost({
   title,
@@ -47,12 +45,7 @@ function HeroPost({
 }
 
 export default async function Page() {
-  const [settings, heroPost] = await Promise.all([
-    sanityFetch({
-      query: settingsQuery,
-    }),
-    sanityFetch({ query: heroQuery }),
-  ]);
+  const heroPost = await sanityFetch({ query: heroQuery });
 
   return (
     <div>

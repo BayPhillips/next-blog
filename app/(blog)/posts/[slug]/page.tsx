@@ -8,7 +8,7 @@ import DateComponent from "../../date";
 import MoreStories from "../../more-stories";
 import PortableText from "../../components/portable-text";
 import { sanityFetch } from "@/sanity/lib/fetch";
-import { postQuery, settingsQuery } from "@/sanity/lib/queries";
+import { postQuery } from "@/sanity/lib/queries";
 import { resolveOpenGraphImage } from "@/sanity/lib/utils";
 
 type Props = {
@@ -42,13 +42,14 @@ export async function generateMetadata(
     openGraph: {
       images: ogImage ? [ogImage, ...previousImages] : previousImages,
     },
+    alternates: {
+      canonical: post?.slug ? `/posts/${post?.slug}` : `/posts`
+    }
   } satisfies Metadata;
 }
 
 export default async function PostPage({ params }: Props) {
-  const [post] = await Promise.all([
-    sanityFetch({ query: postQuery, params }),
-  ]);
+  const post = await sanityFetch({ query: postQuery, params });
 
   if (!post?._id) {
     return notFound();
