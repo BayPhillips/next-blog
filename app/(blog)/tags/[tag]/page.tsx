@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function TagPage({ params }: Props) {
   const tag = decodeURIComponent(params.tag);
-  const posts = await sanityFetch({ query: postsByTagQuery, params: { tag } });
+  const posts = await sanityFetch({ query: postsByTagQuery, params: { tag: tag as any } });
 
   if (!posts?.length) {
     return notFound();

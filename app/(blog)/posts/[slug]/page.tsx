@@ -3,11 +3,12 @@ import type { Metadata, ResolvingMetadata } from "next";
 import { type PortableTextBlock } from "next-sanity";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import CoverImage from "../../cover-image";
-import DateComponent from "../../date";
-import MoreStories from "../../more-stories";
-import PortableText from "../../components/portable-text";
-import PostTags from "../../components/post-tags";
+import CoverImage from "@/app/(blog)/cover-image";
+import DateComponent from "@/app/(blog)/date";
+import MoreStories from "@/app/(blog)/more-stories";
+import PortableText from "@/app/(blog)/components/portable-text";
+import PostTags from "@/app/(blog)/components/post-tags";
+import ShareButtons from "@/app/(blog)/components/share-buttons";
 import { sanityFetch } from "@/sanity/lib/fetch";
 import { postQuery } from "@/sanity/lib/queries";
 import { resolveOpenGraphImage } from "@/sanity/lib/utils";
@@ -79,6 +80,10 @@ export default async function PostPage({ params }: Props) {
             value={post.content as PortableTextBlock[]}
           />
         )}
+        <ShareButtons 
+          url={`${process.env.NEXT_PUBLIC_SITE_URL}/posts/${post.slug}`}
+          title={post.title}
+        />
       </article>
       <aside>
         <hr className="border-accent-2 mb-24 mt-28" />
