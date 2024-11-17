@@ -7,6 +7,7 @@ import CoverImage from "../../cover-image";
 import DateComponent from "../../date";
 import MoreStories from "../../more-stories";
 import PortableText from "../../components/portable-text";
+import PostTags from "../../components/post-tags";
 import { sanityFetch } from "@/sanity/lib/fetch";
 import { postQuery } from "@/sanity/lib/queries";
 import { resolveOpenGraphImage } from "@/sanity/lib/utils";
@@ -69,6 +70,7 @@ export default async function PostPage({ params }: Props) {
             <div className="mb-4 text-lg">
               <DateComponent dateString={post.date} />
             </div>
+            <PostTags tags={post.tags} />
           </div>
         </div>
         {post.content?.length && (
