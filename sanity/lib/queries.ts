@@ -43,3 +43,9 @@ export const postsQuery = defineQuery(`
     ${postFields}
   }
 `);
+
+export const postsByTagQuery = defineQuery(`
+  *[_type == "post" && $tag in tags] | order(date desc) {
+    ${postFields}
+  }
+`);
