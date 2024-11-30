@@ -97,14 +97,14 @@ export default async function RootLayout({
     <html lang="en" className={`${nunito.variable} ${lora.variable} bg-white text-black`}>
       <body>
         <section className="min-h-screen container mx-auto px-5">
-          {draftMode().isEnabled && <AlertBanner />}
+          {(await draftMode()).isEnabled && <AlertBanner />}
           <Header settings={settings} />
           <main>{children}</main>
           <Suspense>
             <Footer settings={settings} />
           </Suspense>
         </section>
-        {draftMode().isEnabled && <VisualEditing />}
+        {(await draftMode()).isEnabled && <VisualEditing />}
         <SpeedInsights />
         <Analytics />
       </body>

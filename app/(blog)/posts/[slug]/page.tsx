@@ -1,6 +1,6 @@
 import { defineQuery } from "next-sanity";
 import type { Metadata, ResolvingMetadata } from "next";
-import { type PortableTextBlock } from "next-sanity";
+import type { PortableTextBlock } from "next-sanity";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import CoverImage from "@/app/(blog)/cover-image";
@@ -14,8 +14,9 @@ import { postQuery } from "@/sanity/lib/queries";
 import { resolveOpenGraphImage } from "@/sanity/lib/utils";
 
 type Props = {
-  params: { slug: string };
-};
+  params: Promise<{ id: string }>
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}
 
 const postSlugs = defineQuery(
   `*[_type == "post" && defined(slug.current)]{"slug": slug.current}`,
@@ -30,7 +31,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata(
-  { params }: Props,
+  { params, searchParams }: Props,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const post = await sanityFetch({ query: postQuery, params, stega: false });
@@ -50,7 +51,7 @@ export async function generateMetadata(
   } satisfies Metadata;
 }
 
-export default async function PostPage({ params }: Props) {
+export default async function PostPage({ params, searchParams }: Props) {
   const post = await sanityFetch({ query: postQuery, params });
 
   if (!post?._id) {

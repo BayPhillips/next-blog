@@ -9,11 +9,12 @@ import { postsByTagQuery } from "@/sanity/lib/queries";
 import type { Metadata } from "next";
 
 type Props = {
-  params: { tag: string };
-};
+  params: Promise<{ tag: string }>
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const tag = decodeURIComponent(params.tag);
+export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
+  const tag = decodeURIComponent((await params).tag);
   
   return {
     title: `Posts tagged with "${tag}"`,
@@ -22,7 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function TagPage({ params }: Props) {
-  const tag = decodeURIComponent(params.tag);
+  const tag = decodeURIComponent((await params).tag);
   const posts = await sanityFetch({ query: postsByTagQuery, params: { tag: tag as any } });
 
   if (!posts?.length) {
