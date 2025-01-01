@@ -3,7 +3,7 @@ import { contactQuery } from "@/sanity/lib/queries";
 import PortableText from "@/app/(blog)/components/portable-text";
 import { PortableTextBlock } from 'next-sanity';
 
-export default async function AboutPage() {
+export default async function ContactPage() {
   const contactData = await sanityFetch({ query: contactQuery});
 
   return (
