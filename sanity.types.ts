@@ -106,6 +106,10 @@ export type Post = {
     crop?: SanityImageCrop;
     _type: "image";
     _key: string;
+  } | {
+    id?: string;
+    _type: "twitter";
+    _key: string;
   }>;
   excerpt?: string;
   coverImage?: {
@@ -716,6 +720,10 @@ export type HeroQueryResult = {
     crop?: SanityImageCrop;
     _type: "image";
     _key: string;
+  } | {
+    id?: string;
+    _type: "twitter";
+    _key: string;
   }> | null;
   _id: string;
   status: "draft" | "published";
@@ -822,6 +830,10 @@ export type PostQueryResult = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
+    _key: string;
+  } | {
+    id?: string;
+    _type: "twitter";
     _key: string;
   }> | null;
   _id: string;

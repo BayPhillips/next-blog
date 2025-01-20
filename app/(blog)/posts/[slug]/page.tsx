@@ -34,7 +34,8 @@ export async function generateMetadata(
   { params, searchParams }: Props,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
-  const post = await sanityFetch({ query: postQuery, params, stega: false });
+  const syncParams = await params;
+  const post = await sanityFetch({ query: postQuery, params: syncParams, stega: false });
   const previousImages = (await parent).openGraph?.images || [];
   const ogImage = resolveOpenGraphImage(post?.coverImage);
 
@@ -52,7 +53,8 @@ export async function generateMetadata(
 }
 
 export default async function PostPage({ params, searchParams }: Props) {
-  const post = await sanityFetch({ query: postQuery, params });
+  const syncParams = await params;
+  const post = await sanityFetch({ query: postQuery, params: syncParams });
 
   if (!post?._id) {
     return notFound();

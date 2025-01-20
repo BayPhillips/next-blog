@@ -47,7 +47,20 @@ export default defineType({
       of: [
         { type: "block" }, 
         { type: "code" }, 
-        { type: "image" }
+        { type: "image" },
+        {
+          type: 'object',
+          name: 'twitter',
+          title: 'Twitter Embed',
+          fields: [
+            {
+              name: 'id',
+              type: 'string',
+              title: 'Tweet ID',
+              description: 'The ID from the tweet URL (e.g., "1234567890")'
+            }
+          ]
+        }
       ],
     }),
     defineField({

@@ -18,6 +18,7 @@ import { apiVersion, dataset, projectId  } from "@/sanity/lib/api";
 import { Image } from "next-sanity/image";
 import { urlForImage } from "@/sanity/lib/utils";
 import CodeBlock from "../code-block";
+import TweetEmbed from './tweet-embed';
 
 export default function CustomPortableText({
   className,
@@ -53,7 +54,8 @@ export default function CustomPortableText({
       image: ImageComponent,
       code: ({ value }: any) => (
         <CodeBlock value={value} />
-      )
+      ),
+      twitter: ({ value }: any) => <TweetEmbed id={value.id} />
     },
     marks: {
       link: ({ children, value }) => {
