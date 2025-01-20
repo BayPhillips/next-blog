@@ -1,7 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { postsQuery } from '@/sanity/lib/queries';
 import { sanityFetch } from '@/sanity/lib/fetch';
-import { Post } from '@/sanity.types';
  
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let routes: MetadataRoute.Sitemap = [
