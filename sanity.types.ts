@@ -107,6 +107,21 @@ export type Post = {
     _type: "image";
     _key: string;
   } | {
+    images?: Array<{
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+      _key: string;
+    }>;
+    _type: "imagegrid";
+    _key: string;
+  } | {
     id?: string;
     _type: "twitter";
     _key: string;
@@ -721,6 +736,21 @@ export type HeroQueryResult = {
     _type: "image";
     _key: string;
   } | {
+    images?: Array<{
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+      _key: string;
+    }>;
+    _type: "imagegrid";
+    _key: string;
+  } | {
     id?: string;
     _type: "twitter";
     _key: string;
@@ -830,6 +860,21 @@ export type PostQueryResult = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
+    _key: string;
+  } | {
+    images?: Array<{
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+      _key: string;
+    }>;
+    _type: "imagegrid";
     _key: string;
   } | {
     id?: string;

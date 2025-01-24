@@ -48,6 +48,18 @@ export default defineType({
         { type: "block" }, 
         { type: "code" }, 
         { type: "image" },
+        { 
+          type: 'object',
+          name: 'imagegrid',
+          title: 'Image Grid',
+          fields:[
+            {
+              name:'images',
+              type: 'array',
+              of:[{ type: "image" }]
+            }
+          ]
+        },
         {
           type: 'object',
           name: 'twitter',

@@ -19,6 +19,7 @@ import { Image } from "next-sanity/image";
 import { urlForImage } from "@/sanity/lib/utils";
 import CodeBlock from "../code-block";
 import TweetEmbed from './tweet-embed';
+import ImageGrid from './image-grid';
 
 export default function CustomPortableText({
   className,
@@ -29,16 +30,19 @@ export default function CustomPortableText({
 }) {
   const client = createClient({ projectId, dataset, apiVersion, useCdn: false});
   const ImageComponent = ({ value, isInline } : any) => {
+    const imageUrl = urlForImage(value)?.height(1000).width(2000).url() as string;
     return (
-      <Image
-        className="h-auto w-full"
-        width={2000}
-        height={1000}
-        alt={value?.alt || ""}
-        src={urlForImage(value)?.height(1000).width(2000).url() as string}
-        sizes="100vw"
-        priority={false}
-      /> 
+      <a target="_blank" href={imageUrl} rel="noreferrer noopener">
+        <Image
+          className="h-auto w-full"
+          width={2000}
+          height={1000}
+          alt={value?.alt || ""}
+          src={imageUrl}
+          sizes="100vw"
+          priority={false}
+        />
+      </a> 
     );
   }
   const components: PortableTextComponents = {
@@ -55,7 +59,10 @@ export default function CustomPortableText({
       code: ({ value }: any) => (
         <CodeBlock value={value} />
       ),
-      twitter: ({ value }: any) => <TweetEmbed id={value.id} />
+      twitter: ({ value }: any) => <TweetEmbed id={value.id} />,
+      imagegrid: ({ value }: any) => {
+        return <ImageGrid images={value.images} />;
+      },
     },
     marks: {
       link: ({ children, value }) => {
