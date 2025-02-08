@@ -49,3 +49,13 @@ export const postsByTagQuery = defineQuery(`
     ${postFields}
   }
 `);
+
+export const paginatedPostsQuery = defineQuery(`
+  *[_type == "post"] | order(date desc) [$start...$end] {
+    ${postFields}
+  }
+`);
+
+export const countPostsQuery = defineQuery(`
+  count(*[_type == "post"])
+`);

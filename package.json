@@ -47,6 +47,7 @@
   "devDependencies": {
     "@types/react-syntax-highlighter": "^15.5.13",
     "eslint": "^9.15.0",
-    "eslint-config-next": "^15.0.3"
+    "eslint-config-next": "^15.0.3",
+    "cursor-tools": "latest"
   }
 }
