@@ -10,7 +10,6 @@ interface ImageGridProps {
 };
 
 const ImageGrid = ({ images }: ImageGridProps) => {
-  console.log('ImageGrid', images)
   return (
     <div className={`m-auto grid grid-cols-1 md:grid-cols-2 gap-1`}>
       {images.map((image, index) => {

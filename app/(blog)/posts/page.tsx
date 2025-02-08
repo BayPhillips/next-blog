@@ -7,8 +7,9 @@ import { paginatedPostsQuery, countPostsQuery } from "@/sanity/lib/queries";
 
 const POSTS_PER_PAGE = 10;
 
-interface Props {
-  searchParams: { page?: string };
+type Props = {
+  params: Promise<{ id: string }>
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
 export default async function BlogPage({ searchParams }: Props) {
