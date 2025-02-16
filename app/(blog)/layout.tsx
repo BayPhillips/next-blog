@@ -20,6 +20,7 @@ import { settingsQuery } from "@/sanity/lib/queries";
 import { resolveOpenGraphImage } from "@/sanity/lib/utils";
 import { SettingsQueryResult } from "@/sanity.types";
 import Header from "./components/header";
+import { Footer } from './components/footer';
 import { Analytics } from "@vercel/analytics/react"
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -68,25 +69,6 @@ const lora = Lora({
   display: "swap",
 });
 
-
-async function Footer(props: { settings: SettingsQueryResult }) {
-  const { settings } = props;
-  const footer = settings?.footer || [];
-
-  return (
-    <footer className="bg-accent-1 border-accent-2 border-t">
-      <div className="container mx-auto px-5">
-        {footer.length > 0 ? (
-          <PortableText
-            className="prose-sm text-pretty bottom-0 w-full max-w-none bg-white py-12 text-center md:py-20"
-            value={footer as PortableTextBlock[]}
-          />
-        ) : null}
-      </div>
-    </footer>
-  );
-}
-
 export default async function RootLayout({
   children,
 }: {
@@ -100,10 +82,8 @@ export default async function RootLayout({
           {(await draftMode()).isEnabled && <AlertBanner />}
           <Header settings={settings} />
           <main>{children}</main>
-          <Suspense>
-            <Footer settings={settings} />
-          </Suspense>
         </section>
+        <Footer settings={settings} />
         {(await draftMode()).isEnabled && <VisualEditing />}
         <SpeedInsights />
         <Analytics />
