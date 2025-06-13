@@ -1,72 +1,224 @@
-import Link from "next/link";
-import { Suspense } from "react";
+import Image from "next/image"
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
+import { CalendarIcon, ClockIcon, ArrowRightIcon } from "@/components/ui/icons"
+import { formatDate } from "@/lib/date-utils"
+import { fetchHeroPost, fetchRecentPosts, type PostWithReadTime } from "@/lib/sanity/fetch"
+import { getImageUrl, getImageAlt } from "@/lib/sanity/utils"
+import type { Post, Slug, SanityImageAsset } from "@/sanity.types"
 
-import DateComponent from "./date";
-import MoreStories from "./more-stories";
-
-import type { HeroQueryResult } from "@/sanity.types";
-import { sanityFetch } from "@/sanity/lib/fetch";
-import { heroQuery } from "@/sanity/lib/queries";
+interface HeroPostProps {
+  title?: string;
+  slug?: string | { current: string } | Slug;
+  coverImage?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [key: string]: any;
+    };
+    media?: unknown;
+    hotspot?: {
+      _type: string;
+      x?: number;
+      y?: number;
+      height?: number;
+      width?: number;
+    };
+    crop?: {
+      _type: string;
+      top?: number;
+      bottom?: number;
+      left?: number;
+      right?: number;
+    };
+    alt?: string;
+    _type: "image";
+  } | null;
+  date?: string;
+  excerpt?: string;
+  author?: Post["author"];
+  readTime?: number;
+}
 
 function HeroPost({
   title,
-  slug,
+  slug: slugProp,
   excerpt,
   coverImage,
   date,
   author,
-}: Pick<
-  Exclude<HeroQueryResult, null>,
-  "title" | "coverImage" | "date" | "excerpt" | "author" | "slug"
->) {
+  readTime,
+}: HeroPostProps) {
+  // Ensure we have a valid slug object
+  const slug = slugProp 
+    ? (typeof slugProp === 'string' ? { current: slugProp } : slugProp)
+    : { current: '' };
   return (
-    <article>
-      <div className="mb-20 md:mb-28 md:grid md:grid-cols-2 md:gap-x-16 lg:gap-x-8">
-        <div>
-          <h3 className="font-serif text-pretty mb-4 text-4xl leading-tight lg:text-6xl">
-            <Link href={`/posts/${slug}`} className="hover:underline">
-              {title}
-            </Link>
-          </h3>
-          <div className="mb-4 text-lg md:mb-0">
-            <DateComponent dateString={date} />
+    <section className="mb-16">
+      <Card className="overflow-hidden border-none shadow-lg">
+        {coverImage?.asset?._ref && (
+          <div className="relative h-96 w-full">
+            <Image
+              src={getImageUrl(coverImage) || '/placeholder.svg'}
+              alt={getImageAlt(coverImage) || title || 'Post cover'}
+              className="object-cover w-full h-full"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
+              width={1200}
+              height={630}
+              priority
+            />
           </div>
-        </div>
-        <div>
+        )}
+        <CardHeader className="space-y-4">
+          <div className="flex items-center gap-4 text-sm text-muted-foreground">
+            <time dateTime={date || ''} className="flex items-center gap-1">
+              <CalendarIcon className="h-4 w-4" />
+              {date ? formatDate(date) : 'No date'}
+            </time>
+            {readTime && readTime > 0 && (
+              <span className="flex items-center gap-1">
+                <ClockIcon className="h-4 w-4" />
+                {readTime} min read
+              </span>
+            )}
+          </div>
+          <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
+            <Link href={`/posts/${slug.current}`} className="hover:underline">
+              {title || 'Untitled Post'}
+            </Link>
+          </h1>
           {excerpt && (
-            <p className="text-pretty mb-4 text-lg leading-relaxed">
+            <p className="text-xl text-muted-foreground">
               {excerpt}
             </p>
           )}
-        </div>
+        </CardHeader>
+        <CardFooter>
+          <Button asChild variant="outline" className="flex items-center">
+            <Link href={`/posts/${slug.current}`}>
+              Read more
+              <ArrowRightIcon className="ml-2 h-4 w-4" />
+            </Link>
+          </Button>
+        </CardFooter>
+      </Card>
+    </section>
+  )
+}
+
+interface RecentPostsProps {
+  posts: PostWithReadTime[];
+}
+
+function RecentPosts({ posts }: RecentPostsProps) {
+  if (!posts?.length) return null
+
+  return (
+    <section className="py-12">
+      <div className="mb-8 flex items-center justify-between">
+        <h2 className="text-3xl font-bold tracking-tight">Latest Posts</h2>
+        <Button variant="ghost" asChild>
+          <Link href="/posts" className="flex items-center">
+            View all
+            <ArrowRightIcon className="ml-2 h-4 w-4" />
+          </Link>
+        </Button>
       </div>
-    </article>
-  );
+
+      <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {posts.map((post) => (
+          <Card key={post._id} className="h-full overflow-hidden">
+            {post.coverImage?.asset?._ref && (
+              <div className="relative h-48 w-full">
+                <Image
+                  src={getImageUrl(post.coverImage) || '/placeholder.svg'}
+                  alt={getImageAlt(post.coverImage) || post.title || 'Post cover'}
+                  width={600}
+                  height={315}
+                  className="h-48 w-full rounded-t-lg object-cover"
+                />
+              </div>
+            )}
+            <CardHeader>
+              <h3 className="text-xl font-semibold">
+                <Link href={`/posts/${typeof post.slug === 'string' ? post.slug : post.slug?.current || ''}`} className="hover:underline">
+                  {post.title}
+                </Link>
+              </h3>
+              <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                <time dateTime={post.date || ''} className="flex items-center gap-1">
+                  <CalendarIcon className="h-4 w-4" />
+                  {post.date ? formatDate(post.date) : 'No date'}
+                </time>
+                {(post.readTime && post.readTime > 0) && (
+                  <span className="flex items-center gap-1">
+                    <ClockIcon className="h-4 w-4" />
+                    {post.readTime} min read
+                  </span>
+                )}
+              </div>
+            </CardHeader>
+            <CardContent>
+              {post.excerpt && (
+                <p className="line-clamp-3 text-muted-foreground">
+                  {post.excerpt}
+                </p>
+              )}
+            </CardContent>
+            <CardFooter>
+              <Button variant="link" className="p-0" asChild>
+                <Link href={`/posts/${typeof post.slug === 'string' ? post.slug : post.slug?.current || ''}`}>
+                  Read more
+                  <ArrowRightIcon className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+            </CardFooter>
+          </Card>
+        ))}
+      </div>
+    </section>
+  )
 }
 
 export default async function Page() {
-  const heroPost = await sanityFetch({ query: heroQuery });
+  // Fetch hero post and recent posts in parallel
+  const [heroPost, recentPosts] = await Promise.all([
+    fetchHeroPost(),
+    fetchRecentPosts(3)
+  ]);
 
   return (
-    <div>
-      {heroPost ? (
-        <HeroPost
-          title={heroPost.title}
-          slug={heroPost.slug}
-          coverImage={heroPost.coverImage}
-          excerpt={heroPost.excerpt}
-          date={heroPost.date}
-          author={heroPost.author}
-        />
-      ) : null}
-      <hr className="mb-16" />
-      {heroPost?._id && (
-        <aside>
-          <Suspense>
-            <MoreStories skip={heroPost._id} limit={100} />
-          </Suspense>
-        </aside>
-      )}
+    <div className="container py-8">
+      <div className="space-y-12">
+        {heroPost && (
+          <HeroPost
+            title={heroPost.title || 'Untitled'}
+            slug={heroPost.slug}
+            excerpt={heroPost.excerpt}
+            coverImage={heroPost.coverImage}
+            date={heroPost.date}
+            author={heroPost.author}
+            readTime={heroPost.content 
+              ? Math.ceil(
+                  heroPost.content
+                    .filter((c: any) => c._type === 'block')
+                    .map((block: any) => 
+                      block.children?.map((child: any) => child.text).join('') || ''
+                    )
+                    .join(' ')
+                    .split(/\s+/).length / 200
+                )
+              : 5 // Default read time if content is not available
+            }
+          />
+        )}
+
+        {recentPosts && recentPosts.length > 0 && (
+          <RecentPosts posts={recentPosts} />
+        )}
+      </div>
     </div>
   );
 }

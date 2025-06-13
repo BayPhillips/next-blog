@@ -1,0 +1,10 @@
+name: New doc
+version: 0.0.1
+schema: v1
+docs:
+  - name: NextJS Documentation
+    startUrl: https://nextjs.org/docs/app
+  - name: Tailwind CSS Documentation
+    startUrl: https://tailwindcss.com/docs
+  - name: Shadcn UI Documentation
+    startUrl: https://ui.shadcn.com/
