@@ -19,9 +19,10 @@ import { sanityFetch } from "@/sanity/lib/fetch";
 import { settingsQuery } from "@/sanity/lib/queries";
 import { resolveOpenGraphImage } from "@/sanity/lib/utils";
 import { SettingsQueryResult } from "@/sanity.types";
-import Header from "./components/header";
-import { Footer } from './components/footer';
+import { SiteHeader } from "@/components/ui/site-header"
+import { SiteFooter } from "@/components/ui/site-footer"
 import { Analytics } from "@vercel/analytics/react"
+import { Toaster } from "@/components/ui/toaster"
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await sanityFetch({
@@ -58,7 +59,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const nunito = Nunito({
-  variable: "--font-nunito-sans",
+  variable: "--font-sans",
   subsets: ["latin"],
   display: "swap",
 });
@@ -76,17 +77,22 @@ export default async function RootLayout({
 }) {
   const settings = await sanityFetch({ query: settingsQuery });
   return (
-    <html lang="en" className={`${nunito.variable} ${lora.variable} bg-white text-black`}>
-      <body>
-        <section className="min-h-screen container mx-auto px-5">
+    <html lang="en" className={`${nunito.variable} ${lora.variable} font-sans min-h-screen`} suppressHydrationWarning>
+      <body className="min-h-screen bg-background font-sans antialiased">
+        <div className="relative flex min-h-screen flex-col">
           {(await draftMode()).isEnabled && <AlertBanner />}
-          <Header settings={settings} />
-          <main>{children}</main>
-        </section>
-        <Footer settings={settings} />
-        {(await draftMode()).isEnabled && <VisualEditing />}
-        <SpeedInsights />
+          <SiteHeader settings={settings} />
+          <main className="flex-1">{children}</main>
+          <SiteFooter settings={settings} />
+        </div>
+        {(await draftMode()).isEnabled && (
+          <Suspense>
+            <VisualEditing />
+          </Suspense>
+        )}
         <Analytics />
+        <SpeedInsights />
+        <Toaster />
       </body>
     </html>
   );
