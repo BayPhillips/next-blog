@@ -7,6 +7,7 @@ import { formatDate } from "@/lib/date-utils"
 import { fetchHeroPost, fetchRecentPosts, type PostWithReadTime } from "@/lib/sanity/fetch"
 import { getImageUrl, getImageAlt } from "@/lib/sanity/utils"
 import type { Post, Slug, SanityImageAsset } from "@/sanity.types"
+import { PostCard } from "@/components/post-card"
 
 interface HeroPostProps {
   title?: string;
@@ -129,53 +130,7 @@ function RecentPosts({ posts }: RecentPostsProps) {
 
       <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
         {posts.map((post) => (
-          <Card key={post._id} className="h-full overflow-hidden">
-            {post.coverImage?.asset?._ref && (
-              <div className="relative h-48 w-full">
-                <Image
-                  src={getImageUrl(post.coverImage) || '/placeholder.svg'}
-                  alt={getImageAlt(post.coverImage) || post.title || 'Post cover'}
-                  width={600}
-                  height={315}
-                  className="h-48 w-full rounded-t-lg object-cover"
-                />
-              </div>
-            )}
-            <CardHeader>
-              <h3 className="text-xl font-semibold">
-                <Link href={`/posts/${typeof post.slug === 'string' ? post.slug : post.slug?.current || ''}`} className="hover:underline">
-                  {post.title}
-                </Link>
-              </h3>
-              <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                <time dateTime={post.date || ''} className="flex items-center gap-1">
-                  <CalendarIcon className="h-4 w-4" />
-                  {post.date ? formatDate(post.date) : 'No date'}
-                </time>
-                {(post.readTime && post.readTime > 0) && (
-                  <span className="flex items-center gap-1">
-                    <ClockIcon className="h-4 w-4" />
-                    {post.readTime} min read
-                  </span>
-                )}
-              </div>
-            </CardHeader>
-            <CardContent>
-              {post.excerpt && (
-                <p className="line-clamp-3 text-muted-foreground">
-                  {post.excerpt}
-                </p>
-              )}
-            </CardContent>
-            <CardFooter>
-              <Button variant="link" className="p-0" asChild>
-                <Link href={`/posts/${typeof post.slug === 'string' ? post.slug : post.slug?.current || ''}`}>
-                  Read more
-                  <ArrowRightIcon className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-            </CardFooter>
-          </Card>
+          <PostCard key={post._id} post={post} />
         ))}
       </div>
     </section>

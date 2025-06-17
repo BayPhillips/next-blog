@@ -51,8 +51,10 @@ export function PostCard({ post, className }: PostCardProps) {
     slug: slugProp, 
     coverImage, 
     date,  
-    tags = [] 
+    tags
   } = post;
+
+  console.log(`What are tags? ${tags}`);
   
   // Create a proper SanityImage object with a reference to the asset
   const image = coverImage?.asset ? {
@@ -96,12 +98,9 @@ export function PostCard({ post, className }: PostCardProps) {
         <p className="line-clamp-3 text-muted-foreground">{excerpt}</p>
       </CardContent>
       <CardFooter className="flex flex-wrap gap-2 mt-auto">
-        {Array.isArray(tags) && tags
-          .filter((tag): tag is string => typeof tag === 'string' && tag.trim() !== '')
-          .map((tag) => {
-            const tagSlug = tag.toLowerCase().replace(/\s+/g, '-');
+        {tags?.map((tag) => {
             return (
-              <Link key={`tag-${tagSlug}`} href={`/posts/tag/${tagSlug}`}>
+              <Link key={`tag-${tag}`} href={`/tags/${tag}`}>
                 <Badge variant="outline" className="hover:bg-accent hover:text-accent-foreground">
                   {tag}
                 </Badge>

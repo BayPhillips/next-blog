@@ -54,13 +54,7 @@ interface MoreStoriesQueryResult {
 
 declare const internalGroqTypeReferenceTo: unique symbol;
 
-type Tag = {
-  _id: string;
-  title: string;
-  slug: {
-    current: string;
-  };
-};
+type Tag = string[];
 
 type CoverImage = {
   asset: {
@@ -183,13 +177,7 @@ interface PostCard {
     };
     alt?: string;
   };
-  tags?: Array<{
-    _id: string;
-    _type: 'reference';
-    _ref: string;
-    title: string;
-    slug?: { current: string };
-  }>;
+  tags?: Array<string>;
 }
 
 
@@ -225,29 +213,11 @@ export default async function PostPage(props: Props) {
   const publishedDate = post.date ? new Date(post.date) : null;
   const readTime = Math.ceil(((post.content?.length || 0) / 200) || 5);
   const postUrl = `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/posts/${post.slug?.current || ''}`;
-
+  console.log(`What are the tags?`, post.tags);
   return (
     <div className="container py-12 max-w-4xl mx-auto">
       <article className="prose dark:prose-invert max-w-none">
         <header className="mb-12">
-          {post.tags && post.tags.length > 0 && (
-            <div className="flex flex-wrap gap-2 mb-4">
-              {post.tags.map((tagRef) => {
-                // Cast the tag reference to the Tag type
-                const tag = tagRef as unknown as Tag;
-                return (
-                  <Link 
-                    key={tag._id} 
-                    href={`/tags/${tag.slug?.current || ''}`}
-                    className="hover:underline"
-                  >
-                    <Badge variant="outline">{tag.title}</Badge>
-                  </Link>
-                );
-              })}
-            </div>
-          )}
-          
           <h1 className="text-4xl font-bold tracking-tight mb-6 md:text-5xl">
             {post.title || 'Untitled'}
           </h1>
@@ -266,6 +236,23 @@ export default async function PostPage(props: Props) {
               <span>{readTime} min read</span>
             </div>
           </div>
+          {post.tags && post.tags.length > 0 && (
+            <div className="flex flex-wrap gap-2 mt-4">
+              {post.tags.map((tagRef) => {
+                // Cast the tag reference to the Tag type
+                const tag = tagRef as unknown as Tag;
+                return (
+                  <Link 
+                    key={`tag-${tag}`} 
+                    href={`/tags/${tag}`}
+                    className="hover:underline"
+                  >
+                    <Badge variant="outline">{tag}</Badge>
+                  </Link>
+                );
+              })}
+            </div>
+          )}
 
           {post.coverImage && (
             <div className="relative aspect-video w-full mt-8 rounded-lg overflow-hidden">

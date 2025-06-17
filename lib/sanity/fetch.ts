@@ -3,11 +3,8 @@ import type { Post, Slug } from "@/sanity.types";
 import { SanityImage } from "@/types";
 
 // Extended Post type with readTime for our queries
-export type PostWithReadTime = Omit<Post, 'content' | 'slug' | 'coverImage'> & {
+export type PostWithReadTime = Post & {
   readTime?: number;
-  content?: any; // Add content back for read time calculation
-  slug: Slug | { current: string };
-  coverImage?: SanityImage | null;
 };
 
 // Type-safe wrapper around sanityFetch
