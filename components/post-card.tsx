@@ -5,6 +5,7 @@ import { Button } from "./ui/button"
 import { CalendarDays, Clock } from "lucide-react"
 import { formatDate } from "@/lib/utils"
 import { PostImage } from "./post-image"
+import { Post } from "@/sanity.types"
 
 export type SanityImageAsset = {
   _type: 'sanity.imageAsset'
@@ -24,20 +25,6 @@ export type SanityImage = {
   asset: SanityImageAsset
   alt?: string
   caption?: string
-}
-
-export type Post = {
-  _id: string
-  title: string
-  excerpt: string
-  slug: string | { current: string }
-  coverImage?: {
-    asset?: SanityImageAsset
-    alt?: string
-  } | null
-  date: string
-  readTime?: number
-  tags?: (string | null)[]
 }
 
 type PostCardProps = {
@@ -63,8 +50,7 @@ export function PostCard({ post, className }: PostCardProps) {
     excerpt, 
     slug: slugProp, 
     coverImage, 
-    date, 
-    readTime, 
+    date,  
     tags = [] 
   } = post;
   
@@ -102,14 +88,8 @@ export function PostCard({ post, className }: PostCardProps) {
         <div className="flex items-center gap-4 text-sm text-muted-foreground">
           <div className="flex items-center gap-1">
             <CalendarDays className="h-4 w-4" />
-            <time dateTime={date}>{formatDate(date)}</time>
+            <time dateTime={date}>{formatDate(date || '')}</time>
           </div>
-          {readTime && (
-            <div className="flex items-center gap-1">
-              <Clock className="h-4 w-4" />
-              <span>{readTime} min read</span>
-            </div>
-          )}
         </div>
       </CardHeader>
       <CardContent>

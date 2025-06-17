@@ -16,48 +16,15 @@ import { postQuery, moreStoriesQuery } from "@/sanity/lib/queries";
 import { resolveOpenGraphImage } from "@/sanity/lib/utils";
 
 // Import SanityDocument type from next-sanity
-import type { SanityDocument } from "next-sanity";
+import type { PortableTextBlock, SanityDocument } from "next-sanity";
+import { Post, PostsQueryResult } from "@/sanity.types";
+import { getImageUrl } from "@/lib/sanity/utils";
 
 // Define a type for the post slugs query result
 interface PostSlugResult {
   slug: {
     current: string;
   };
-}
-
-interface Post extends Omit<SanityDocument, '_type'> {
-  _type: 'post';
-  title?: string | null;
-  slug?: {
-    current: string;
-  } | null;
-  excerpt?: string | null;
-  content?: any[] | null;
-  date?: string | null;
-  coverImage?: {
-    _type: 'image';
-    asset: {
-      _ref: string;
-      _type: 'reference';
-      _weak?: boolean;
-      [key: string]: any;
-    };
-    alt?: string;
-    caption?: string;
-  } | null;
-  tags?: Array<{
-    _key?: string;
-    _type: 'reference';
-    _ref: string;
-    _weak?: boolean;
-    [key: string]: any;
-  }> | null;
-  author?: {
-    _ref: string;
-    _type: 'reference';
-    _weak?: boolean;
-    [key: string]: any;
-  } | null;
 }
 
 interface MoreStoriesQueryResult {
@@ -103,8 +70,8 @@ type CoverImage = {
 };
 
 type Props = {
-  params: { slug: string };
-  searchParams: { [key: string]: string | string[] | undefined };
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
 const postSlugs = defineQuery(
@@ -154,8 +121,8 @@ export async function generateStaticParams(): Promise<StaticParams> {
 }
 
 interface GenerateMetadataProps {
-  params: { slug: string };
-  searchParams: { [key: string]: string | string[] | undefined };
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
 export async function generateMetadata(
@@ -164,7 +131,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const post = await sanityFetch({
     query: postQuery,
-    params: { slug: params.slug },
+    params: { slug: (await params).slug },
   });
 
   if (!post) {
@@ -227,131 +194,18 @@ interface PostCard {
   }>;
 }
 
-interface MoreStoriesResult {
-  _id: string;
-  title: string;
-  slug: string;
-  excerpt?: string | null;
-  date?: string | null;
-  content?: any[] | null;
-  coverImage?: {
-    asset: {
-      _ref: string;
-      _type: 'reference';
-      _weak?: boolean;
-      [key: string]: any;
-    };
-    alt?: string;
-  } | null;
-  tags?: Array<{
-    _id: string;
-    title: string;
-    slug?: {
-      current: string;
-    };
-  }> | null;
-}
 
 async function MorePosts({ currentPostId }: { currentPostId: string }) {
   // Use type assertion to handle the generic type constraint
-  const result = await sanityFetch({
+  const morePosts = await sanityFetch({
     query: moreStoriesQuery,
     params: { skip: currentPostId, limit: 2 }
-  }) as unknown as MoreStoriesResult[];
-
-  if (!result?.length) return null;
-
-  // Transform the data to match the PostCard props
-  const posts = result
-    .filter((post): post is Required<MoreStoriesResult> => 
-      !!post.slug && !!post._id
-    )
-    .map(post => {
-      // Handle slug - it can be string or { current: string }
-      const slug = typeof post.slug === 'string' 
-        ? post.slug 
-        : typeof post.slug === 'object' && post.slug?.current 
-          ? post.slug.current 
-          : '';
-
-      // Handle coverImage
-      const coverImage = post.coverImage?.asset?._ref 
-        ? {
-            asset: {
-              _type: 'sanity.imageAsset' as const,
-              _ref: post.coverImage.asset._ref,
-              url: `https://cdn.sanity.io/images/${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}/${process.env.NEXT_PUBLIC_SANITY_DATASET}/${post.coverImage.asset._ref.split('-').slice(1).join('-')}.jpg`,
-              metadata: {
-                dimensions: {
-                  width: 1200,
-                  height: 630,
-                  aspectRatio: 1.9
-                }
-              }
-            },
-            alt: post.coverImage.alt || post.title || 'Post cover image'
-          }
-        : null;
-
-      // Transform tags to string array
-      const tags: string[] = [];
-      if (Array.isArray(post.tags)) {
-        for (const tag of post.tags) {
-          if (typeof tag === 'string') {
-            tags.push(tag);
-          } else if (tag && typeof tag === 'object' && 'title' in tag && typeof tag.title === 'string') {
-            tags.push(tag.title);
-          }
-        }
-      }
-
-      return {
-        _id: post._id,
-        title: post.title || 'Untitled',
-        slug,
-        excerpt: post.excerpt || '',
-        date: post.date || new Date().toISOString(),
-        coverImage,
-        readTime: Math.ceil((post.content?.length || 0) / 200) || 5,
-        tags,
-        content: post.content || []
-      };
-    });
+  }) as PostsQueryResult;
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
-      {posts.map((post) => {
-        const postTags = (post.tags || []).map(tag => ({
-          title: tag.title || 'Untitled Tag',
-          slug: tag.slug?.current || ''
-        }));
-        
-        // Get the image URL from the asset reference
-        const imageUrl = post.coverImage?.asset?._ref 
-          ? `https://cdn.sanity.io/images/${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}/${process.env.NEXT_PUBLIC_SANITY_DATASET}/${post.coverImage.asset._ref.split('-').slice(1).join('-')}.jpg`
-          : undefined;
-        
-        // Create a post object that matches the PostCard's expected format
-        const postData = {
-          ...post,
-          slug: post.slug,
-          coverImage: imageUrl && post.coverImage?.asset
-            ? {
-                _type: 'image',
-                asset: {
-                  _ref: post.coverImage.asset._ref,
-                  _type: 'reference',
-                  _weak: post.coverImage.asset._weak,
-                  url: imageUrl,
-                },
-                alt: post.coverImage?.alt || post.title || 'Post cover image',
-              }
-            : null,
-          tags: postTags,
-          readTime: Math.ceil((post.content?.length || 0) / 200) || 5
-        } as const;
-
-        return <PostCard key={post._id} post={postData} className="h-full" />;
+      {morePosts.map((post) => {
+        return <PostCard key={post._id} post={post as unknown as Post} className="h-full" />;
       })}
     </div>
   );
@@ -414,10 +268,10 @@ export default async function PostPage({ params }: Props) {
             </div>
           </div>
 
-          {post.coverImage?.asset?.url && (
+          {post.coverImage && (
             <div className="relative aspect-video w-full mt-8 rounded-lg overflow-hidden">
               <Image
-                src={post.coverImage.asset.url}
+                src={getImageUrl(post.coverImage)}
                 alt={post.coverImage.alt || post.title || 'Post cover image'}
                 fill
                 className="object-cover"
@@ -430,7 +284,7 @@ export default async function PostPage({ params }: Props) {
 
         {post.content && post.content.length > 0 && (
           <div className="prose-lg dark:prose-invert max-w-none">
-            <PortableText value={post.content} />
+            <PortableText value={post.content as unknown as PortableTextBlock[]} />
           </div>
         )}
 
