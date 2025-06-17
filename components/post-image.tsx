@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import { SanityImageAsset } from '@/sanity.types';
 import { getImageUrl } from '@/lib/sanity/utils';
 import { SanityImage } from '@/types';
 

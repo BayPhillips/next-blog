@@ -125,10 +125,8 @@ interface GenerateMetadataProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
-export async function generateMetadata(
-  { params }: GenerateMetadataProps,
-  parent: ResolvingMetadata
-): Promise<Metadata> {
+export async function generateMetadata(props: GenerateMetadataProps, parent: ResolvingMetadata): Promise<Metadata> {
+  const params = await props.params;
   const post = await sanityFetch({
     query: postQuery,
     params: { slug: (await params).slug },
@@ -211,7 +209,8 @@ async function MorePosts({ currentPostId }: { currentPostId: string }) {
   );
 }
 
-export default async function PostPage({ params }: Props) {
+export default async function PostPage(props: Props) {
+  const params = await props.params;
   const post = await sanityFetch({
     query: postQuery,
     params: { slug: params.slug },

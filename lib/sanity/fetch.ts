@@ -1,5 +1,6 @@
 import { sanityFetch as baseSanityFetch } from "@/sanity/lib/fetch";
-import type { Post, Slug, SanityImage } from "@/sanity.types";
+import type { Post, Slug } from "@/sanity.types";
+import { SanityImage } from "@/types";
 
 // Extended Post type with readTime for our queries
 export type PostWithReadTime = Omit<Post, 'content' | 'slug' | 'coverImage'> & {
