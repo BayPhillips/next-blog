@@ -53,11 +53,6 @@ export async function fetchPost(slug: string): Promise<PostWithReadTime | null> 
 
   if (!result) return null;
 
-  // Ensure coverImage is properly typed
-  if (result.coverImage && !result.coverImage.asset) {
-    result.coverImage = null;
-  }
-
   return result;
 }
 
@@ -83,17 +78,7 @@ export async function fetchRecentPosts(limit = 3): Promise<PostWithReadTime[]> {
     params: { limit },
   });
 
-  if (!result) return [];
-
-  // Ensure coverImage is properly typed for each post
-  return result.map(post => {
-    // If coverImage exists but has no asset, set it to null
-    const coverImage = post.coverImage?.asset ? post.coverImage : null;
-    return {
-      ...post,
-      coverImage
-    };
-  });
+  return result || [];
 }
 
 // Helper function to fetch hero post
@@ -116,13 +101,6 @@ export async function fetchHeroPost(): Promise<PostWithReadTime | null> {
   const result = await fetchSanityData<PostWithReadTime | null>({
     query,
   });
-
-  if (!result) return null;
-
-  // Ensure coverImage is properly typed
-  if (result.coverImage && !result.coverImage.asset) {
-    result.coverImage = null;
-  }
 
   return result;
 }
