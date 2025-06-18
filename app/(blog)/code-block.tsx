@@ -11,7 +11,7 @@ interface Props {
 
 const CodeBlock: React.FC<Props> = ({ value }: Props) => {
   const { code, language } = value
-  console.log(`What is ${code} and language ${language}`);
+
   return (
     <SyntaxHighlighter
       language={language}

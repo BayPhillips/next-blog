@@ -3,6 +3,7 @@ import { paginatedPostsQuery, countPostsQuery } from "@/sanity/lib/queries";
 import { PostCard } from "@/components/post-card";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { PageHeader } from "@/components/ui/page-header";
 
 const POSTS_PER_PAGE = 10;
 
@@ -29,8 +30,8 @@ export default async function BlogPage(props: Props) {
   const totalPages = Math.ceil(totalPosts / POSTS_PER_PAGE);
 
   return (
-    <div className="container py-12">
-      <h1 className="text-4xl font-bold tracking-tight mb-12">All Posts</h1>
+    <>
+      <PageHeader title="All Posts" description="Browse all my posts" />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {posts.map((post: any) => {
           // Transform the post data to match our Post type
@@ -81,6 +82,6 @@ export default async function BlogPage(props: Props) {
           </nav>
         </div>
       )}
-    </div>
+    </>
   );
 }

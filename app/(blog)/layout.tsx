@@ -82,7 +82,11 @@ export default async function RootLayout({
         <div className="relative flex min-h-screen flex-col">
           {(await draftMode()).isEnabled && <AlertBanner />}
           <SiteHeader settings={settings} />
-          <main className="flex-1">{children}</main>
+          <main className="flex-1">
+            <div className="container py-12">
+              {children}
+            </div>
+          </main>
           <SiteFooter settings={settings} />
         </div>
         {(await draftMode()).isEnabled && (

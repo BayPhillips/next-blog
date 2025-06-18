@@ -42,7 +42,7 @@ export default async function AboutPage() {
   const hasContent = content.length > 0;
 
   return (
-    <article className="container py-12 max-w-4xl mx-auto">
+    <article className="">
       {aboutData.coverImage?.asset?._ref && (
         <div className="relative w-full h-64 md:h-96 mb-8 rounded-lg overflow-hidden">
           <Image

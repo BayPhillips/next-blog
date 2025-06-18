@@ -53,8 +53,6 @@ export function PostCard({ post, className }: PostCardProps) {
     date,  
     tags
   } = post;
-
-  console.log(`What are tags? ${tags}`);
   
   // Create a proper SanityImage object with a reference to the asset
   const image = coverImage?.asset ? {
@@ -66,8 +64,9 @@ export function PostCard({ post, className }: PostCardProps) {
     },
     alt: coverImage.alt || ''
   } : undefined;
+
   // Ensure slug is always a string and handle potential undefined
-  const slug = typeof slugProp === 'string' ? slugProp : '';
+  const slug = typeof slugProp === 'string' ? slugProp : slugProp?.current || '';
   const postUrl = `/posts/${slug}`;
   return (
     <Card className={cn("flex flex-col h-full overflow-hidden transition-all hover:shadow-md", className)}>

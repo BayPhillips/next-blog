@@ -39,14 +39,14 @@ export default async function ContactPage() {
   const hasContent = content.length > 0
 
   return (
-    <article className="container py-12 max-w-4xl mx-auto">
+    <article className="">
       <PageHeader 
         title={contactData.title || 'Contact Us'} 
         description={contactData.description}
         className="mb-12"
       />
       
-      <div className="max-w-2xl mx-auto">
+      <div className="">
         <div className="space-y-6">
           {hasContent && <PortableText value={content} />}
           

@@ -19,6 +19,7 @@ import { resolveOpenGraphImage } from "@/sanity/lib/utils";
 import type { PortableTextBlock, SanityDocument } from "next-sanity";
 import { Post, PostsQueryResult } from "@/sanity.types";
 import { getImageUrl } from "@/lib/sanity/utils";
+import { PageHeader } from "@/components/ui/page-header";
 
 // Define a type for the post slugs query result
 interface PostSlugResult {
@@ -213,14 +214,12 @@ export default async function PostPage(props: Props) {
   const publishedDate = post.date ? new Date(post.date) : null;
   const readTime = Math.ceil(((post.content?.length || 0) / 200) || 5);
   const postUrl = `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/posts/${post.slug?.current || ''}`;
-  console.log(`What are the tags?`, post.tags);
+
   return (
-    <div className="container py-12 max-w-4xl mx-auto">
+    <>
       <article className="prose dark:prose-invert max-w-none">
         <header className="mb-12">
-          <h1 className="text-4xl font-bold tracking-tight mb-6 md:text-5xl">
-            {post.title || 'Untitled'}
-          </h1>
+          <PageHeader title={post.title || 'Untitled'} description={''} />
           
           <div className="flex items-center text-muted-foreground text-sm gap-4">
             {publishedDate && (
@@ -321,6 +320,6 @@ export default async function PostPage(props: Props) {
           <MorePosts currentPostId={post._id} />
         </Suspense>
       </aside>
-    </div>
+    </>
   );
 }
