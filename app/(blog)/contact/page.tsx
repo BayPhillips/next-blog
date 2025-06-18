@@ -45,7 +45,6 @@ export default async function ContactPage() {
         description={contactData.description}
         className="mb-12"
       />
-      
       <div className="">
         <div className="space-y-6">
           {hasContent && <PortableText value={content} />}
@@ -111,5 +110,5 @@ export default async function ContactPage() {
         </div>
       </div>
     </article>
-  )
+  );
 }

@@ -86,7 +86,10 @@ function HeroPost({
             )}
           </div>
           <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
-            <Link href={`/posts/${slug.current}`} className="hover:underline">
+            <Link
+              href={`/posts/${slug.current}`}
+              className="hover:underline"
+            >
               {title || 'Untitled Post'}
             </Link>
           </h1>
@@ -106,7 +109,7 @@ function HeroPost({
         </CardFooter>
       </Card>
     </section>
-  )
+  );
 }
 
 interface RecentPostsProps {
@@ -127,14 +130,13 @@ function RecentPosts({ posts }: RecentPostsProps) {
           </Link>
         </Button>
       </div>
-
       <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
         {posts.map((post) => (
           <PostCard key={post._id} post={post} />
         ))}
       </div>
     </section>
-  )
+  );
 }
 
 export default async function Page() {

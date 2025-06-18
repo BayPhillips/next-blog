@@ -114,7 +114,7 @@ export function PostCard({ post, className }: PostCardProps) {
         </Button>
       </CardFooter>
     </Card>
-  )
+  );
 }
 
 function cn(...classes: (string | undefined)[]) {

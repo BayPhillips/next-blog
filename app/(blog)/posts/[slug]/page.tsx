@@ -241,11 +241,11 @@ export default async function PostPage(props: Props) {
                 // Cast the tag reference to the Tag type
                 const tag = tagRef as unknown as Tag;
                 return (
-                  <Link 
-                    key={`tag-${tag}`} 
+                  <Link
+                    key={`tag-${tag}`}
                     href={`/tags/${tag}`}
                     className="hover:underline"
-                  >
+                    >
                     <Badge variant="outline">{tag}</Badge>
                   </Link>
                 );
@@ -311,9 +311,7 @@ export default async function PostPage(props: Props) {
           </div>
         </footer>
       </article>
-
       <Separator className="my-12" />
-
       <aside>
         <h2 className="text-2xl font-bold mb-8">More articles</h2>
         <Suspense fallback={<div>Loading more posts...</div>}>
