@@ -13,4 +13,7 @@ rules:
   - Follow AirBnB style guide for code formatting.
   - Use PascalCase when creating new React files. UserCard, not user-card.
   - Use named exports when creating new react components.
+  - Reuse exported types from Sanity when possible and avoid creating new or inline types just to fix build issues.
+  - Use TypeScript for type safety and better developer experience.
+  - Write clean, maintainable, and well-documented code.
   - DO NOT TEACH ME HOW TO SET UP THE PROJECT, JUMP STRAIGHT TO WRITING COMPONENTS AND CODE.
