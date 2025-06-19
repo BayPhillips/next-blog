@@ -19,7 +19,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
   
   // Add all blog posts
-  const posts = await sanityFetch({ query: postsQuery });
+  const posts = await sanityFetch({ query: postsQuery, perspective: 'published' });
   routes.push(...posts.map((post) => ({
       url: `https://bayphillips.com/posts/${post.slug || 'slug'}`,
       lastModified: post.date ? new Date(Date.parse(post.date)) : '',
@@ -27,7 +27,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   })));
 
   // Add blog index pages
-  const totalPosts = await sanityFetch({ query: countPostsQuery });
+  const totalPosts = await sanityFetch({ query: countPostsQuery, perspective: 'published' });
   const POSTS_PER_PAGE = 10;
   const totalPages = Math.ceil(totalPosts / POSTS_PER_PAGE);
 

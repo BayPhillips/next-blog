@@ -12,16 +12,14 @@ export async function fetchSanityData<T>(
   options: {
     query: string;
     params?: Record<string, unknown>;
-    perspective?: 'published' | 'previewDrafts';
     stega?: boolean;
   }
 ): Promise<T> {
-  const { query, params, perspective = 'published', stega = false } = options;
+  const { query, params, stega = false } = options;
   
   const result = await baseSanityFetch({
     query,
     params,
-    perspective,
     stega,
   });
   
