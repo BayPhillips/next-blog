@@ -19,13 +19,12 @@ export async function sanityFetch<const QueryString extends string>({
   query: QueryString;
   params?: QueryParams;
   stega?: boolean;
-  perspective: string | undefined;
+  perspective?: string | undefined;
 }) {
   const { isEnabled } = await draftMode();
   const actualPerspective = isEnabled ? "drafts" : perspective;
   const actualStega = stega || actualPerspective === "drafts";
 
-  console.log(`[sanityFetch] perspective: ${perspective}, actualPerspective ${actualPerspective}, stega: ${actualStega}, params: ${JSON.stringify(params)}`);
   let fetchParams: FilteredResponseQueryOptions = {
     stega: actualStega,
     perspective: actualPerspective as ClientPerspective,
