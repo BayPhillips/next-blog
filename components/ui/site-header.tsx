@@ -13,11 +13,11 @@ export function SiteHeader({ settings }: { settings: SettingsQueryResult }) {
             href="/"
             className="mr-6 flex items-center space-x-2 hover:opacity-80 transition-opacity"
           >
-            <span>
+            <span className="flex items-center">
               <span className="inline-block h-6 w-6">
                 <LogoIcon className="h-full w-full" />
               </span>
-              <span className="hidden font-bold sm:inline-block">
+              <span className="hidden font-bold sm:inline-block align-middle ml-2">
                 {settings?.title || 'Blog'}
               </span>
             </span>
