@@ -9,6 +9,7 @@ import {
   Clock,
   ArrowRight,
   Sparkles,
+  Menu,
   type LucideIcon
 } from "lucide-react"
 
@@ -31,6 +32,9 @@ ClockIcon.displayName = 'ClockIcon'
 export const ArrowRightIcon = (props: LucideProps) => <ArrowRight {...props} />
 ArrowRightIcon.displayName = 'ArrowRightIcon'
 
+export const MenuIcon = (props: LucideProps) => <Menu {...props} />
+MenuIcon.displayName = 'MenuIcon'
+
 // Icon mapping
 export const Icons = {
   eye: EyeIcon,
@@ -39,6 +43,7 @@ export const Icons = {
   calendar: CalendarIcon,
   clock: ClockIcon,
   arrowRight: ArrowRightIcon,
+  menu: MenuIcon
 }
 
 // Client component for dynamic icon loading
