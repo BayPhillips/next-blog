@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/alert";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import ImageGrid from "./image-grid";
 
 // Custom components for different block types
 const components: PortableTextComponents = {
@@ -142,6 +143,9 @@ const components: PortableTextComponents = {
           />
         </div>
       );
+    },
+    imagegrid: ({ value }) => {
+      return <ImageGrid images={value.images || []} />;
     },
   },
 };
