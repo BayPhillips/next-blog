@@ -12,7 +12,7 @@ export async function fetchSanityData<T>(
   options: {
     query: string;
     params?: Record<string, unknown>;
-    perspective?: 'published' | 'previewDrafts';
+    perspective?: 'published' | 'drafts';
     stega?: boolean;
   }
 ): Promise<T> {
