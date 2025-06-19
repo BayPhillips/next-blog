@@ -6,64 +6,24 @@ import { CalendarIcon, ClockIcon, ArrowRightIcon } from "@/components/ui/icons"
 import { formatDate } from "@/lib/date-utils"
 import { fetchHeroPost, fetchRecentPosts, type PostWithReadTime } from "@/lib/sanity/fetch"
 import { getImageUrl, getImageAlt } from "@/lib/sanity/utils"
-import type { Post, Slug, SanityImageAsset } from "@/sanity.types"
+import type { Post } from "@/sanity.types"
 import { PostCard } from "@/components/post-card"
+import PostTags from "./components/post-tags"
 
 interface HeroPostProps {
-  title?: string;
-  slug?: string | { current: string } | Slug;
-  coverImage?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [key: string]: any;
-    };
-    media?: unknown;
-    hotspot?: {
-      _type: string;
-      x?: number;
-      y?: number;
-      height?: number;
-      width?: number;
-    };
-    crop?: {
-      _type: string;
-      top?: number;
-      bottom?: number;
-      left?: number;
-      right?: number;
-    };
-    alt?: string;
-    _type: "image";
-  } | null;
-  date?: string;
-  excerpt?: string;
-  author?: Post["author"];
-  readTime?: number;
+  post: Post;
 }
 
-function HeroPost({
-  title,
-  slug: slugProp,
-  excerpt,
-  coverImage,
-  date,
-  author,
-  readTime,
-}: HeroPostProps) {
+function HeroPost({ post }: HeroPostProps) {
   // Ensure we have a valid slug object
-  const slug = slugProp 
-    ? (typeof slugProp === 'string' ? { current: slugProp } : slugProp)
-    : { current: '' };
   return (
     <section className="mb-16">
       <Card className="overflow-hidden border-none shadow-lg">
-        {coverImage?.asset?._ref && (
+        {post.coverImage?.asset?._ref && (
           <div className="relative h-96 w-full">
             <Image
-              src={getImageUrl(coverImage) || '/placeholder.svg'}
-              alt={getImageAlt(coverImage) || title || 'Post cover'}
+              src={getImageUrl(post.coverImage) || '/placeholder.svg'}
+              alt={getImageAlt(post.coverImage) || post.title || 'Post cover'}
               className="object-cover w-full h-full"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
               width={1200}
@@ -74,38 +34,31 @@ function HeroPost({
         )}
         <CardHeader className="space-y-4">
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
-            <time dateTime={date || ''} className="flex items-center gap-1">
+            <time dateTime={post.date || ''} className="flex items-center gap-1">
               <CalendarIcon className="h-4 w-4" />
-              {date ? formatDate(date) : 'No date'}
+              {post.date ? formatDate(post.date) : 'No date'}
             </time>
-            {readTime && readTime > 0 && (
-              <span className="flex items-center gap-1">
-                <ClockIcon className="h-4 w-4" />
-                {readTime} min read
-              </span>
-            )}
           </div>
           <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
             <Link
-              href={`/posts/${slug.current}`}
+              href={`/posts/${post.slug?.current}`}
               className="hover:underline"
             >
-              {title || 'Untitled Post'}
+              {post.title || 'Untitled Post'}
             </Link>
           </h1>
-          {excerpt && (
+          {post.excerpt && (
             <p className="text-xl text-muted-foreground">
-              {excerpt}
+              {post.excerpt}
             </p>
           )}
         </CardHeader>
-        <CardFooter>
-          <Button asChild variant="outline" className="flex items-center">
-            <Link href={`/posts/${slug.current}`}>
-              Read more
-              <ArrowRightIcon className="ml-2 h-4 w-4" />
-            </Link>
-          </Button>
+        <CardFooter className="flex flex-wrap items-center gap-4 mt-auto">
+          <PostTags tags={post.tags || []} />
+          <Link href={`/posts/${post.slug?.current}`}>
+            Read more
+            <span className="sr-only">about {post.title}</span>
+          </Link>
         </CardFooter>
       </Card>
     </section>
@@ -151,24 +104,7 @@ export default async function Page() {
       <div className="space-y-12">
         {heroPost && (
           <HeroPost
-            title={heroPost.title || 'Untitled'}
-            slug={heroPost.slug}
-            excerpt={heroPost.excerpt}
-            coverImage={heroPost.coverImage}
-            date={heroPost.date}
-            author={heroPost.author}
-            readTime={heroPost.content 
-              ? Math.ceil(
-                  heroPost.content
-                    .filter((c: any) => c._type === 'block')
-                    .map((block: any) => 
-                      block.children?.map((child: any) => child.text).join('') || ''
-                    )
-                    .join(' ')
-                    .split(/\s+/).length / 200
-                )
-              : 5 // Default read time if content is not available
-            }
+            post={heroPost as Post}
           />
         )}
 

@@ -6,6 +6,7 @@ import { CalendarDays, Clock } from "lucide-react"
 import { formatDate } from "@/lib/utils"
 import { PostImage } from "./post-image"
 import { Post } from "@/sanity.types"
+import PostTags from "@/app/(blog)/components/post-tags"
 
 export type SanityImageAsset = {
   _type: 'sanity.imageAsset'
@@ -97,15 +98,7 @@ export function PostCard({ post, className }: PostCardProps) {
         <p className="line-clamp-3 text-muted-foreground">{excerpt}</p>
       </CardContent>
       <CardFooter className="flex flex-wrap gap-2 mt-auto">
-        {tags?.map((tag) => {
-            return (
-              <Link key={`tag-${tag}`} href={`/tags/${tag}`}>
-                <Badge variant="outline" className="hover:bg-accent hover:text-accent-foreground">
-                  {tag}
-                </Badge>
-              </Link>
-            );
-          })}
+        <PostTags tags={post.tags || []} />
         <Button variant="ghost" className="ml-auto" asChild>
           <Link href={postUrl}>
             Read more

@@ -20,6 +20,7 @@ import type { PortableTextBlock, SanityDocument } from "next-sanity";
 import { Post, PostsQueryResult } from "@/sanity.types";
 import { getImageUrl } from "@/lib/sanity/utils";
 import { PageHeader } from "@/components/ui/page-header";
+import PostTags from "../../components/post-tags";
 
 // Define a type for the post slugs query result
 interface PostSlugResult {
@@ -235,24 +236,7 @@ export default async function PostPage(props: Props) {
               <span>{readTime} min read</span>
             </div>
           </div>
-          {post.tags && post.tags.length > 0 && (
-            <div className="flex flex-wrap gap-2 mt-4">
-              {post.tags.map((tagRef) => {
-                // Cast the tag reference to the Tag type
-                const tag = tagRef as unknown as Tag;
-                return (
-                  <Link
-                    key={`tag-${tag}`}
-                    href={`/tags/${tag}`}
-                    className="hover:underline"
-                    >
-                    <Badge variant="outline">{tag}</Badge>
-                  </Link>
-                );
-              })}
-            </div>
-          )}
-
+          <PostTags tags={post.tags || []} />
           {post.coverImage && (
             <div className="relative aspect-video w-full mt-8 rounded-lg overflow-hidden">
               <Image
