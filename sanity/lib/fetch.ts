@@ -29,15 +29,15 @@ export async function sanityFetch<const QueryString extends string>({
       return false;
     }
   })();
-  const actualPerspective = isEnabled ? "drafts" : perspective;
-  const actualStega = stega || actualPerspective === "drafts";
+  const actualPerspective = isEnabled ? "previewDrafts" : perspective;
+  const actualStega = stega || actualPerspective === "previewDrafts";
 
   let fetchParams: FilteredResponseQueryOptions = {
     stega: actualStega,
     perspective: actualPerspective as ClientPerspective,
     // The `published` perspective is available on the API CDN
     useCdn: actualPerspective === "published" ? true : false,
-    token: actualPerspective === "drafts" ? token : undefined,
+    token: actualPerspective === "previewDrafts" ? token : undefined,
     // When using the `published` perspective we use time-based revalidation to match the time-to-live on Sanity's API CDN (60 seconds)
     next: { revalidate: actualPerspective === "published" ? 60 : 0 },
   };
