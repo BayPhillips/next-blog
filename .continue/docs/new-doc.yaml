@@ -8,3 +8,7 @@ docs:
     startUrl: https://tailwindcss.com/docs
   - name: Shadcn UI Documentation
     startUrl: https://ui.shadcn.com/
+  - name: TanStack Query Documentation
+    startUrl: https://tanstack.com/query/v4/docs/react/overview
+  - name: Sanity Documentation
+    startUrl: https://www.sanity.io/docs
