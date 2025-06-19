@@ -21,7 +21,14 @@ export async function sanityFetch<const QueryString extends string>({
   stega?: boolean;
   perspective?: string | undefined;
 }) {
-  const { isEnabled } = await draftMode();
+  // Draft Mode may be disabled in some environments, so we need to handle that case
+  const isEnabled = await (async () => {
+    try {
+      return (await draftMode()).isEnabled;
+    } catch {
+      return false;
+    }
+  })();
   const actualPerspective = isEnabled ? "drafts" : perspective;
   const actualStega = stega || actualPerspective === "drafts";
 
