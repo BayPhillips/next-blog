@@ -100,7 +100,7 @@ export default async function Page() {
   ]);
 
   return (
-    <div className="container py-8">
+    <>
       <div className="space-y-12">
         {heroPost && (
           <HeroPost
@@ -112,6 +112,6 @@ export default async function Page() {
           <RecentPosts posts={recentPosts} />
         )}
       </div>
-    </div>
+    </>
   );
 }
