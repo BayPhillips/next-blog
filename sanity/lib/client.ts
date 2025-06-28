@@ -1,4 +1,4 @@
-import { createClient } from "next-sanity";
+import { ClientPerspective, createClient } from "next-sanity";
 
 import { apiVersion, dataset, projectId, studioUrl } from "@/sanity/lib/api";
 
@@ -7,7 +7,7 @@ export const client = createClient({
   dataset,
   apiVersion,
   useCdn: true,
-  perspective: process.env.NEXT_PUBLIC_SANITY_PERSPECTIVE || 'published',
+  perspective: (process.env.NEXT_PUBLIC_SANITY_PERSPECTIVE || 'published') as ClientPerspective,
   stega: {
     studioUrl,
     logger: console,
