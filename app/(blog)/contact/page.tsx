@@ -24,7 +24,7 @@ interface ContactData {
 export default async function ContactPage() {
   const contactData = await sanityFetch({
     query: contactQuery,
-    perspective: 'published'
+    perspective: process.env.NEXT_PUBLIC_SANITY_PERSPECTIVE || 'published'
   }) as ContactData | null
 
   if (!contactData) {

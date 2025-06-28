@@ -7,9 +7,16 @@ models:
     model: nomic-embed-text:latest
     roles:
       - embed
+  - name: Gemma 3n
+    provider: ollama
+    model: gemma-3.5:latest
+    roles:
+      - chat
+      - autocomplete
   - name: Autodetect
     provider: ollama
     model: AUTODETECT
+    apiBase: http://192.168.5.170:11434
 context:
   - provider: code
   - provider: docs

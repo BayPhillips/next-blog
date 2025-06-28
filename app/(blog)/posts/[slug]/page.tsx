@@ -95,7 +95,7 @@ export async function generateStaticParams(): Promise<StaticParams> {
     // Fetch the data from Sanity with the correct type
     const result = await sanityFetch({
       query,
-      perspective: "published",
+      perspective: process.env.NEXT_PUBLIC_SANITY_PERSPECTIVE || 'published',
       stega: false,
     }) as unknown as Array<{ slug: string }>;
     
@@ -204,7 +204,7 @@ export default async function PostPage(props: Props) {
   const post = await sanityFetch({
     query: postQuery,
     params: { slug: params.slug },
-    perspective: 'published',
+    perspective: process.env.NEXT_PUBLIC_SANITY_PERSPECTIVE || 'published',
     stega: false,
   }) as unknown as Post;
 

@@ -7,7 +7,7 @@ export const client = createClient({
   dataset,
   apiVersion,
   useCdn: true,
-  perspective: "published",
+  perspective: process.env.NEXT_PUBLIC_SANITY_PERSPECTIVE || 'published',
   stega: {
     studioUrl,
     logger: console,

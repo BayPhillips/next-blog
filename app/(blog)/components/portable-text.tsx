@@ -27,6 +27,7 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import ImageGrid from "./image-grid";
+import { Tweet } from "react-tweet";
 
 // Custom components for different block types
 const components: PortableTextComponents = {
@@ -147,6 +148,15 @@ const components: PortableTextComponents = {
     imagegrid: ({ value }) => {
       return <ImageGrid images={value.images || []} />;
     },
+    twitter: ({ value }) => {
+      const id = value?.id;
+      if (!id) return null;
+      return (
+        <div className="my-6 justify-center">
+          <Tweet id={id} />
+        </div>
+      );
+    },
   },
 };
 
@@ -170,3 +180,4 @@ export default function CustomPortableText({
     </div>
   );
 }
+

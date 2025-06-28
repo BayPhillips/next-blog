@@ -27,7 +27,7 @@ interface AboutData {
 export default async function AboutPage() {
   const aboutData = await sanityFetch({
     query: aboutQuery,
-    perspective: 'published'
+    perspective: process.env.NEXT_PUBLIC_SANITY_PERSPECTIVE || 'published'
   }) as AboutData | null
 
   if (!aboutData) {
