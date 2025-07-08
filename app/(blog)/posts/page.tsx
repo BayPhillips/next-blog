@@ -32,7 +32,7 @@ export default async function BlogPage(props: Props) {
   return (
     <>
       <PageHeader title="All Posts" description="Browse all my posts" />
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div id="posts" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {posts.map((post: any) => {
           // Transform the post data to match our Post type
           const postData = {
@@ -45,7 +45,7 @@ export default async function BlogPage(props: Props) {
             tags: post.tags || []
           };
           
-          return <PostCard key={post._id} post={postData} />;
+          return <PostCard className="post" key={post._id} post={postData} />;
         })}
       </div>
       

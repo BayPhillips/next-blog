@@ -1,6 +1,5 @@
 ---
 name: Implementation Details
-alwaysApply: true
 ---
 
 # Next.js Blog with Sanity CMS - Implementation Details
@@ -12,6 +11,7 @@ This is a modern blog application built with Next.js, Sanity.io, and Tailwind CS
 - **Frontend Framework**: Next.js 14 (App Router)
 - **Styling**: Tailwind CSS
 - **CMS**: Sanity.io (Headless CMS)
+- **TESTING**: Playwright for end-to-end testing
 - **Hosting**: Vercel
 - **CDN**: Cloudflare
 - **Analytics**: Vercel Analytics
@@ -28,6 +28,7 @@ This is a modern blog application built with Next.js, Sanity.io, and Tailwind CS
 - `/sanity` - Sanity configuration and schemas
   - `/schemas` - Content type definitions
   - `/lib` - Helper functions and API clients
+- `/tests/e2e` - End to end tests with Playwright
 
 ## Content Management (Sanity)
 

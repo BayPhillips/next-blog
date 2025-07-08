@@ -17,7 +17,7 @@ interface HeroPostProps {
 function HeroPost({ post }: HeroPostProps) {
   // Ensure we have a valid slug object
   return (
-    <section className="mb-16">
+    <section className="hero mb-16">
       <Card className="overflow-hidden border-none shadow-lg">
         {post.coverImage?.asset?._ref && (
           <div className="relative h-96 w-full">

@@ -220,7 +220,7 @@ export default async function PostPage(props: Props) {
     <>
       <article className="prose dark:prose-invert max-w-none">
         <header className="mb-12">
-          <PageHeader title={post.title || 'Untitled'} description={''} />
+          <PageHeader className={'post-header'} title={post.title || 'Untitled'} description={''} />
           
           <div className="flex items-center text-muted-foreground text-sm gap-4">
             {publishedDate && (
@@ -238,7 +238,7 @@ export default async function PostPage(props: Props) {
           </div>
           <PostTags tags={post.tags || []} />
           {post.coverImage && (
-            <div className="relative aspect-video w-full mt-8 rounded-lg overflow-hidden">
+            <div className="cover-image relative aspect-video w-full mt-8 rounded-lg overflow-hidden">
               <Image
                 src={getImageUrl(post.coverImage)}
                 alt={post.coverImage.alt || post.title || 'Post cover image'}
@@ -252,7 +252,7 @@ export default async function PostPage(props: Props) {
         </header>
 
         {post.content && post.content.length > 0 && (
-          <div className="prose-lg dark:prose-invert max-w-none">
+          <div className="post-content prose-lg dark:prose-invert max-w-none">
             <PortableText value={post.content as unknown as PortableTextBlock[]} />
           </div>
         )}
