@@ -1,0 +1,29 @@
+# docker-compose.yml
+services:
+  blog:
+    # Build image from Dockerfile in the current directory
+    build:
+      context: .
+      args:
+        - NEXT_PUBLIC_SANITY_PROJECT_ID=${NEXT_PUBLIC_SANITY_PROJECT_ID}
+        - NEXT_PUBLIC_SANITY_DATASET=${NEXT_PUBLIC_SANITY_DATASET}
+        - NEXT_PUBLIC_SANITY_PERSPECTIVE=${NEXT_PUBLIC_SANITY_PERSPECTIVE}
+        - SANITY_API_READ_TOKEN=${SANITY_API_READ_TOKEN}
+        - SANITY_AUTH_TOKEN=${SANITY_AUTH_TOKEN}
+        - NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL}
+        - NODE_ENV=${NODE_ENV}
+      dockerfile: Dockerfile
+    environment:
+      - NEXT_PUBLIC_SANITY_PROJECT_ID=${NEXT_PUBLIC_SANITY_PROJECT_ID}
+      - NEXT_PUBLIC_SANITY_DATASET=${NEXT_PUBLIC_SANITY_DATASET}
+      - NEXT_PUBLIC_SANITY_PERSPECTIVE={NEXT_PUBLIC_SANITY_PERSPECTIVE}
+      - SANITY_API_READ_TOKEN=${SANITY_API_READ_TOKEN}
+      - SANITY_AUTH_TOKEN=${SANITY_AUTH_TOKEN}
+      - NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL}
+      - NODE_ENV=${NODE_ENV}
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+
+    # Optional: keep the container alive while you develop
+    # command: sh -c "while sleep 1000; do :; done"
