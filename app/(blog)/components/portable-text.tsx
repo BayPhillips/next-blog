@@ -15,7 +15,7 @@ import {
 } from "next-sanity";
 import { createClient } from "next-sanity";
 import { apiVersion, dataset, projectId } from "@/sanity/lib/api";
-import { Image } from "next-sanity/image";
+import Image from "next/image";
 import { urlForImage } from "@/sanity/lib/utils";
 import { cn } from "@/lib/utils";
 import { Code } from "@/components/ui/code";
@@ -118,9 +118,11 @@ const components: PortableTextComponents = {
       }
       return (
         <div className="my-6 overflow-hidden rounded-lg">
-          <img
+          <Image
             src={imageUrl}
             alt={value.alt || 'Image'}
+            width={800}
+            height={600}
             className="mx-auto max-h-[70vh] w-auto max-w-full object-contain"
           />
           {value.caption && (

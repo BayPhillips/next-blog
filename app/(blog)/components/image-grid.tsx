@@ -15,7 +15,7 @@ const ImageGrid = ({ images }: ImageGridProps) => {
       {images.map((image, index) => {
         const imageUrl = urlForImage(image)?.height(1000).width(2000).url() as string;
         return (
-          <a target="_blank" href={imageUrl} rel="noreferrer noopener">
+          <a key={`${index}-${image?.id}`} target="_blank" href={imageUrl} rel="noreferrer noopener">
             <Image
               key={`${index}-${image?.id}`}
               src={imageUrl}
