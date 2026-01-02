@@ -4,9 +4,8 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import {
   VisualEditing,
-  toPlainText,
-  type PortableTextBlock,
-} from "next-sanity";
+} from "next-sanity/visual-editing";
+import { toPlainText } from "next-sanity";
 import { Nunito, Lora } from "next/font/google";
 import { draftMode } from "next/headers";
 import { Suspense } from "react";
