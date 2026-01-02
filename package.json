@@ -4,7 +4,7 @@
     "predev": "npm run typegen",
     "dev": "next dev --turbopack",
     "prebuild": "npm run typegen",
-    "build": "next build",
+    "build": "next build --webpack",
     "postbuild": "npx sanity manifest extract --path public/studio/static",
     "start": "next start",
     "lint": "next lint",
