@@ -51,7 +51,7 @@ export function SiteHeader({ settings }: { settings: SettingsQueryResult }) {
                 <NavigationMenuContent>
                   <ul className="grid gap-4 p-4">
                     {settings?.navigation?.map((item) => (
-                      <li>
+                      <li key={item._key}>
                         <NavigationMenuLink asChild>
                           <Link href={item.path || '#'} key={item._key}>
                             {item.title || ''}
