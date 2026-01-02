@@ -2,8 +2,5 @@
   "buildCommand": "NEXT_TURBOPACK_BUILD=0 npm run build",
   "framework": "nextjs",
   "devCommand": "npm run dev",
-  "installCommand": "npm install",
-  "typescript": {
-    "ignoreBuildErrors": true
-  }
+  "installCommand": "npm install"
 }
