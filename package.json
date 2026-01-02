@@ -41,7 +41,7 @@
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "lucide-react": "^0.513.0",
-    "next": "^15.1.5",
+    "next": "^16.1.1",
     "next-sanity": "^9.8.16",
     "postcss": "^8.4.49",
     "prismjs": "^1.29.0",
@@ -65,6 +65,6 @@
     "@types/react-syntax-highlighter": "^15.5.13",
     "cursor-tools": "latest",
     "eslint": "^9.39.1",
-    "eslint-config-next": "^15.0.3"
+    "eslint-config-next": "^16.0.0"
   }
 }
