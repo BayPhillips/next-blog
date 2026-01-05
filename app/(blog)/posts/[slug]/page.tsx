@@ -13,6 +13,7 @@ import { PostCard } from "@/components/post-card";
 import PortableText from "@/app/(blog)/components/portable-text";
 import { sanityFetch } from "@/sanity/lib/fetch";
 import { postQuery, moreStoriesQuery } from "@/sanity/lib/queries";
+import { fetchSanityData } from "@/lib/sanity/fetch";
 import { resolveOpenGraphImage } from "@/sanity/lib/utils";
 
 // Import SanityDocument type from next-sanity
@@ -92,12 +93,13 @@ export async function generateStaticParams(): Promise<StaticParams> {
   try {
     const query = `*[_type == "post" && defined(slug.current)]{ "slug": slug.current }`;
     
-    // Fetch the data from Sanity with the correct type
-    const result = await sanityFetch({
+    // Use cached fetch to ensure static generation
+    const result = await fetchSanityData<Array<{ slug: string }>>({
       query,
-      perspective: process.env.NEXT_PUBLIC_SANITY_PERSPECTIVE || 'published',
+      params: undefined,
       stega: false,
-    }) as unknown as Array<{ slug: string }>;
+      useCache: false, // Don't use cache during build time
+    });
     
     // Ensure we have a valid result before mapping
     if (!Array.isArray(result)) {
@@ -123,9 +125,10 @@ interface GenerateMetadataProps {
 
 export async function generateMetadata(props: GenerateMetadataProps, parent: ResolvingMetadata): Promise<Metadata> {
   const params = await props.params;
-  const post = await sanityFetch({
+  const post = await fetchSanityData<Post>({
     query: postQuery,
     params: { slug: (await params).slug },
+    useCache: false, // Don't use cache during build
   });
 
   if (!post) {
@@ -140,6 +143,14 @@ export async function generateMetadata(props: GenerateMetadataProps, parent: Res
     ? resolveOpenGraphImage(post.coverImage.asset)
     : null;
 
+  // Handle author name extraction safely
+  let authorName: string | undefined;
+  
+  if (post.author && 'name' in post.author) {
+    // This is an Author object
+    authorName = (post.author as any).name;
+  }
+
   const metadata: Metadata = {
     title: post.title || 'Untitled Post',
     description: post.excerpt || '',
@@ -148,7 +159,7 @@ export async function generateMetadata(props: GenerateMetadataProps, parent: Res
       description: post.excerpt || '',
       type: 'article',
       publishedTime: post.date || new Date().toISOString(),
-      authors: post.author?.name ? [post.author.name] : [],
+      authors: authorName ? [authorName] : [],
       images: ogImage ? [ogImage, ...previousImages] : previousImages,
     },
     twitter: {
@@ -201,12 +212,12 @@ async function MorePosts({ currentPostId }: { currentPostId: string }) {
 
 export default async function PostPage(props: Props) {
   const params = await props.params;
-  const post = await sanityFetch({
+  const post = await fetchSanityData<Post>({
     query: postQuery,
     params: { slug: params.slug },
-    perspective: process.env.NEXT_PUBLIC_SANITY_PERSPECTIVE || 'published',
     stega: false,
-  }) as unknown as Post;
+    useCache: true, // Use cache for runtime requests
+  });
 
   if (!post?._id) {
     return notFound();

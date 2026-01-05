@@ -781,7 +781,7 @@ export type ContactQueryResult = {
 
 // Source: sanity/lib/queries.ts
 // Variable: heroQuery
-// Query: *[_type == "post" && defined(slug.current)] | order(date desc, _updatedAt desc) [0] {    content,      _id,  "status": select(_originalId in path("drafts.**") => "draft", "published"),  "title": coalesce(title, "Untitled"),  "slug": slug.current,  excerpt,  coverImage,  "date": coalesce(date, _updatedAt),  "author": author->{"name": coalesce(name, "Anonymous"), picture},  tags,  }
+// Query: *[_type == "post" && defined(slug.current)] | order(date desc, _updatedAt desc) [0] {    content,      _id,  "status": select(_originalId in path("drafts.**") => "draft", "published"),  "title": coalesce(title, "Untitled"),  "slug": slug.current,  excerpt,  coverImage,  "date": coalesce(date, _updatedAt),  "author": author->{name, picture},  tags,    }
 export type HeroQueryResult = {
   content: Array<
     | ({
@@ -854,7 +854,7 @@ export type HeroQueryResult = {
   } | null;
   date: string;
   author: {
-    name: string | "Anonymous";
+    name: string | null;
     picture: {
       asset?: SanityImageAssetReference;
       media?: unknown;
@@ -869,7 +869,7 @@ export type HeroQueryResult = {
 
 // Source: sanity/lib/queries.ts
 // Variable: moreStoriesQuery
-// Query: *[_type == "post" && _id != $skip && defined(slug.current)] | order(date desc, _updatedAt desc) [0...$limit] {      _id,  "status": select(_originalId in path("drafts.**") => "draft", "published"),  "title": coalesce(title, "Untitled"),  "slug": slug.current,  excerpt,  coverImage,  "date": coalesce(date, _updatedAt),  "author": author->{"name": coalesce(name, "Anonymous"), picture},  tags,  }
+// Query: *[_type == "post" && _id != $skip && defined(slug.current)] | order(date desc, _updatedAt desc) [0...$limit] {      _id,  "status": select(_originalId in path("drafts.**") => "draft", "published"),  "title": coalesce(title, "Untitled"),  "slug": slug.current,  excerpt,  coverImage,  "date": coalesce(date, _updatedAt),  "author": author->{name, picture},  tags,    }
 export type MoreStoriesQueryResult = Array<{
   _id: string;
   status: "draft" | "published";
@@ -886,7 +886,7 @@ export type MoreStoriesQueryResult = Array<{
   } | null;
   date: string;
   author: {
-    name: string | "Anonymous";
+    name: string | null;
     picture: {
       asset?: SanityImageAssetReference;
       media?: unknown;
@@ -901,7 +901,7 @@ export type MoreStoriesQueryResult = Array<{
 
 // Source: sanity/lib/queries.ts
 // Variable: postQuery
-// Query: *[_type == "post" && slug.current == $slug] [0] {    content,      _id,  "status": select(_originalId in path("drafts.**") => "draft", "published"),  "title": coalesce(title, "Untitled"),  "slug": slug.current,  excerpt,  coverImage,  "date": coalesce(date, _updatedAt),  "author": author->{"name": coalesce(name, "Anonymous"), picture},  tags,  }
+// Query: *[_type == "post" && slug.current == $slug] [0] {    content,      _id,  "status": select(_originalId in path("drafts.**") => "draft", "published"),  "title": coalesce(title, "Untitled"),  "slug": slug.current,  excerpt,  coverImage,  "date": coalesce(date, _updatedAt),  "author": author->{name, picture},  tags,    }
 export type PostQueryResult = {
   content: Array<
     | ({
@@ -974,7 +974,7 @@ export type PostQueryResult = {
   } | null;
   date: string;
   author: {
-    name: string | "Anonymous";
+    name: string | null;
     picture: {
       asset?: SanityImageAssetReference;
       media?: unknown;
@@ -989,7 +989,7 @@ export type PostQueryResult = {
 
 // Source: sanity/lib/queries.ts
 // Variable: postsQuery
-// Query: *[_type == "post"] {      _id,  "status": select(_originalId in path("drafts.**") => "draft", "published"),  "title": coalesce(title, "Untitled"),  "slug": slug.current,  excerpt,  coverImage,  "date": coalesce(date, _updatedAt),  "author": author->{"name": coalesce(name, "Anonymous"), picture},  tags,  }
+// Query: *[_type == "post"] {      _id,  "status": select(_originalId in path("drafts.**") => "draft", "published"),  "title": coalesce(title, "Untitled"),  "slug": slug.current,  excerpt,  coverImage,  "date": coalesce(date, _updatedAt),  "author": author->{name, picture},  tags,    }
 export type PostsQueryResult = Array<{
   _id: string;
   status: "draft" | "published";
@@ -1006,7 +1006,7 @@ export type PostsQueryResult = Array<{
   } | null;
   date: string;
   author: {
-    name: string | "Anonymous";
+    name: string | null;
     picture: {
       asset?: SanityImageAssetReference;
       media?: unknown;
@@ -1021,7 +1021,7 @@ export type PostsQueryResult = Array<{
 
 // Source: sanity/lib/queries.ts
 // Variable: postsByTagQuery
-// Query: *[_type == "post" && $tag in tags] | order(date desc) {      _id,  "status": select(_originalId in path("drafts.**") => "draft", "published"),  "title": coalesce(title, "Untitled"),  "slug": slug.current,  excerpt,  coverImage,  "date": coalesce(date, _updatedAt),  "author": author->{"name": coalesce(name, "Anonymous"), picture},  tags,  }
+// Query: *[_type == "post" && $tag in tags] | order(date desc) {      _id,  "status": select(_originalId in path("drafts.**") => "draft", "published"),  "title": coalesce(title, "Untitled"),  "slug": slug.current,  excerpt,  coverImage,  "date": coalesce(date, _updatedAt),  "author": author->{name, picture},  tags,    }
 export type PostsByTagQueryResult = Array<{
   _id: string;
   status: "draft" | "published";
@@ -1038,7 +1038,7 @@ export type PostsByTagQueryResult = Array<{
   } | null;
   date: string;
   author: {
-    name: string | "Anonymous";
+    name: string | null;
     picture: {
       asset?: SanityImageAssetReference;
       media?: unknown;
@@ -1053,7 +1053,7 @@ export type PostsByTagQueryResult = Array<{
 
 // Source: sanity/lib/queries.ts
 // Variable: paginatedPostsQuery
-// Query: *[_type == "post"] | order(date desc) [$start...$end] {      _id,  "status": select(_originalId in path("drafts.**") => "draft", "published"),  "title": coalesce(title, "Untitled"),  "slug": slug.current,  excerpt,  coverImage,  "date": coalesce(date, _updatedAt),  "author": author->{"name": coalesce(name, "Anonymous"), picture},  tags,  }
+// Query: *[_type == "post"] | order(date desc) [$start...$end] {      _id,  "status": select(_originalId in path("drafts.**") => "draft", "published"),  "title": coalesce(title, "Untitled"),  "slug": slug.current,  excerpt,  coverImage,  "date": coalesce(date, _updatedAt),  "author": author->{name, picture},  tags,    }
 export type PaginatedPostsQueryResult = Array<{
   _id: string;
   status: "draft" | "published";
@@ -1070,7 +1070,7 @@ export type PaginatedPostsQueryResult = Array<{
   } | null;
   date: string;
   author: {
-    name: string | "Anonymous";
+    name: string | null;
     picture: {
       asset?: SanityImageAssetReference;
       media?: unknown;
@@ -1096,12 +1096,12 @@ declare module "@sanity/client" {
     '*[_type == "settings"][0]': SettingsQueryResult;
     '*[_type == "about"][0]': AboutQueryResult;
     '*[_type == "contact"][0]': ContactQueryResult;
-    '\n  *[_type == "post" && defined(slug.current)] | order(date desc, _updatedAt desc) [0] {\n    content,\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{"name": coalesce(name, "Anonymous"), picture},\n  tags,\n\n  }\n': HeroQueryResult;
-    '\n  *[_type == "post" && _id != $skip && defined(slug.current)] | order(date desc, _updatedAt desc) [0...$limit] {\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{"name": coalesce(name, "Anonymous"), picture},\n  tags,\n\n  }\n': MoreStoriesQueryResult;
-    '\n  *[_type == "post" && slug.current == $slug] [0] {\n    content,\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{"name": coalesce(name, "Anonymous"), picture},\n  tags,\n\n  }\n': PostQueryResult;
-    '\n  *[_type == "post"] {\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{"name": coalesce(name, "Anonymous"), picture},\n  tags,\n\n  }\n': PostsQueryResult;
-    '\n  *[_type == "post" && $tag in tags] | order(date desc) {\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{"name": coalesce(name, "Anonymous"), picture},\n  tags,\n\n  }\n': PostsByTagQueryResult;
-    '\n  *[_type == "post"] | order(date desc) [$start...$end] {\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{"name": coalesce(name, "Anonymous"), picture},\n  tags,\n\n  }\n': PaginatedPostsQueryResult;
+    '\n  *[_type == "post" && defined(slug.current)] | order(date desc, _updatedAt desc) [0] {\n    content,\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{name, picture},\n  tags,\n  \n  }\n': HeroQueryResult;
+    '\n  *[_type == "post" && _id != $skip && defined(slug.current)] | order(date desc, _updatedAt desc) [0...$limit] {\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{name, picture},\n  tags,\n  \n  }\n': MoreStoriesQueryResult;
+    '\n  *[_type == "post" && slug.current == $slug] [0] {\n    content,\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{name, picture},\n  tags,\n  \n  }\n': PostQueryResult;
+    '\n  *[_type == "post"] {\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{name, picture},\n  tags,\n  \n  }\n': PostsQueryResult;
+    '\n  *[_type == "post" && $tag in tags] | order(date desc) {\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{name, picture},\n  tags,\n  \n  }\n': PostsByTagQueryResult;
+    '\n  *[_type == "post"] | order(date desc) [$start...$end] {\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{name, picture},\n  tags,\n  \n  }\n': PaginatedPostsQueryResult;
     '\n  count(*[_type == "post"])\n': CountPostsQueryResult;
   }
 }
