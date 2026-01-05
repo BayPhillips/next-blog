@@ -86,6 +86,9 @@ interface SanitySlugResult {
   slug: string;
 }
 
+export const dynamic = 'force-static';
+export const revalidate = false; // Force static generation
+
 // Define the expected return type for generateStaticParams
 type StaticParams = Array<{ params: { slug: string } }>;
 
