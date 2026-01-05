@@ -2,20 +2,32 @@ import { sanityFetch as baseSanityFetch } from "@/sanity/lib/fetch";
 import type { Post, Slug } from "@/sanity.types";
 import { SanityImage } from "@/types";
 
-// Extended Post type with readTime for our queries
 export type PostWithReadTime = Post & {
   readTime?: number;
 };
 
-// Type-safe wrapper around sanityFetch
+const cache = new Map<string, { data: unknown; timestamp: number }>();
+const CACHE_TTL = 5 * 60 * 1000;
+
 export async function fetchSanityData<T>(
   options: {
     query: string;
     params?: Record<string, unknown>;
     stega?: boolean;
+    useCache?: boolean;
   }
 ): Promise<T> {
-  const { query, params, stega = false } = options;
+  const { query, params, stega = false, useCache = true } = options;
+  
+  const cacheKey = JSON.stringify({ query, params, stega });
+  
+  if (useCache && cache.has(cacheKey)) {
+    const cached = cache.get(cacheKey)!;
+    if (Date.now() - cached.timestamp < CACHE_TTL) {
+      return cached.data as T;
+    }
+    cache.delete(cacheKey);
+  }
   
   const result = await baseSanityFetch({
     query,
@@ -23,11 +35,16 @@ export async function fetchSanityData<T>(
     stega,
   });
   
-  // Cast the result to the expected type
+  if (useCache) {
+    cache.set(cacheKey, {
+      data: result,
+      timestamp: Date.now(),
+    });
+  }
+  
   return result as unknown as T;
 }
 
-// Helper function to fetch a single post
 export async function fetchPost(slug: string): Promise<PostWithReadTime | null> {
   const query = `
     *[_type == "post" && slug.current == $slug][0] {
@@ -54,7 +71,6 @@ export async function fetchPost(slug: string): Promise<PostWithReadTime | null> 
   return result;
 }
 
-// Helper function to fetch recent posts
 export async function fetchRecentPosts(limit = 3): Promise<PostWithReadTime[]> {
   const query = `
     *[_type == "post" && defined(slug.current)] | order(date desc, _updatedAt desc) [0...$limit] {
@@ -79,7 +95,6 @@ export async function fetchRecentPosts(limit = 3): Promise<PostWithReadTime[]> {
   return result || [];
 }
 
-// Helper function to fetch hero post
 export async function fetchHeroPost(): Promise<PostWithReadTime | null> {
   const query = `
     *[_type == "post" && defined(slug.current)] | order(date desc, _updatedAt desc) [0] {

@@ -16,6 +16,7 @@ import PortableText from "./components/portable-text";
 import * as demo from "@/sanity/lib/demo";
 import { sanityFetch } from "@/sanity/lib/fetch";
 import { settingsQuery } from "@/sanity/lib/queries";
+import { fetchSanityData } from "@/lib/sanity/fetch";
 import { resolveOpenGraphImage } from "@/sanity/lib/utils";
 import { SettingsQueryResult } from "@/sanity.types";
 import { SiteHeader } from "@/components/ui/site-header"
@@ -24,10 +25,10 @@ import { Analytics } from "@vercel/analytics/react"
 import { Toaster } from "@/components/ui/toaster"
 
 export async function generateMetadata(): Promise<Metadata> {
-  const settings = await sanityFetch({
+  const settings = await fetchSanityData<SettingsQueryResult>({
     query: settingsQuery,
-    // Metadata should never contain stega
     stega: false,
+    useCache: false, // Don't use cache during build
   });
   const title = settings?.title || demo.title;
   const description = settings?.description || demo.description;
@@ -74,7 +75,11 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const settings = await sanityFetch({ query: settingsQuery });
+  const settings = await fetchSanityData<SettingsQueryResult>({
+    query: settingsQuery,
+    stega: false,
+    useCache: false, // Don't use cache during build
+  });
   return (
     <html lang="en" className={`${nunito.variable} ${lora.variable} font-sans min-h-screen`} suppressHydrationWarning>
       <body className="min-h-screen bg-background font-sans antialiased">
