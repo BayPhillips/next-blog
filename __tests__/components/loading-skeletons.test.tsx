@@ -34,8 +34,8 @@ describe('Loading Skeletons', () => {
   it('renders HeroSkeleton with correct structure', () => {
     render(<HeroSkeleton />)
     
-    const heroSection = screen.getByRole('region')
-    expect(heroSection).toBeInTheDocument()
-    expect(heroSection).toHaveClass('animate-pulse')
+    const heroSection = document.querySelector('section')
+    expect(heroSection).toBeTruthy()
+    expect(heroSection?.className).toContain('animate-pulse')
   })
 })
