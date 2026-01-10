@@ -1,7 +1,35 @@
 import { describe, it, expect, beforeEach, jest } from '@jest/globals'
-import { fetchSanityData, fetchPost, fetchRecentPosts, type PostWithReadTime } from '../../../lib/sanity/fetch'
+import type { PostWithReadTime } from '../../../lib/sanity/fetch'
 
-jest.mock('../../../sanity/lib/fetch')
+// Mock the base sanity fetch function
+const mockBaseSanityFetch = jest.fn()
+
+jest.mock('../../../sanity/lib/fetch', () => ({
+  sanityFetch: mockBaseSanityFetch,
+}))
+
+// Mock other dependencies
+jest.mock('server-only', () => ({}))
+
+jest.mock('../../../sanity/lib/api', () => ({
+  dataset: 'test-dataset',
+  projectId: 'test-project-id',
+  apiVersion: '2024-02-28',
+  studioUrl: '/studio',
+}))
+
+jest.mock('../../../sanity/lib/token', () => ({
+  token: 'test-token',
+}))
+
+jest.mock('next-sanity', () => ({
+  createClient: jest.fn(() => ({
+    fetch: jest.fn(),
+  })),
+}))
+
+// Now import the functions we want to test
+const { fetchSanityData, fetchPost, fetchRecentPosts } = await import('../../../lib/sanity/fetch')
 
 describe('Sanity Fetch Utilities', () => {
   beforeEach(() => {

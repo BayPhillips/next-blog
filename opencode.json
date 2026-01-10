@@ -11,7 +11,8 @@
         "qwen3:latest": {},
         "codestral:latest": {},
         "gpt-oss:latest": {},
-        "devstral-small-2:latest": {}
+        "devstral-small-2:latest": {},
+        "nemotron-3-nano:latest": {}
       }
     }
   }
