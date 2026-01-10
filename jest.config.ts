@@ -7,17 +7,7 @@ const createJestConfig = nextJest({
 
 const config: Config = {
   ...createJestConfig(),
-  preset: 'ts-jest',
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
-  
-  // Transform TypeScript and JSX files
-  transform: {
-    '^.+\\.(ts|tsx)$': 'ts-jest',
-    '^.+\\.(js|jsx)$': 'babel-jest',
-  },
-  
-  // Module file extensions
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   
   collectCoverageFrom: [
     'app/**/*.{js,jsx,ts,tsx}',
@@ -45,9 +35,9 @@ const config: Config = {
   
   testEnvironment: 'jsdom',
   
-  // Handle ES modules from node_modules
+  // Handle ES modules from node_modules  
   transformIgnorePatterns: [
-    'node_modules/(?!(.*\\.mjs$|@sanity/.*|next-sanity/.*|nanoid/.*|@portabletext/.*))',
+    'node_modules/(?!(.*\\.mjs$))',
   ],
   
   // Test file patterns - exclude e2e tests
