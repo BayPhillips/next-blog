@@ -1,7 +1,7 @@
 import { SettingsQueryResult } from "@/sanity.types"
-import PortableText from "@/app/(blog)/components/portable-text"
+import PortableText from "@/components/portable-text"
 import { PortableTextBlock } from "next-sanity"
-import Link from "next/link"
+import { Link } from "@tanstack/react-router"
 
 export function SiteFooter({ settings }: { settings: SettingsQueryResult }) {
   const footer = settings?.footer || []

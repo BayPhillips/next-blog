@@ -16,7 +16,7 @@ export const aboutRoute = createFileRoute('/(blog)/about/')({
 })
 
 function AboutPage() {
-  const { settings } = Route.useLoaderData()
+  const { settings } = aboutRoute.useLoaderData()
   
   return (
     <div className="container py-12">

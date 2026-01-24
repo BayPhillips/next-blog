@@ -1,18 +1,28 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { PostCard } from '../../../components/post-card'
-import { fetchRecentPosts, type PostWithReadTime } from '../../../lib/sanity/fetch'
+import { postsQuery } from '../../../sanity/lib/queries'
+import { fetchSanityData } from '../../../lib/sanity/fetch'
 import type { Post } from '../../../sanity.types'
 
 export const postsIndexRoute = createFileRoute('/(blog)/posts/')({
   component: PostsPage,
   loader: async () => {
-    const posts = await fetchRecentPosts(20)
-    return { posts }
+    try {
+      const posts = await fetchSanityData<Post[]>({
+        query: postsQuery,
+        stega: false,
+        useCache: false,
+      })
+      return { posts }
+    } catch (error) {
+      console.error('Error loading posts:', error)
+      return { posts: [] }
+    }
   },
 })
 
 function PostsPage() {
-  const { posts } = Route.useLoaderData()
+  const { posts } = postsIndexRoute.useLoaderData()
   
   if (!posts?.length) {
     return (
