@@ -1,4 +1,4 @@
-import { getImageUrl } from '@/lib/sanity/utils';
+import { buildImageUrl } from '@/lib/sanity/utils';
 import { SanityImage } from '@/types';
 
 interface PostImageProps {
@@ -16,9 +16,12 @@ export function PostImage({
 }: PostImageProps) {
   if (!imageAsset) return null;
 
+  const imageUrl = buildImageUrl(imageAsset);
+  if (!imageUrl) return null;
+
   return (
     <img
-      src={getImageUrl(imageAsset)}
+      src={imageUrl}
       alt={alt}
       className={`w-full h-auto object-cover ${className}`}
       loading={priority ? 'eager' : 'lazy'}

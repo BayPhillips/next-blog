@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dev Server Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .status { padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .success { background: #d4edda; border: 1px solid #c3e6cb; color: #155724; }
+        .error { background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; }
+    </style>
+</head>
+<body>
+    <h1>🔍 TanStack Router Dev Server Test</h1>
+    
+    <div id="connection-status" class="status">Testing connection...</div>
+    
+    <div id="router-status" class="status">Loading router status...</div>
+    
+    <div id="sanity-status" class="status">Loading Sanity status...</div>
+    
+    <script>
+        // Test server connection
+        fetch('/api/health')
+            .then(() => {
+                document.getElementById('connection-status').className = 'status success';
+                document.getElementById('connection-status').innerHTML = '✅ Server Connected';
+            })
+            .catch(() => {
+                document.getElementById('connection-status').className = 'status error';
+                document.getElementById('connection-status').innerHTML = '❌ Server Connection Failed';
+            });
+        
+        // Check if TanStack Router is available
+        setTimeout(() => {
+            const routerElement = document.getElementById('root');
+            if (routerElement && routerElement.innerHTML.length > 20) {
+                document.getElementById('router-status').className = 'status success';
+                document.getElementById('router-status').innerHTML = '✅ TanStack Router Working';
+            } else {
+                document.getElementById('router-status').className = 'status error';
+                document.getElementById('router-status').innerHTML = '❌ Router Not Rendered';
+            }
+        }, 3000);
+        
+        // Test Sanity data (would need API endpoint)
+        document.getElementById('sanity-status').className = 'status';
+        document.getElementById('sanity-status').innerHTML = '⏳ Sanity Integration (requires browser test)';
+    </script>
+</body>
+</html>

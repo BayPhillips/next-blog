@@ -1,93 +1,28 @@
-import { createClient } from 'next-sanity';
-import imageUrlBuilder from '@sanity/image-url';
-// Define the image type that matches our Sanity image structure
-type SanityImage = {
-  asset?: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [key: string]: any;
-  };
-  media?: unknown;
-  hotspot?: {
-    _type: string;
-    x?: number;
-    y?: number;
-    height?: number;
-    width?: number;
-  };
-  crop?: {
-    _type: string;
-    top?: number;
-    bottom?: number;
-    left?: number;
-    right?: number;
-  };
-  alt?: string;
-  _type: "image";
-} | null | undefined;
+import { SanityImageSource } from "@sanity/image-url"
+import { imageUrlBuilder } from "@sanity/image-url"
+import { client } from "@/sanity/lib/client"
 
-// Create a Sanity client
-const client = createClient({
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
-  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
-  apiVersion: '2023-05-03',
-  useCdn: process.env.NODE_ENV === 'production',
-});
+const builder = imageUrlBuilder(client)
 
-// Create a URL builder for Sanity images
-const builder = imageUrlBuilder(client);
-
-/**
- * Get the image URL from a Sanity image object
- */
-export function getImageUrl(source: SanityImage | null | undefined): string {
-  if (!source?.asset?._ref) return '';
-  return builder.image(source as any).url();
+export function urlForImage(source: SanityImageSource) {
+  return builder.image(source)
 }
 
-/**
- * Get the alt text for a Sanity image, falling back to an empty string
- */
-export function getImageAlt(source: SanityImage | null | undefined): string {
-  return source?.alt || '';
-}
-
-/**
- * Get the aspect ratio of a Sanity image
- */
-export function getImageDimensions(source: SanityImage | null | undefined): { width: number; height: number } {
-  if (!source?.asset?._ref) {
-    return { width: 1200, height: 630 }; // Default dimensions
-  }
+export function buildImageUrl(asset: any): string {
+  if (!asset) return '';
+  if (asset.url) return asset.url;
+  if (asset.asset?.url) return asset.asset.url;
   
-  const dimensions = source.asset._ref.split('-')[2];
-  if (!dimensions) {
-    return { width: 1200, height: 630 }; // Fallback if dimensions can't be parsed
-  }
+  // Build Sanity URL from reference
+  const ref = asset._ref || asset.asset?._ref;
+  if (!ref) return '';
   
-  const [width, height] = dimensions.split('x').map(Number);
+  const refParts = ref.split('-');
+  const fileExtension = refParts[1];
+  const filePath = refParts.slice(2).join('-');
   
-  return { 
-    width: isNaN(width) ? 1200 : width, 
-    height: isNaN(height) ? 630 : height 
-  };
-}
-
-/**
- * Generate a URL for a Sanity image with the specified width and quality
- */
-export function getSanityImageUrl(
-  source: SanityImage | null | undefined, 
-  width: number, 
-  quality = 75
-): string {
-  if (!source?.asset?._ref) return '';
+  const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
+  const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production';
   
-  return builder
-    .image(source)
-    .width(width)
-    .quality(quality)
-    .auto('format')
-    .url();
+  return `https://cdn.sanity.io/images/${projectId}/${dataset}/${filePath}.${fileExtension}`;
 }
