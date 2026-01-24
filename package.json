@@ -5,7 +5,6 @@
     "predev": "npm run typegen",
     "dev": "NODE_ENV=development vite",
     "prebuild": "echo 'Skipping typegen for build'",
-    "build": "vinxi build",
     "build": "vite build",
     "postbuild": "npx sanity manifest extract --path public/studio/static",
     "start": "vite preview",
