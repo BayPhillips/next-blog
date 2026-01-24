@@ -1,18 +1,16 @@
 import type { Config } from 'jest'
-import nextJest from 'next/jest'
-
-const createJestConfig = nextJest({
-  dir: './',
-})
 
 const config: Config = {
-  ...createJestConfig(),
+  preset: 'ts-jest',
+  testEnvironment: 'jsdom',
+  
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   
   collectCoverageFrom: [
-    'app/**/*.{js,jsx,ts,tsx}',
+    'src/**/*.{js,jsx,ts,tsx}',
     'components/**/*.{js,jsx,ts,tsx}',
     'lib/**/*.{js,jsx,ts,tsx}',
+    'sanity/**/*.{js,jsx,ts,tsx}',
     '!**/*.d.ts',
     '!**/node_modules/**',
   ],
@@ -33,14 +31,18 @@ const config: Config = {
     '^.+\\.(jpg|jpeg|png|gif|webp|avif|svg)$': '<rootDir>/__mocks__/fileMock.js',
   },
   
-  testEnvironment: 'jsdom',
+  transform: {
+    '^.+\\.(ts|tsx)$': ['ts-jest', {
+      tsconfig: {
+        jsx: 'react-jsx',
+      },
+    }],
+  },
   
-  // Handle ES modules from node_modules  
   transformIgnorePatterns: [
     'node_modules/(?!(.*\\.mjs$))',
   ],
   
-  // Test file patterns - exclude e2e tests
   testMatch: [
     '**/__tests__/**/*.(ts|tsx|js|jsx)',
     '**/*.(test|spec).(ts|tsx|js|jsx)',
