@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
-  tsconfigPath: './tsconfig.json',
+  tsconfigPath: './src/tsconfig.json',
   plugins: [
     react(),
     tailwindcss(),

@@ -117,3 +117,51 @@ export async function fetchHeroPost(): Promise<PostWithReadTime | null> {
 
   return result;
 }
+
+export async function fetchPostBySlug(slug: string): Promise<PostWithReadTime | null> {
+  const query = `
+    *[_type == "post" && slug.current == $slug][0] {
+      content,
+      _id,
+      title,
+      "slug": slug,
+      excerpt,
+      coverImage,
+      "date": coalesce(date, _updatedAt),
+      "author": author->{"name": coalesce(name, "Anonymous"), picture},
+      tags,
+      "readTime": round(length(pt::text(content)) / 5 / 180)
+    }
+  `;
+
+  const result = await fetchSanityData<PostWithReadTime | null>({
+    query,
+    params: { slug },
+  });
+
+  return result;
+}
+
+export async function fetchPostsByTag(tag: string): Promise<PostWithReadTime[]> {
+  const query = `
+    *[_type == "post" && $tag in tags && defined(slug.current)] | order(date desc, _updatedAt desc) {
+      _id,
+      title,
+      "slug": slug,
+      excerpt,
+      coverImage,
+      "date": coalesce(date, _updatedAt),
+      "author": author->{"name": coalesce(name, "Anonymous"), picture},
+      tags,
+      content,
+      "readTime": round(length(pt::text(content)) / 5 / 180)
+    }
+  `;
+
+  const result = await fetchSanityData<PostWithReadTime[]>({
+    query,
+    params: { tag },
+  });
+
+  return result || [];
+}

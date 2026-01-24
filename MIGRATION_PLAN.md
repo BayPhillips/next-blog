@@ -198,10 +198,14 @@ npm install -D @types/node typescript vite
 - [x] Package.json scripts updated
 - [x] TailwindCSS integration preserved
 
-### 🔄 Phase 2: Core Routing & Layout (IN PROGRESS)
-- [ ] Convert Next.js App Router to TanStack Router
-- [ ] Migrate layout components
+### 🔄 Phase 2: Core Routing & Layout (MAJOR PROGRESS)
+- [x] Convert Next.js App Router to TanStack Router
+- [x] Migrate layout components (blog layout with header/footer)
+- [x] Implement core routes (home, posts, detail, about)
+- [x] Preserve Sanity CMS integration
+- [ ] Fix build errors and test functionality
 - [ ] Implement error handling
+- [ ] Migrate remaining routes (tags, contact, etc.)
 
 ## Estimated Timeline: 8 Weeks
 - **Phase 1:** ✅ COMPLETED - Foundation setup
