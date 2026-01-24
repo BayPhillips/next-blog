@@ -203,9 +203,10 @@ npm install -D @types/node typescript vite
 - [x] Migrate layout components (blog layout with header/footer)
 - [x] Implement core routes (home, posts, detail, about)
 - [x] Preserve Sanity CMS integration
-- [ ] Fix build errors and test functionality
+- [x] Add remaining routes (tags, contact)
+- [🔧] Fix build errors and test functionality
 - [ ] Implement error handling
-- [ ] Migrate remaining routes (tags, contact, etc.)
+- [ ] Complete build and deployment setup
 
 ## Estimated Timeline: 8 Weeks
 - **Phase 1:** ✅ COMPLETED - Foundation setup
