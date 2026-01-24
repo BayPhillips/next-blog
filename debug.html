@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug</title>
+</head>
+<body>
+    <h1>Vite Debug Test</h1>
+    <p>If you see this static page, Vite is serving content.</p>
+    <script>
+        console.log('Static page loaded');
+        // Try to fetch the React app
+        fetch('/src/main.tsx')
+            .then(response => console.log('main.tsx fetch response:', response))
+            .catch(error => console.error('main.tsx fetch error:', error));
+    </script>
+</body>
+</html>

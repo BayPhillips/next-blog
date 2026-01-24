@@ -493,6 +493,7 @@ export type SanityImageMetadata = {
   palette?: SanityImagePalette;
   lqip?: string;
   blurHash?: string;
+  thumbHash?: string;
   hasAlpha?: boolean;
   isOpaque?: boolean;
 };
@@ -592,6 +593,12 @@ export type AllSanitySchemaTypes =
 
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
+type ArrayOf<T> = Array<
+  T & {
+    _key: string;
+  }
+>;
+
 // Source: app/(blog)/posts/[slug]/page.tsx
 // Variable: postSlugs
 // Query: *[_type == "post" && defined(slug.current)]{"slug": slug.current}
@@ -599,7 +606,7 @@ export type PostSlugsResult = Array<{
   slug: string | null;
 }>;
 
-// Source: sanity/lib/queries.ts
+// Source: src/sanity/lib/queries.ts
 // Variable: settingsQuery
 // Query: *[_type == "settings"][0]
 export type SettingsQueryResult = {
@@ -661,7 +668,7 @@ export type SettingsQueryResult = {
   };
 } | null;
 
-// Source: sanity/lib/queries.ts
+// Source: src/sanity/lib/queries.ts
 // Variable: aboutQuery
 // Query: *[_type == "about"][0]
 export type AboutQueryResult = {
@@ -720,7 +727,7 @@ export type AboutQueryResult = {
   };
 } | null;
 
-// Source: sanity/lib/queries.ts
+// Source: src/sanity/lib/queries.ts
 // Variable: contactQuery
 // Query: *[_type == "contact"][0]
 export type ContactQueryResult = {
@@ -779,7 +786,7 @@ export type ContactQueryResult = {
   };
 } | null;
 
-// Source: sanity/lib/queries.ts
+// Source: src/sanity/lib/queries.ts
 // Variable: heroQuery
 // Query: *[_type == "post" && defined(slug.current)] | order(date desc, _updatedAt desc) [0] {    content,      _id,  "status": select(_originalId in path("drafts.**") => "draft", "published"),  "title": coalesce(title, "Untitled"),  "slug": slug.current,  excerpt,  coverImage,  "date": coalesce(date, _updatedAt),  "author": author->{name, picture},  tags,    }
 export type HeroQueryResult = {
@@ -867,7 +874,7 @@ export type HeroQueryResult = {
   tags: Array<string> | null;
 } | null;
 
-// Source: sanity/lib/queries.ts
+// Source: src/sanity/lib/queries.ts
 // Variable: moreStoriesQuery
 // Query: *[_type == "post" && _id != $skip && defined(slug.current)] | order(date desc, _updatedAt desc) [0...$limit] {      _id,  "status": select(_originalId in path("drafts.**") => "draft", "published"),  "title": coalesce(title, "Untitled"),  "slug": slug.current,  excerpt,  coverImage,  "date": coalesce(date, _updatedAt),  "author": author->{name, picture},  tags,    }
 export type MoreStoriesQueryResult = Array<{
@@ -899,7 +906,7 @@ export type MoreStoriesQueryResult = Array<{
   tags: Array<string> | null;
 }>;
 
-// Source: sanity/lib/queries.ts
+// Source: src/sanity/lib/queries.ts
 // Variable: postQuery
 // Query: *[_type == "post" && slug.current == $slug] [0] {    content,      _id,  "status": select(_originalId in path("drafts.**") => "draft", "published"),  "title": coalesce(title, "Untitled"),  "slug": slug.current,  excerpt,  coverImage,  "date": coalesce(date, _updatedAt),  "author": author->{name, picture},  tags,    }
 export type PostQueryResult = {
@@ -987,7 +994,7 @@ export type PostQueryResult = {
   tags: Array<string> | null;
 } | null;
 
-// Source: sanity/lib/queries.ts
+// Source: src/sanity/lib/queries.ts
 // Variable: postsQuery
 // Query: *[_type == "post"] {      _id,  "status": select(_originalId in path("drafts.**") => "draft", "published"),  "title": coalesce(title, "Untitled"),  "slug": slug.current,  excerpt,  coverImage,  "date": coalesce(date, _updatedAt),  "author": author->{name, picture},  tags,    }
 export type PostsQueryResult = Array<{
@@ -1019,7 +1026,7 @@ export type PostsQueryResult = Array<{
   tags: Array<string> | null;
 }>;
 
-// Source: sanity/lib/queries.ts
+// Source: src/sanity/lib/queries.ts
 // Variable: postsByTagQuery
 // Query: *[_type == "post" && $tag in tags] | order(date desc) {      _id,  "status": select(_originalId in path("drafts.**") => "draft", "published"),  "title": coalesce(title, "Untitled"),  "slug": slug.current,  excerpt,  coverImage,  "date": coalesce(date, _updatedAt),  "author": author->{name, picture},  tags,    }
 export type PostsByTagQueryResult = Array<{
@@ -1051,7 +1058,7 @@ export type PostsByTagQueryResult = Array<{
   tags: Array<string> | null;
 }>;
 
-// Source: sanity/lib/queries.ts
+// Source: src/sanity/lib/queries.ts
 // Variable: paginatedPostsQuery
 // Query: *[_type == "post"] | order(date desc) [$start...$end] {      _id,  "status": select(_originalId in path("drafts.**") => "draft", "published"),  "title": coalesce(title, "Untitled"),  "slug": slug.current,  excerpt,  coverImage,  "date": coalesce(date, _updatedAt),  "author": author->{name, picture},  tags,    }
 export type PaginatedPostsQueryResult = Array<{
@@ -1083,7 +1090,7 @@ export type PaginatedPostsQueryResult = Array<{
   tags: Array<string> | null;
 }>;
 
-// Source: sanity/lib/queries.ts
+// Source: src/sanity/lib/queries.ts
 // Variable: countPostsQuery
 // Query: count(*[_type == "post"])
 export type CountPostsQueryResult = number;

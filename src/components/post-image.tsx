@@ -1,6 +1,3 @@
-'use client';
-
-import Image from 'next/image';
 import { getImageUrl } from '@/lib/sanity/utils';
 import { SanityImage } from '@/types';
 
@@ -20,13 +17,11 @@ export function PostImage({
   if (!imageAsset) return null;
 
   return (
-    <Image
+    <img
       src={getImageUrl(imageAsset)}
       alt={alt}
-      fill
-      className={`object-cover ${className}`}
-      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-      priority={priority}
+      className={`w-full h-auto object-cover ${className}`}
+      loading={priority ? 'eager' : 'lazy'}
     />
   );
 }

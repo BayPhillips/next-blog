@@ -3,7 +3,7 @@ import type { SettingsQueryResult } from '../../../sanity.types'
 import { settingsQuery } from '../../../sanity/lib/queries'
 import { fetchSanityData } from '../../../lib/sanity/fetch'
 
-export const Route = createFileRoute('/(blog)/about/')({
+export const aboutRoute = createFileRoute('/(blog)/about/')({
   component: AboutPage,
   loader: async () => {
     const settings = await fetchSanityData<SettingsQueryResult>({
@@ -27,8 +27,8 @@ function AboutPage() {
           built with modern web technologies.
         </p>
         <p>
-          {'This blog showcases experiments with various frameworks and technologies, 
-          including React, TypeScript, and content management systems.'}
+          This blog showcases experiments with various frameworks and technologies, 
+          including React, TypeScript, and content management systems.
         </p>
       </div>
     </div>

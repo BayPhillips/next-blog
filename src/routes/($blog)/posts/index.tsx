@@ -3,7 +3,7 @@ import { PostCard } from '../../../components/post-card'
 import { fetchRecentPosts, type PostWithReadTime } from '../../../lib/sanity/fetch'
 import type { Post } from '../../../sanity.types'
 
-export const Route = createFileRoute('/(blog)/posts/')({
+export const postsIndexRoute = createFileRoute('/(blog)/posts/')({
   component: PostsPage,
   loader: async () => {
     const posts = await fetchRecentPosts(20)

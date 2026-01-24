@@ -1,7 +1,4 @@
-"use client"
-
 import { type LucideProps } from "lucide-react"
-import dynamic from "next/dynamic"
 import { 
   Eye, 
   ChevronDown, 
@@ -46,20 +43,14 @@ export const Icons = {
   menu: MenuIcon
 }
 
-// Client component for dynamic icon loading
-export const DynamicIcon = dynamic(
-  async () => {
-    const mod = await import("lucide-react")
-    return function DynamicIcon({
-      name,
-      ...props
-    }: { name: keyof typeof mod } & LucideProps) {
-      const Icon = mod[name] as React.ComponentType<LucideProps>
-      return <Icon {...props} />
-    }
-  },
-  {
-    ssr: false,
-    loading: () => <span className="inline-block h-6 w-6" />
+// Component for dynamic icon loading (TanStack Start compatible)
+export function DynamicIcon({
+  name,
+  ...props
+}: { name: keyof typeof import("lucide-react") } & LucideProps) {
+  const icons = {
+    Eye, ChevronDown, CalendarDays, Clock, ArrowRight, Sparkles, Menu
   }
-)
+  const Icon = icons[name as keyof typeof icons] as React.ComponentType<LucideProps>
+  return <Icon {...props} />
+}

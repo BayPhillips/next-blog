@@ -1,5 +1,4 @@
 import type { ClientPerspective, FilteredResponseQueryOptions, QueryParams } from "next-sanity";
-import { draftMode } from "next/headers";
 
 import { client } from "@/sanity/lib/client";
 import { token } from "@/sanity/lib/token";
@@ -21,16 +20,10 @@ export async function sanityFetch<const QueryString extends string>({
   stega?: boolean;
   perspective?: string | undefined;
 }) {
-  // Draft Mode may be disabled in some environments, so we need to handle that case
-  const isEnabled = await (async () => {
-    try {
-      return (await draftMode()).isEnabled;
-    } catch {
-      return false;
-    }
-  })();
-  const actualPerspective = isEnabled ? "previewDrafts" : perspective;
-  const actualStega = stega || actualPerspective === "previewDrafts";
+  // TODO: Implement TanStack Start compatible draft mode
+  // For now, always use published perspective
+  const actualPerspective = perspective || "published";
+  const actualStega = stega || false;
 
   let fetchParams: FilteredResponseQueryOptions = {
     stega: actualStega,

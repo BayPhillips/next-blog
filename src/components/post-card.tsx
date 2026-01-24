@@ -1,4 +1,4 @@
-import Link from "next/link"
+import { Link } from "@tanstack/react-router"
 import { Card, CardContent, CardFooter, CardHeader } from "./ui/card"
 import { Badge } from "./ui/badge"
 import { Button } from "./ui/button"
@@ -6,7 +6,7 @@ import { CalendarDays, Clock } from "lucide-react"
 import { formatDate } from "@/lib/utils"
 import { PostImage } from "./post-image"
 import { Post } from "@/sanity.types"
-import PostTags from "@/app/(blog)/components/post-tags"
+import PostTags from "@/components/post-tags"
 
 export type SanityImageAsset = {
   _type: 'sanity.imageAsset'
@@ -83,7 +83,7 @@ export function PostCard({ post, className }: PostCardProps) {
       </div>
       <CardHeader className="flex-1">
         <h3 className="text-xl font-semibold leading-tight tracking-tight">
-          <Link href={postUrl} className="hover:underline">
+          <Link to={postUrl} className="hover:underline">
             {title}
           </Link>
         </h3>
@@ -100,7 +100,7 @@ export function PostCard({ post, className }: PostCardProps) {
       <CardFooter className="flex flex-wrap gap-2 mt-auto">
         <PostTags tags={post.tags || []} />
         <Button variant="ghost" className="ml-auto" asChild>
-          <Link href={postUrl}>
+          <Link to={postUrl}>
             Read more
             <span className="sr-only">about {title}</span>
           </Link>

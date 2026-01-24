@@ -1,5 +1,5 @@
 import { SettingsQueryResult } from "@/sanity.types"
-import Link from "next/link"
+import { Link } from "@tanstack/react-router"
 import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuLink, navigationMenuTriggerStyle, NavigationMenuTrigger, NavigationMenuContent } from "./navigation-menu"
 import { cn } from "@/lib/utils"
 import { LogoIcon, MenuIcon } from "./icons"
@@ -11,7 +11,7 @@ export function SiteHeader({ settings }: { settings: SettingsQueryResult }) {
         {/* Logo */}
         <div className="mr-4 flex items-center">
           <Link
-            href="/"
+            to="/"
             className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
           >
             <span className="flex items-center">
@@ -31,7 +31,7 @@ export function SiteHeader({ settings }: { settings: SettingsQueryResult }) {
             <NavigationMenuList>
               {settings?.navigation?.map((item) => (
                 <NavigationMenuItem key={item._key}>
-                  <Link href={item.path || '#'} passHref legacyBehavior>
+                  <Link to={item.path || '#'}>
                     <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), 'inline-block')}>
                       {item.title || 'Link'}
                     </NavigationMenuLink>
@@ -53,7 +53,7 @@ export function SiteHeader({ settings }: { settings: SettingsQueryResult }) {
                     {settings?.navigation?.map((item) => (
                       <li key={item._key}>
                         <NavigationMenuLink asChild>
-                          <Link href={item.path || '#'} key={item._key}>
+                          <Link to={item.path || '#'} key={item._key}>
                             {item.title || ''}
                           </Link>
                         </NavigationMenuLink>
