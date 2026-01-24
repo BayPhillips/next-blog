@@ -1,90 +1,39 @@
 import { createFileRoute } from '@tanstack/react-router'
-import PortableText from '@/components/portable-text'
-import { PortableTextBlock } from 'next-sanity'
-import { aboutQuery } from '@/sanity/lib/queries'
-import { fetchSanityData } from '@/lib/sanity/fetch'
-import { buildImageUrl } from '@/lib/sanity/utils'
-
-interface AboutData {
-  _id: string
-  _type: 'about'
-  title?: string
-  excerpt?: string
-  content?: PortableTextBlock[]
-  coverImage?: {
-    asset?: {
-      _ref: string
-      _type: 'reference'
-      _weak?: boolean
-      [key: string]: any
-    }
-    alt?: string
-    _type: 'image'
-  } | null
-}
 
 export const aboutRoute = createFileRoute('/about')({
   component: AboutPage,
   loader: async () => {
-    const aboutData = await fetchSanityData<AboutData>({
-      query: aboutQuery,
-      stega: false,
-      useCache: false,
-    })
-
-    if (!aboutData) {
-      return { aboutData: null }
+    return {
+      message: 'About page working!',
+      about: {
+        title: 'About Me',
+        content: 'This is the about page content with TanStack Router.',
+        skills: ['React', 'TypeScript', 'TanStack Router', 'Vite']
+      }
     }
-
-    return { aboutData }
   },
 })
 
 function AboutPage() {
-  const { aboutData } = aboutRoute.useLoaderData()
-
-  if (!aboutData) {
-    return (
-      <div className="container py-12">
-        <h1 className="text-3xl font-bold mb-8">About</h1>
-        <p>No about page content found.</p>
-      </div>
-    )
-  }
-
-  const content = Array.isArray(aboutData.content) ? aboutData.content : []
-  const hasContent = content.length > 0
+  const { message, about } = aboutRoute.useLoaderData()
 
   return (
-    <article className="container max-w-4xl py-12">
-      {aboutData.coverImage?.asset?._ref && (
-        <div className="relative w-full h-64 md:h-96 mb-8 rounded-lg overflow-hidden">
-          <img
-            src={buildImageUrl(aboutData.coverImage)}
-            alt={aboutData.coverImage.alt || 'About page cover'}
-            className="object-cover w-full h-full"
-          />
-        </div>
-      )}
-
-      <header>
-        <h1 className="text-4xl font-bold tracking-tight mb-4">
-          {aboutData.title || 'About Me'}
-        </h1>
-        {aboutData.excerpt && (
-          <p className="text-xl text-muted-foreground mb-8">
-            {aboutData.excerpt}
-          </p>
-        )}
-      </header>
+    <div className="container py-12">
+      <div className="mb-8">
+        <h1 className="text-4xl font-bold tracking-tight mb-4">{about.title}</h1>
+        <div className="text-lg text-muted-foreground">{message}</div>
+      </div>
 
       <div className="prose dark:prose-invert max-w-none">
-        {hasContent ? (
-          <PortableText value={content} />
-        ) : (
-          <p>No content available yet. Please check back later.</p>
-        )}
+        <p>{about.content}</p>
+        
+        <h3>Skills</h3>
+        <ul>
+          {about.skills.map((skill, index) => (
+            <li key={index}>{skill}</li>
+          ))}
+        </ul>
       </div>
-    </article>
+    </div>
   )
 }
