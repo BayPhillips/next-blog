@@ -61,5 +61,13 @@ export async function fetchRecentPosts(limit: number = 10) {
   });
 }
 
+// Helper function to fetch hero post
+export async function fetchHeroPost() {
+  const { heroQuery } = await import("@/sanity/lib/queries");
+  return fetchSanityData({
+    query: heroQuery,
+  });
+}
+
 // Type for posts with read time (legacy compatibility)
 export type PostWithReadTime = any;
