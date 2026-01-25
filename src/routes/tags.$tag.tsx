@@ -4,7 +4,7 @@ import { postsByTagQuery } from '@/sanity/lib/queries'
 import { fetchSanityData } from '@/lib/sanity/fetch'
 import type { Post } from '@/sanity.types'
 
-export const tagsRoute = createFileRoute('/tags/$tag')({
+export const Route = createFileRoute('/tags/$tag')({
   component: TagPage,
   loader: async ({ params }) => {
     const tagParam = await params
@@ -35,7 +35,7 @@ export const tagsRoute = createFileRoute('/tags/$tag')({
 })
 
 function TagPage() {
-  const { posts, tag } = tagsRoute.useLoaderData()
+  const data = Route.useLoaderData(); const posts = data?.posts; const tag = data?.tag
 
   if (!posts?.length) {
     return (

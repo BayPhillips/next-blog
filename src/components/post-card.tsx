@@ -7,6 +7,7 @@ import { formatDate } from "@/lib/utils"
 import { PostImage } from "./post-image"
 import { Post } from "@/sanity.types"
 import PostTags from "@/components/post-tags"
+import { dataset, projectId } from "@/sanity/lib/api"
 
 export type SanityImageAsset = {
   _type: 'sanity.imageAsset'
@@ -36,13 +37,13 @@ type PostCardProps = {
 // Helper function to build the image URL from Sanity reference
 const buildImageUrl = (asset: SanityImageAsset): string => {
   if (asset.url) return asset.url;
-  
+
   // Extract the file extension and path from the reference
   const refParts = asset._ref.split('-');
   const fileExtension = refParts[1];
   const filePath = refParts.slice(2).join('-');
-  
-  return `https://cdn.sanity.io/images/${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}/${process.env.NEXT_PUBLIC_SANITY_DATASET || 'production'}/${filePath}.${fileExtension}`;
+
+  return `https://cdn.sanity.io/images/${projectId}/${dataset}/${filePath}.${fileExtension}`;
 };
 
 export function PostCard({ post, className }: PostCardProps) {

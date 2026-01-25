@@ -113,12 +113,12 @@ function RecentPosts({ posts }: RecentPostsProps) {
   );
 }
 
-export const indexRoute = createFileRoute('/')({
+export const Route = createFileRoute('/')({
   component: HomeRoute,
   loader: async () => {
     try {
       console.log('🔍 Loading home page data from Sanity...')
-      
+
       // Fetch hero post and recent posts in parallel
       const [heroPost, recentPosts] = await Promise.all([
         fetchSanityData<Post>({ query: heroQuery }),
@@ -135,7 +135,9 @@ export const indexRoute = createFileRoute('/')({
 })
 
 function HomeRoute() {
-  const { heroPost, recentPosts } = indexRoute.useLoaderData()
+  const data = Route.useLoaderData()
+  const heroPost = data?.heroPost as Post | null
+  const recentPosts = data?.recentPosts as Post[] | undefined
 
   return (
     <div className="container py-12">

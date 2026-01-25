@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { Suspense } from 'react'
+import React from 'react'
 import { CalendarDays, Clock } from 'lucide-react'
 import { formatDate } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -33,7 +34,7 @@ const moreStoriesQuery = `*[_type == "post" && slug.current != $slug && !(_id in
   tags,
 }`
 
-export const postRoute = createFileRoute('/posts/$slug')({
+export const Route = createFileRoute('/posts/$slug')({
   component: PostPage,
   loader: async ({ params }) => {
     const { slug } = await params
@@ -43,8 +44,6 @@ export const postRoute = createFileRoute('/posts/$slug')({
       const post = await fetchSanityData<Post>({
         query: postQuery,
         params: { slug },
-        stega: false,
-        useCache: false,
       })
 
       console.log('✅ Post loaded:', post)
@@ -66,8 +65,6 @@ function MorePosts({ currentPostId }: { currentPostId: string }) {
         const posts = await fetchSanityData<Post[]>({
           query: moreStoriesQuery,
           params: { slug: currentPostId },
-          stega: false,
-          useCache: false,
         })
         console.log('✅ More posts loaded:', posts)
         setMorePosts(posts || [])
@@ -92,7 +89,7 @@ function MorePosts({ currentPostId }: { currentPostId: string }) {
 }
 
 function PostPage() {
-  const { post } = postRoute.useLoaderData()
+  const data = Route.useLoaderData(); const post = data?.post
 
   if (!post) {
     return (

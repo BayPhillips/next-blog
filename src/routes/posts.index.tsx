@@ -6,7 +6,7 @@ import type { Post } from '@/sanity.types'
 
 const POSTS_PER_PAGE = 10
 
-export const postsIndexRoute = createFileRoute('/posts')({
+export const Route = createFileRoute('/posts/')({
   component: PostsPage,
   loader: async ({ search }) => {
     const page = Number(search?.page) || 1
@@ -43,7 +43,7 @@ export const postsIndexRoute = createFileRoute('/posts')({
 })
 
 function PostsPage() {
-  const { posts, totalPages, currentPage } = postsIndexRoute.useLoaderData()
+  const data = Route.useLoaderData(); const posts = data?.posts; const totalPages = data?.totalPages; const currentPage = data?.currentPage
 
   return (
     <div className="container max-w-4xl py-12">

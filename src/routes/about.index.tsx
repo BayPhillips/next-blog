@@ -23,7 +23,7 @@ interface AboutData {
   } | null
 }
 
-export const aboutRoute = createFileRoute('/about')({
+export const Route = createFileRoute('/about/')({
   component: AboutPage,
   loader: async () => {
     try {
@@ -50,7 +50,7 @@ export const aboutRoute = createFileRoute('/about')({
 })
 
 function AboutPage() {
-  const { aboutData } = aboutRoute.useLoaderData()
+  const data = Route.useLoaderData(); const aboutData = data?.aboutData
 
   if (!aboutData) {
     return (
