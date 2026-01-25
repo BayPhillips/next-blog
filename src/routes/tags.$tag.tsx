@@ -1,39 +1,77 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { PostCard } from '@/components/post-card'
+import { postsByTagQuery } from '@/sanity/lib/queries'
+import { fetchSanityData } from '@/lib/sanity/fetch'
+import type { Post } from '@/sanity.types'
 
 export const tagsRoute = createFileRoute('/tags/$tag')({
   component: TagPage,
   loader: async ({ params }) => {
-    const { tag } = await params
-    return { 
-      message: 'Tag page working!',
-      tag,
-      posts: [
-        { id: 1, title: `Tag post for ${tag}`, excerpt: 'Post with specific tag' },
-        { id: 2, title: `Another ${tag} post`, excerpt: 'Another post with this tag' }
-      ]
+    const tagParam = await params
+    const tag = decodeURIComponent(tagParam.tag)
+    
+    try {
+      console.log('🔍 Loading tag:', tag)
+      
+      const posts = await fetchSanityData<Post[]>({
+        query: postsByTagQuery,
+        params: { tag: tag as any },
+        stega: false,
+        useCache: false,
+      })
+
+      if (!posts?.length) {
+        console.log('❌ No posts found for tag:', tag)
+        throw new Error('No posts found for tag')
+      }
+
+      console.log('✅ Tag posts loaded:', { tag, count: posts.length })
+      return { posts, tag }
+    } catch (error) {
+      console.error('❌ Error loading tag posts:', error)
+      return { posts: [], tag }
     }
   },
 })
 
 function TagPage() {
-  const { message, tag, posts } = tagsRoute.useLoaderData()
+  const { posts, tag } = tagsRoute.useLoaderData()
+
+  if (!posts?.length) {
+    return (
+      <div className="container py-12">
+        <h1 className="text-3xl font-bold mb-8">No posts found</h1>
+        <p>No posts found for tag: "{tag}"</p>
+      </div>
+    )
+  }
 
   return (
-    <div className="container py-12 max-w-4xl">
-      <div className="mb-8">
+    <div className="container max-w-4xl py-12">
+      <div className="mb-12">
         <h1 className="text-3xl font-bold tracking-tight capitalize">
-          {tag} Posts
+          {tag} posts
         </h1>
-        <div className="text-muted-foreground">{message}</div>
+        <div className="text-muted-foreground">
+          Browse all posts tagged with {tag}
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-        {posts.map((post) => (
-          <div key={post.id} className="p-6 border rounded-lg">
-            <h3 className="text-xl font-semibold mb-2">{post.title}</h3>
-            <p className="text-muted-foreground">{post.excerpt}</p>
-          </div>
-        ))}
+      <div className="mb-32 grid grid-cols-1 gap-y-20 md:grid-cols-2 md:gap-x-16 md:gap-y-32 lg:gap-x-32 lg:gap-y-32">
+        {posts.map((post) => {
+          // Transform to match PostCard expectations
+          const postData = {
+            ...post,
+            slug: post.slug?.current || post.slug,
+            coverImage: post.coverImage?.asset ? {
+              asset: post.coverImage.asset,
+              alt: post.coverImage.alt
+            } : null,
+            tags: post.tags || []
+          }
+          
+          return <PostCard key={post!._id} post={postData} />
+        })}
       </div>
     </div>
   )
