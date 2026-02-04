@@ -23,6 +23,7 @@ import { SiteHeader } from "@/components/ui/site-header"
 import { SiteFooter } from "@/components/ui/site-footer"
 import { Analytics } from "@vercel/analytics/react"
 import { Toaster } from "@/components/ui/toaster"
+import { ThemeProvider } from "@/components/theme-provider"
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await fetchSanityData<SettingsQueryResult>({
@@ -83,24 +84,31 @@ export default async function RootLayout({
   return (
     <html lang="en" className={`${nunito.variable} ${lora.variable} font-sans min-h-screen`} suppressHydrationWarning>
       <body className="min-h-screen bg-background font-sans antialiased">
-        <div className="relative flex min-h-screen flex-col">
-          {(await draftMode()).isEnabled && <AlertBanner />}
-          <SiteHeader settings={settings} />
-          <main className="flex-1">
-            <div className="container py-12">
-              {children}
-            </div>
-          </main>
-          <SiteFooter settings={settings} />
-        </div>
-        {(await draftMode()).isEnabled && (
-          <Suspense>
-            <VisualEditing />
-          </Suspense>
-        )}
-        <Analytics />
-        <SpeedInsights />
-        <Toaster />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <div className="relative flex min-h-screen flex-col">
+            {(await draftMode()).isEnabled && <AlertBanner />}
+            <SiteHeader settings={settings} />
+            <main className="flex-1">
+              <div className="container py-12">
+                {children}
+              </div>
+            </main>
+            <SiteFooter settings={settings} />
+          </div>
+          {(await draftMode()).isEnabled && (
+            <Suspense>
+              <VisualEditing />
+            </Suspense>
+          )}
+          <Analytics />
+          <SpeedInsights />
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   );

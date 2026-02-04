@@ -3,6 +3,7 @@ import Link from "next/link"
 import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuLink, navigationMenuTriggerStyle, NavigationMenuTrigger, NavigationMenuContent } from "./navigation-menu"
 import { cn } from "@/lib/utils"
 import { LogoIcon, MenuIcon } from "./icons"
+import { ThemeToggle } from "./theme-toggle"
 
 export function SiteHeader({ settings }: { settings: SettingsQueryResult }) {
   return (
@@ -40,10 +41,12 @@ export function SiteHeader({ settings }: { settings: SettingsQueryResult }) {
               ))}
             </NavigationMenuList>
           </NavigationMenu>
+          <ThemeToggle />
         </nav>
 
         {/* Mobile Navigation Menu */}
-        <nav className="md:hidden flex flex-col space-y-2">
+        <nav className="md:hidden flex items-center space-x-2">
+          <ThemeToggle />
           <NavigationMenu>
             <NavigationMenuList>
               <NavigationMenuItem>

@@ -56,23 +56,23 @@ export default async function BlogPage(props: Props) {
               href={`/posts?page=${Math.max(1, page - 1)}`}
               className={`inline-flex items-center justify-center rounded-md px-3 py-2 text-sm font-medium ${
                 page <= 1
-                  ? 'pointer-events-none text-gray-400'
-                  : 'text-gray-700 hover:bg-gray-100'
+                  ? 'pointer-events-none text-muted-foreground/50'
+                  : 'text-foreground hover:bg-accent'
               }`}
               aria-disabled={page <= 1}
               tabIndex={page <= 1 ? -1 : undefined}
             >
               Previous
             </Link>
-            <span className="px-3 py-2 text-sm text-gray-700">
+            <span className="px-3 py-2 text-sm text-muted-foreground">
               Page {page} of {totalPages}
             </span>
             <Link
               href={`/posts?page=${Math.min(totalPages, page + 1)}`}
               className={`inline-flex items-center justify-center rounded-md px-3 py-2 text-sm font-medium ${
                 page >= totalPages
-                  ? 'pointer-events-none text-gray-400'
-                  : 'text-gray-700 hover:bg-gray-100'
+                  ? 'pointer-events-none text-muted-foreground/50'
+                  : 'text-foreground hover:bg-accent'
               }`}
               aria-disabled={page >= totalPages}
               tabIndex={page >= totalPages ? -1 : undefined}
