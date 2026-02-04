@@ -89,6 +89,7 @@ export default async function RootLayout({
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
+          themes={["light", "dark", "system"]}
         >
           <div className="relative flex min-h-screen flex-col">
             {(await draftMode()).isEnabled && <AlertBanner />}
