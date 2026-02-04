@@ -47,8 +47,8 @@ export default function ShareButtons({ url, title }: ShareButtonsProps) {
   };
 
   return (
-    <div className="flex flex-col items-center gap-4 my-12 border-t border-gray-200 pt-8">
-      <span className="text-gray-600 text-sm font-medium">Share this post</span>
+    <div className="flex flex-col items-center gap-4 my-12 border-t border-border pt-8">
+      <span className="text-muted-foreground text-sm font-medium">Share this post</span>
       <div className="flex gap-4">
         {shareLinks.map((link) => (
           <a
@@ -56,20 +56,20 @@ export default function ShareButtons({ url, title }: ShareButtonsProps) {
             href={link.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+            className="p-2 rounded-full hover:bg-accent transition-colors"
             aria-label={`Share on ${link.name}`}
           >
-            <link.icon className="w-6 h-6 text-gray-600 hover:text-gray-800" />
+            <link.icon className="w-6 h-6 text-muted-foreground hover:text-foreground" />
           </a>
         ))}
         <button
           onClick={handleCopy}
-          className="p-2 rounded-full hover:bg-gray-100 transition-colors relative group"
+          className="p-2 rounded-full hover:bg-accent transition-colors relative group"
           aria-label="Copy link"
         >
-          <CopyIcon className="w-6 h-6 text-gray-600 group-hover:text-gray-800" />
+          <CopyIcon className="w-6 h-6 text-muted-foreground group-hover:text-foreground" />
           {copied && (
-            <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-black text-white text-xs py-1 px-2 rounded">
+            <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-foreground text-background text-xs py-1 px-2 rounded">
               Copied!
             </span>
           )}
