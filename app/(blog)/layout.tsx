@@ -1,6 +1,5 @@
 import "../globals.css";
 
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import {
   VisualEditing,
@@ -21,7 +20,7 @@ import { resolveOpenGraphImage } from "@/sanity/lib/utils";
 import { SettingsQueryResult } from "@/sanity.types";
 import { SiteHeader } from "@/components/ui/site-header"
 import { SiteFooter } from "@/components/ui/site-footer"
-import { Analytics } from "@vercel/analytics/react"
+import Script from "next/script";
 import { Toaster } from "@/components/ui/toaster"
 import { ThemeProvider } from "@/components/theme-provider"
 
@@ -106,8 +105,11 @@ export default async function RootLayout({
               <VisualEditing />
             </Suspense>
           )}
-          <Analytics />
-          <SpeedInsights />
+          <Script
+            src="https://static.cloudflareinsights.com/beacon.min.js"
+            data-cf-beacon='{"token": ""}'
+            strategy="afterInteractive"
+          />
           <Toaster />
         </ThemeProvider>
       </body>
