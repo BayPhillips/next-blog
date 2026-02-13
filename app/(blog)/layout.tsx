@@ -107,7 +107,7 @@ export default async function RootLayout({
           )}
           <Script
             src="https://static.cloudflareinsights.com/beacon.min.js"
-            data-cf-beacon='{"token": ""}'
+            data-cf-beacon='{"token": "456d04ab3b904adba5476a76831029e6"}'
             strategy="afterInteractive"
           />
           <Toaster />
