@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, jest } from '@jest/globals'
+/* eslint-disable @typescript-eslint/no-require-imports */
 import type { PostWithReadTime } from '../../../lib/sanity/fetch'
 
 // Mock the base sanity fetch function
@@ -28,10 +28,19 @@ jest.mock('next-sanity', () => ({
   })),
 }))
 
-// Now import the functions we want to test
-const { fetchSanityData, fetchPost, fetchRecentPosts } = await import('../../../lib/sanity/fetch')
+// Module-level variables to hold imported functions
+let fetchSanityData: typeof import('../../../lib/sanity/fetch').fetchSanityData
+let fetchPost: typeof import('../../../lib/sanity/fetch').fetchPost
+let fetchRecentPosts: typeof import('../../../lib/sanity/fetch').fetchRecentPosts
 
 describe('Sanity Fetch Utilities', () => {
+  beforeAll(async () => {
+    const module = await import('../../../lib/sanity/fetch')
+    fetchSanityData = module.fetchSanityData
+    fetchPost = module.fetchPost
+    fetchRecentPosts = module.fetchRecentPosts
+  })
+
   beforeEach(() => {
     jest.clearAllMocks()
   })
@@ -84,8 +93,7 @@ describe('Sanity Fetch Utilities', () => {
   })
 
   describe('fetchPost', () => {
-    it('calls fetchSanityData with correct query', async () => {
-      const mockFetchSanityData = jest.mocked(fetchSanityData)
+    it('fetches a post by slug and returns it', async () => {
       const mockPost = {
         _id: 'test-id',
         _type: 'post' as const,
@@ -102,32 +110,32 @@ describe('Sanity Fetch Utilities', () => {
         tags: ['test'],
         readTime: 5,
       } as unknown as PostWithReadTime
-      
-      mockFetchSanityData.mockResolvedValue(mockPost)
-      
+
+      mockBaseSanityFetch.mockResolvedValue(mockPost)
+
       const result = await fetchPost('test-post')
-      
-      expect(mockFetchSanityData).toHaveBeenCalledWith({
-        query: expect.stringContaining('*[_type == "post" && slug.current == $slug][0]'),
-        params: { slug: 'test-post' },
-      })
-      
+
+      expect(mockBaseSanityFetch).toHaveBeenCalledWith(
+        expect.objectContaining({
+          query: expect.stringContaining('*[_type == "post" && slug.current == $slug][0]'),
+          params: { slug: 'test-post' },
+        })
+      )
+
       expect(result).toEqual(mockPost)
     })
 
     it('returns null when no post found', async () => {
-      const mockFetchSanityData = jest.mocked(fetchSanityData)
-      mockFetchSanityData.mockResolvedValue(null)
-      
+      mockBaseSanityFetch.mockResolvedValue(null)
+
       const result = await fetchPost('nonexistent-post')
-      
+
       expect(result).toBeNull()
     })
   })
 
   describe('fetchRecentPosts', () => {
-    it('calls fetchSanityData with correct query and limit', async () => {
-      const mockFetchSanityData = jest.mocked(fetchSanityData)
+    it('fetches recent posts with correct query and limit', async () => {
       const mockPosts = [
         {
           _id: 'test-id-1',
@@ -160,40 +168,42 @@ describe('Sanity Fetch Utilities', () => {
           readTime: 5,
         },
       ] as unknown as PostWithReadTime[]
-      
-      mockFetchSanityData.mockResolvedValue(mockPosts)
-      
+
+      mockBaseSanityFetch.mockResolvedValue(mockPosts)
+
       const result = await fetchRecentPosts(2)
-      
-      expect(mockFetchSanityData).toHaveBeenCalledWith({
-        query: expect.stringContaining('*[_type == "post" && defined(slug.current)] | order(date desc, _updatedAt desc) [0...$limit]'),
-        params: { limit: 2 },
-      })
-      
+
+      expect(mockBaseSanityFetch).toHaveBeenCalledWith(
+        expect.objectContaining({
+          query: expect.stringContaining('*[_type == "post" && defined(slug.current)] | order(date desc, _updatedAt desc) [0...$limit]'),
+          params: { limit: 2 },
+        })
+      )
+
       expect(result).toEqual(mockPosts)
     })
 
     it('returns empty array when no posts found', async () => {
-      const mockFetchSanityData = jest.mocked(fetchSanityData)
-      mockFetchSanityData.mockResolvedValue(null)
-      
+      mockBaseSanityFetch.mockResolvedValue(null)
+
       const result = await fetchRecentPosts(5)
-      
+
       expect(result).toEqual([])
     })
 
     it('uses default limit of 3 when not specified', async () => {
-      const mockFetchSanityData = jest.mocked(fetchSanityData)
       const mockPosts = [] as unknown as PostWithReadTime[]
-      mockFetchSanityData.mockResolvedValue(mockPosts)
-      
+      mockBaseSanityFetch.mockResolvedValue(mockPosts)
+
       const result = await fetchRecentPosts()
-      
-      expect(mockFetchSanityData).toHaveBeenCalledWith({
-        query: expect.stringContaining('*[_type == "post" && defined(slug.current)] | order(date desc, _updatedAt desc) [0...$limit]'),
-        params: { limit: 3 },
-      })
-      
+
+      expect(mockBaseSanityFetch).toHaveBeenCalledWith(
+        expect.objectContaining({
+          query: expect.stringContaining('*[_type == "post" && defined(slug.current)] | order(date desc, _updatedAt desc) [0...$limit]'),
+          params: { limit: 3 },
+        })
+      )
+
       expect(result).toEqual([])
     })
   })

@@ -16,4 +16,7 @@ export default defineCliConfig({
       },
     },
   },
+  typegen: {
+    overloadClientMethods: true,
+  },
 });
