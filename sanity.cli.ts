@@ -19,4 +19,7 @@ export default defineCliConfig({
   typegen: {
     overloadClientMethods: true,
   },
+  deployment: {
+    appId: "qsv3mgr50938rr58rafymq5u",
+  },
 });

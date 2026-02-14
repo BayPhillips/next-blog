@@ -15,7 +15,7 @@
   // R2 bucket for ISR incremental cache
   "r2_buckets": [
     {
-      "binding": "INCREMENTAL_CACHE",
+      "binding": "NEXT_INC_CACHE_R2_BUCKET",
       "bucket_name": "bayphillips-cache"
     }
   ],
