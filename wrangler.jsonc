@@ -26,5 +26,11 @@
     "NEXT_PUBLIC_SANITY_DATASET": "production",
     "NEXT_PUBLIC_SANITY_PERSPECTIVE": "published",
     "NEXT_PUBLIC_SITE_URL": "https://bayphillips.com"
+  },
+  "observability": {
+    "logs": {
+      "enabled": true,
+      "invocation_logs": true
+    }
   }
 }
