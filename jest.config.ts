@@ -5,10 +5,9 @@ const createJestConfig = nextJest({
   dir: './',
 })
 
-const config: Config = {
-  ...createJestConfig(),
+const customConfig: Config = {
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
-  
+
   collectCoverageFrom: [
     'app/**/*.{js,jsx,ts,tsx}',
     'components/**/*.{js,jsx,ts,tsx}',
@@ -25,21 +24,21 @@ const config: Config = {
     },
   },
   coverageReporters: ['text', 'lcov', 'html'],
-  
+
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/$1',
     // Handle CSS modules and other assets
     '^.+\\.module\\.(css|sass|scss)$': 'identity-obj-proxy',
     '^.+\\.(jpg|jpeg|png|gif|webp|avif|svg)$': '<rootDir>/__mocks__/fileMock.js',
   },
-  
+
   testEnvironment: 'jsdom',
-  
-  // Handle ES modules from node_modules  
+
+  // Handle ES modules from node_modules
   transformIgnorePatterns: [
     'node_modules/(?!(.*\\.mjs$))',
   ],
-  
+
   // Test file patterns - exclude e2e tests
   testMatch: [
     '**/__tests__/**/*.(ts|tsx|js|jsx)',
@@ -51,4 +50,4 @@ const config: Config = {
   ],
 }
 
-export default config
+export default createJestConfig(customConfig)

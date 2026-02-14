@@ -1,4 +1,4 @@
-import { describe, it, expect } from '@jest/globals'
+/* eslint-disable @typescript-eslint/no-require-imports */
 
 describe('Basic Tests', () => {
   it('should pass a simple test', () => {
