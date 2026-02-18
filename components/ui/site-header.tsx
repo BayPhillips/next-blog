@@ -32,11 +32,11 @@ export function SiteHeader({ settings }: { settings: SettingsQueryResult }) {
             <NavigationMenuList>
               {settings?.navigation?.map((item) => (
                 <NavigationMenuItem key={item._key}>
-                  <Link href={item.path || '#'} passHref legacyBehavior>
-                    <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), 'inline-block')}>
+                  <NavigationMenuLink asChild className={cn(navigationMenuTriggerStyle(), 'inline-block')}>
+                    <Link href={item.path || '#'}>
                       {item.title || 'Link'}
-                    </NavigationMenuLink>
-                  </Link>
+                    </Link>
+                  </NavigationMenuLink>
                 </NavigationMenuItem>
               ))}
             </NavigationMenuList>
