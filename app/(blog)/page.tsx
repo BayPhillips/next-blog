@@ -20,7 +20,7 @@ function HeroPost({ post }: HeroPostProps) {
     <section className="hero mb-16">
       <Card className="overflow-hidden border-none shadow-lg">
         {post.coverImage?.asset?._ref && (
-          <div className="relative h-96 w-full">
+          <Link href={`/posts/${post.slug?.current}`} className="relative h-96 w-full block" tabIndex={-1} aria-hidden="true">
             <Image
               src={getImageUrl(post.coverImage) || '/placeholder.svg'}
               alt={getImageAlt(post.coverImage) || post.title || 'Post cover'}
@@ -30,7 +30,7 @@ function HeroPost({ post }: HeroPostProps) {
               height={630}
               priority
             />
-          </div>
+          </Link>
         )}
         <CardHeader className="space-y-4">
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
