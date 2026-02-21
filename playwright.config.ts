@@ -3,6 +3,9 @@
 import { defineConfig } from '@playwright/test';
 
 export default defineConfig({
+  // Only look for tests in the tests/e2e directory
+  testDir: './tests/e2e',
+  testMatch: '**/*.spec.ts',
   webServer: {
     command: 'npm run dev', // Command to start your Next.js development server
     port: 3000,             // Port the server runs on

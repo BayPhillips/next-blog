@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Next.js 15 blog application with Sanity.io CMS, built for bayphillips.com. Uses App Router, TypeScript, and Tailwind CSS. Hosted on Vercel.
+Next.js 15 blog application with Sanity.io CMS, built for bayphillips.com. Uses App Router, TypeScript, and Tailwind CSS. Hosted on Cloudflare Workers via `@opennextjs/cloudflare`.
 
 ## Commands
 
@@ -102,7 +102,7 @@ All schemas auto-imported via schema index file.
 
 - **Development**: Uses Turbopack (`next dev --turbopack`)
 - **Production**: Uses webpack (`next build --webpack`)
-- **Output**: Standalone mode (`output: 'standalone'` in next.config.js)
+- **Output**: Cloudflare Workers via `@opennextjs/cloudflare` (no `standalone` mode; use `npx opennextjs-cloudflare build` for deployment builds)
 - **Image Optimization**: Configured for Sanity CDN (`cdn.sanity.io`)
 - **Security Headers**: CORS, XSS protection, frame options, CSP configured
 
