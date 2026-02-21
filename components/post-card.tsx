@@ -71,7 +71,7 @@ export function PostCard({ post, className }: PostCardProps) {
   const postUrl = `/posts/${slug}`;
   return (
     <Card className={cn("flex flex-col h-full overflow-hidden transition-all hover:shadow-md", className)}>
-      <div className="relative h-48 w-full">
+      <Link href={postUrl} className="relative h-48 w-full block" tabIndex={-1} aria-hidden="true">
         {image && (
           <PostImage
             imageAsset={image}
@@ -80,7 +80,7 @@ export function PostCard({ post, className }: PostCardProps) {
             priority={false}
           />
         )}
-      </div>
+      </Link>
       <CardHeader className="flex-1">
         <h3 className="text-xl font-semibold leading-tight tracking-tight">
           <Link href={postUrl} className="hover:underline">
