@@ -4,7 +4,22 @@ export const settingsQuery = defineQuery(`*[_type == "settings"][0]`);
 
 export const aboutQuery = defineQuery(`*[_type == "about"][0]`);
 
-export const contactQuery = defineQuery(`*[_type == "contact"][0]`);
+export const contactQuery = defineQuery(`
+  *[_type == "contact"][0] {
+    _id,
+    _type,
+    title,
+    description,
+    email,
+    socialLinks[] {
+      _key,
+      platform,
+      url,
+      label
+    },
+    content
+  }
+`);
 
 const postFields = /* groq */ `
   _id,
