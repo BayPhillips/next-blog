@@ -151,53 +151,40 @@ export type Contact = {
   _updatedAt: string;
   _rev: string;
   title?: string;
-  content?: Array<
-    | {
-        children?: Array<{
-          marks?: Array<string>;
-          text?: string;
-          _type: "span";
-          _key: string;
-        }>;
-        style?:
-          | "normal"
-          | "h1"
-          | "h2"
-          | "h3"
-          | "h4"
-          | "h5"
-          | "h6"
-          | "blockquote";
-        listItem?: "bullet" | "number";
-        markDefs?: Array<{
-          href?: string;
-          _type: "link";
-          _key: string;
-        }>;
-        level?: number;
-        _type: "block";
-        _key: string;
-      }
-    | ({
-        _key: string;
-      } & Code)
-    | {
-        asset?: SanityImageAssetReference;
-        media?: unknown;
-        hotspot?: SanityImageHotspot;
-        crop?: SanityImageCrop;
-        _type: "image";
-        _key: string;
-      }
-  >;
-  coverImage?: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
-  };
+  description?: string;
+  email?: string;
+  socialLinks?: Array<{
+    _key: string;
+    platform?: "github" | "twitter" | "linkedin" | "instagram" | "youtube" | "facebook" | "bluesky" | "threads" | "tiktok" | "twitch" | "discord" | "mastodon";
+    url?: string;
+    label?: string;
+  }>;
+  content?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?:
+      | "normal"
+      | "h1"
+      | "h2"
+      | "h3"
+      | "h4"
+      | "h5"
+      | "h6"
+      | "blockquote";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }>;
 };
 
 export type About = {
@@ -722,61 +709,45 @@ export type AboutQueryResult = {
 
 // Source: sanity/lib/queries.ts
 // Variable: contactQuery
-// Query: *[_type == "contact"][0]
+// Query: *[_type == "contact"][0] { _id, _type, title, description, email, socialLinks[] { _key, platform, url, label }, content }
 export type ContactQueryResult = {
   _id: string;
   _type: "contact";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title?: string;
-  content?: Array<
-    | ({
-        _key: string;
-      } & Code)
-    | {
-        children?: Array<{
-          marks?: Array<string>;
-          text?: string;
-          _type: "span";
-          _key: string;
-        }>;
-        style?:
-          | "blockquote"
-          | "h1"
-          | "h2"
-          | "h3"
-          | "h4"
-          | "h5"
-          | "h6"
-          | "normal";
-        listItem?: "bullet" | "number";
-        markDefs?: Array<{
-          href?: string;
-          _type: "link";
-          _key: string;
-        }>;
-        level?: number;
-        _type: "block";
-        _key: string;
-      }
-    | {
-        asset?: SanityImageAssetReference;
-        media?: unknown;
-        hotspot?: SanityImageHotspot;
-        crop?: SanityImageCrop;
-        _type: "image";
-        _key: string;
-      }
-  >;
-  coverImage?: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
-  };
+  title: string | null;
+  description: string | null;
+  email: string | null;
+  socialLinks: Array<{
+    _key: string;
+    platform: string | null;
+    url: string | null;
+    label: string | null;
+  }> | null;
+  content: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?:
+      | "blockquote"
+      | "h1"
+      | "h2"
+      | "h3"
+      | "h4"
+      | "h5"
+      | "h6"
+      | "normal";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }> | null;
 } | null;
 
 // Source: sanity/lib/queries.ts
@@ -1095,7 +1066,7 @@ declare module "@sanity/client" {
     '*[_type == "post" && defined(slug.current)]{"slug": slug.current}': PostSlugsResult;
     '*[_type == "settings"][0]': SettingsQueryResult;
     '*[_type == "about"][0]': AboutQueryResult;
-    '*[_type == "contact"][0]': ContactQueryResult;
+    '\n  *[_type == "contact"][0] {\n    _id,\n    _type,\n    title,\n    description,\n    email,\n    socialLinks[] {\n      _key,\n      platform,\n      url,\n      label\n    },\n    content\n  }\n': ContactQueryResult;
     '\n  *[_type == "post" && defined(slug.current)] | order(date desc, _updatedAt desc) [0] {\n    content,\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{name, picture},\n  tags,\n  \n  }\n': HeroQueryResult;
     '\n  *[_type == "post" && _id != $skip && defined(slug.current)] | order(date desc, _updatedAt desc) [0...$limit] {\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{name, picture},\n  tags,\n  \n  }\n': MoreStoriesQueryResult;
     '\n  *[_type == "post" && slug.current == $slug] [0] {\n    content,\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{name, picture},\n  tags,\n  \n  }\n': PostQueryResult;
