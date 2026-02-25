@@ -49,6 +49,15 @@ export function formatDate(date: Date | string | number, format: DateFormat = 'm
   return d.toLocaleDateString(undefined, options)
 }
 
+const TITLE_CASE_OVERRIDES: Record<string, string> = {
+  ai: "AI",
+  nextjs: "Next.js",
+  reflexai: "ReflexAI",
+};
+
 export function toTitleCase(str: string): string {
-  return str.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+  return str.toLowerCase().split(' ').map(word => {
+    if (TITLE_CASE_OVERRIDES[word]) return TITLE_CASE_OVERRIDES[word];
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  }).join(' ');
 }

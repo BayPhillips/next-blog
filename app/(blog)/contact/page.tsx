@@ -1,3 +1,4 @@
+import type { Metadata } from "next"
 import { sanityFetch } from "@/sanity/lib/fetch"
 import { contactQuery } from "@/sanity/lib/queries"
 import PortableText from "@/app/(blog)/components/portable-text"
@@ -21,6 +22,10 @@ interface SocialLink {
   platform: string
   url: string
   label?: string
+}
+
+export const metadata: Metadata = {
+  title: "Contact",
 }
 
 interface ContactData {
