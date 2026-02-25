@@ -1,3 +1,4 @@
+import type { Metadata } from "next"
 import { sanityFetch } from "@/sanity/lib/fetch"
 import { aboutQuery } from "@/sanity/lib/queries"
 import PortableText from "@/app/(blog)/components/portable-text"
@@ -5,6 +6,10 @@ import { PortableTextBlock } from 'next-sanity'
 import { PageHeader } from "@/components/ui/page-header"
 import Image from 'next/image'
 import { getImageUrl, getImageAlt } from "@/lib/sanity/utils"
+
+export const metadata: Metadata = {
+  title: "About",
+}
 
 interface AboutData {
   _id: string

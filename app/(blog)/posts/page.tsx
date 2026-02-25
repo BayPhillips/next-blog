@@ -1,9 +1,14 @@
+import type { Metadata } from "next";
 import { sanityFetch } from "@/sanity/lib/fetch";
 import { paginatedPostsQuery, countPostsQuery } from "@/sanity/lib/queries";
 import { PostCard } from "@/components/post-card";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { PageHeader } from "@/components/ui/page-header";
+
+export const metadata: Metadata = {
+  title: "All Posts",
+};
 
 const POSTS_PER_PAGE = 10;
 

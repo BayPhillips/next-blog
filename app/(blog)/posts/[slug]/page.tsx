@@ -228,7 +228,7 @@ export default async function PostPage(props: Props) {
 
   const publishedDate = post.date ? new Date(post.date) : null;
   const readTime = Math.ceil(((post.content?.length || 0) / 200) || 5);
-  const postUrl = `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/posts/${post.slug?.current || ''}`;
+  const postUrl = `${process.env.NEXT_PUBLIC_SITE_URL || 'https://bayphillips.com'}/posts/${typeof post.slug === 'string' ? post.slug : post.slug?.current || ''}`;
 
   return (
     <>
