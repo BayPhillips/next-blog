@@ -3,7 +3,7 @@ import { sanityFetch } from "@/sanity/lib/fetch"
 import { contactQuery } from "@/sanity/lib/queries"
 import PortableText from "@/app/(blog)/components/portable-text"
 import { PortableTextBlock } from 'next-sanity'
-import { ContactForm } from "@/components/contact-form"
+
 import {
   Github,
   Twitter,
@@ -139,18 +139,6 @@ export default async function ContactPage() {
             </div>
           </section>
         )}
-      </div>
-
-      {/* Divider + form */}
-      <div className="mt-14">
-        <div className="mb-8 flex items-center gap-4">
-          <div className="h-px flex-1 bg-border" />
-          <span className="text-xs font-medium text-muted-foreground">or send a message</span>
-          <div className="h-px flex-1 bg-border" />
-        </div>
-        <div className="max-w-lg">
-          <ContactForm />
-        </div>
       </div>
 
       {/* Optional rich-text content */}
