@@ -51,7 +51,7 @@ const NavigationMenuTrigger = React.forwardRef<
   React.ElementRef<typeof NavigationMenuPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Trigger> &
   NavigationMenuTriggerExtraProps
->(({ className, children, ...props }, ref) => (
+>(({ className, children, arrowHidden, ...props }, ref) => (
   <NavigationMenuPrimitive.Trigger
     ref={ref}
     className={cn(navigationMenuTriggerStyle(), "group", className)}
@@ -59,7 +59,7 @@ const NavigationMenuTrigger = React.forwardRef<
   >
     {children}{" "}
     <ChevronDownIcon
-      className={`${props.arrowHidden ? "hidden" : "block"} relative top-[1px] ml-1 h-3 w-3 transition duration-300 group-data-[state=open]:rotate-180`}
+      className={`${arrowHidden ? "hidden" : "block"} relative top-[1px] ml-1 h-3 w-3 transition duration-300 group-data-[state=open]:rotate-180`}
       aria-hidden="true"
     />
   </NavigationMenuPrimitive.Trigger>

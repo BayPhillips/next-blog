@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
+  // Note: 'standalone' output removed — OpenNext adapter handles bundling for Cloudflare Workers
   logging: {
     fetches: { fullUrl: false },
   },
