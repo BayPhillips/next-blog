@@ -154,10 +154,23 @@ export type Contact = {
   description?: string;
   email?: string;
   socialLinks?: Array<{
-    _key: string;
-    platform?: "github" | "twitter" | "linkedin" | "instagram" | "youtube" | "facebook" | "bluesky" | "threads" | "tiktok" | "twitch" | "discord" | "mastodon";
+    platform?:
+      | "github"
+      | "twitter"
+      | "linkedin"
+      | "instagram"
+      | "youtube"
+      | "facebook"
+      | "bluesky"
+      | "threads"
+      | "tiktok"
+      | "twitch"
+      | "discord"
+      | "mastodon";
     url?: string;
     label?: string;
+    _type: "socialLink";
+    _key: string;
   }>;
   content?: Array<{
     children?: Array<{
@@ -166,15 +179,7 @@ export type Contact = {
       _type: "span";
       _key: string;
     }>;
-    style?:
-      | "normal"
-      | "h1"
-      | "h2"
-      | "h3"
-      | "h4"
-      | "h5"
-      | "h6"
-      | "blockquote";
+    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
     listItem?: "bullet" | "number";
     markDefs?: Array<{
       href?: string;
@@ -709,7 +714,7 @@ export type AboutQueryResult = {
 
 // Source: sanity/lib/queries.ts
 // Variable: contactQuery
-// Query: *[_type == "contact"][0] { _id, _type, title, description, email, socialLinks[] { _key, platform, url, label }, content }
+// Query: *[_type == "contact"][0] {    _id,    _type,    title,    description,    email,    socialLinks[] {      _key,      platform,      url,      label    },    content  }
 export type ContactQueryResult = {
   _id: string;
   _type: "contact";
@@ -718,7 +723,20 @@ export type ContactQueryResult = {
   email: string | null;
   socialLinks: Array<{
     _key: string;
-    platform: string | null;
+    platform:
+      | "bluesky"
+      | "discord"
+      | "facebook"
+      | "github"
+      | "instagram"
+      | "linkedin"
+      | "mastodon"
+      | "threads"
+      | "tiktok"
+      | "twitch"
+      | "twitter"
+      | "youtube"
+      | null;
     url: string | null;
     label: string | null;
   }> | null;
@@ -729,15 +747,7 @@ export type ContactQueryResult = {
       _type: "span";
       _key: string;
     }>;
-    style?:
-      | "blockquote"
-      | "h1"
-      | "h2"
-      | "h3"
-      | "h4"
-      | "h5"
-      | "h6"
-      | "normal";
+    style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
     listItem?: "bullet" | "number";
     markDefs?: Array<{
       href?: string;
