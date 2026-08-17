@@ -1,12 +1,6 @@
-import type { Config } from 'jest'
-import nextJest from 'next/jest'
-
-const createJestConfig = nextJest({
-  dir: './',
-})
-
-const config: Config = {
-  ...createJestConfig(),
+const config = {
+  preset: 'ts-jest',
+  testEnvironment: 'jsdom',
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   
   collectCoverageFrom: [
@@ -28,19 +22,19 @@ const config: Config = {
   
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/$1',
-    // Handle CSS modules and other assets
     '^.+\\.module\\.(css|sass|scss)$': 'identity-obj-proxy',
     '^.+\\.(jpg|jpeg|png|gif|webp|avif|svg)$': '<rootDir>/__mocks__/fileMock.js',
   },
   
-  testEnvironment: 'jsdom',
+  transform: {
+    '^.+\\.(ts|tsx)$': ['ts-jest', { useESM: true }],
+    '^.+\\.(js|jsx)$': 'babel-jest',
+  },
   
-  // Handle ES modules from node_modules  
   transformIgnorePatterns: [
     'node_modules/(?!(.*\\.mjs$))',
   ],
   
-  // Test file patterns - exclude e2e tests
   testMatch: [
     '**/__tests__/**/*.(ts|tsx|js|jsx)',
     '**/*.(test|spec).(ts|tsx|js|jsx)',
@@ -51,4 +45,4 @@ const config: Config = {
   ],
 }
 
-export default config
+module.exports = config
