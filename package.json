@@ -23,7 +23,6 @@
     "deps:update": "npm update"
   },
   "dependencies": {
-    "@babel/preset-typescript": "^8.0.1",
     "@hookform/resolvers": "^5.1.0",
     "@playwright/test": "^1.62.1",
     "@radix-ui/react-accordion": "^1.2.11",
