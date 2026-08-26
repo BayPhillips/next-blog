@@ -4,7 +4,7 @@
 @import "tailwindcss";
 
 * {
-  border-color: light-dark(hsl(210 17% 91%), hsl(240 5.9% 15%));
+  border-color: light-dark(hsl(220 13% 91%), hsl(240 4% 16%));
 }
 
 body {
