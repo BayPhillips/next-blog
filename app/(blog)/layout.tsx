@@ -83,7 +83,7 @@ export default async function RootLayout({
   });
   return (
     <html lang="en" className={`${nunito.variable} ${lora.variable} font-sans min-h-screen`} suppressHydrationWarning>
-      <body className="min-h-screen bg-background font-sans antialiased">
+      <body className="min-h-screen bg-background font-sans antialiased dark:bg-dark-background">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
