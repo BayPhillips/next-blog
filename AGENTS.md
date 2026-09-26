@@ -1,158 +1,41 @@
 # AGENTS Guidelines for next-blog
 
-## Build/Lint/Test
+Next.js 16 (App Router) blog for bayphillips.com with Sanity.io CMS. TypeScript, Tailwind CSS v4, deployed on Vercel. Node 22 (`.nvmrc`).
 
-- Build: `npm run build`
-- Lint: `npm run lint`
-- Test: `npm run test`
-- Run single test: `npm run test -- --testNamePattern='TestName'`
+## Build/Lint/Test
+- Dev: `npm run dev` (Turbopack); build: `npm run build` (webpack — `prebuild` runs Sanity `typegen`, `postbuild` extracts the studio manifest)
+- Unit tests: `npm run test` (Jest + jsdom; tests in `__tests__/`); single test: `npm run test -- --testNamePattern='TestName'`
+- Coverage: `npm run test:coverage` (enforces 70% thresholds — a plain `npm run test` after adding files can fail coverage if thresholds dip)
+- E2E: `npm run test:e2e` (Playwright, specs in `tests/e2e/`; auto-starts dev server on :3000)
+- Lint: run `npx eslint app components lib hooks sanity tests __tests__` — `npm run lint` is broken (`next lint` was removed in Next 16; the script errors with "Invalid project directory"). Flat config is `eslint.config.js`; it only ignores `sanity.types.ts`, so avoid linting `.` (build dirs like `.next/` and `dist/` are not ignored and crash ESLint).
+- Typecheck: `npx tsc --noEmit`
 
 ## Code Style
-
-- TypeScript with `tsconfig.json`
-- Prettier (`.prettierignore`, `.prettierconfig`)
-- ESLint (`.eslintrc`)
-- Component naming: PascalCase
-- Variable names: camelCase
-- Imports: Prefer relative paths
-- Error handling: Use try/catch with logging
-
-## Cursor Rules
-
-- No explicit Cursor rules found in `.continue/`
-- No Copilot instructions in `.github/`
-- Follow standard Next.js/TypeScript conventions
+- TypeScript strict mode (`noImplicitAny: false`), Prettier, ESLint (flat config; generated `sanity.types.ts` is ignored)
+- PascalCase for components; camelCase for variables
+- Use `@/` path aliases (`@/*`, `@/components/*`, `@/lib/*`) — most imports are aliased; a few relative imports remain in `app/(blog)/`
+- try/catch with logging around data fetching and client actions (see `components/contact-form.tsx`)
+- Mixed quote styles exist; match the surrounding file
 
 ## Notes
-
-- Use `next/dynamic` for dynamic imports
-- UI components in `components/ui/` follow shared styles
-- Post content uses MDX in `app/posts/[slug]`
-
-<skills_system priority="1">
+- Content lives in Sanity, NOT MDX. Posts render at `app/(blog)/posts/[slug]/` via GROQ queries in `sanity/lib/queries.ts`
+- Dual Sanity integration: `lib/sanity/` = app-side fetching (`fetchSanityData` adds a 5-min in-memory cache); `sanity/lib/` = studio-side client/queries/token
+- Run `npm run typegen` after changing schemas in `sanity/schemas/` — regenerates `sanity.types.ts` (`predev`/`prebuild` run it automatically)
+- Route groups: `app/(blog)/` = public site, `app/(sanity)/studio/` = CMS studio at `/studio`
+- Shared UI components: `components/ui/` (shadcn/Radix, barrel at `components/ui/index.ts`); use `next/dynamic` for dynamic imports
+- Env (`.env.local`, see `.env.local.example`): `NEXT_PUBLIC_SANITY_PROJECT_ID`, `NEXT_PUBLIC_SANITY_DATASET`, `SANITY_API_READ_TOKEN`
+- Vercel deploy builds with `NEXT_TURBOPACK_BUILD=0` (see `vercel.json`); `next.config.js` sets standalone output, Sanity CDN image host, security headers
 
 ## Available Skills
 
 <!-- SKILLS_TABLE_START -->
-<usage>
-When users ask you to perform tasks, check if any of the available skills below can help complete the task more effectively. Skills provide specialized capabilities and domain knowledge.
+**Use skills when the task matches their purpose:**
+- `docx`/`pdf`/`xlsx`/`pptx`: Document operations
+- `frontend-design`/`web-artifacts-builder`: Web UIs
+- `webapp-testing`: Playwright testing
+- `doc-coauthoring`: Docs/proposals/specs
+- `canvas-design`/`algorithmic-art`: Visual art
+- `mcp-builder`: MCP server development
 
-How to use skills:
-- Invoke: Bash("openskills read <skill-name>")
-- The skill content will load with detailed instructions on how to complete the task
-- Base directory provided in output for resolving bundled resources (references/, scripts/, assets/)
-
-Usage notes:
-- Only use skills listed in <available_skills> below
-- Do not invoke a skill that is already loaded in your context
-- Each skill invocation is stateless
-</usage>
-
-<available_skills>
-
-<skill>
-<name>algorithmic-art</name>
-<description>Creating algorithmic art using p5.js with seeded randomness and interactive parameter exploration. Use this when users request creating art using code, generative art, algorithmic art, flow fields, or particle systems. Create original algorithmic art rather than copying existing artists' work to avoid copyright violations.</description>
-<location>project</location>
-</skill>
-
-<skill>
-<name>brand-guidelines</name>
-<description>Applies Anthropic's official brand colors and typography to any sort of artifact that may benefit from having Anthropic's look-and-feel. Use it when brand colors or style guidelines, visual formatting, or company design standards apply.</description>
-<location>project</location>
-</skill>
-
-<skill>
-<name>canvas-design</name>
-<description>Create beautiful visual art in .png and .pdf documents using design philosophy. You should use this skill when the user asks to create a poster, piece of art, design, or other static piece. Create original visual designs, never copying existing artists' work to avoid copyright violations.</description>
-<location>project</location>
-</skill>
-
-<skill>
-<name>doc-coauthoring</name>
-<description>Guide users through a structured workflow for co-authoring documentation. Use when user wants to write documentation, proposals, technical specs, decision docs, or similar structured content. This workflow helps users efficiently transfer context, refine content through iteration, and verify the doc works for readers. Trigger when user mentions writing docs, creating proposals, drafting specs, or similar documentation tasks.</description>
-<location>project</location>
-</skill>
-
-<skill>
-<name>docx</name>
-<description>"Comprehensive document creation, editing, and analysis with support for tracked changes, comments, formatting preservation, and text extraction. When Claude needs to work with professional documents (.docx files) for: (1) Creating new documents, (2) Modifying or editing content, (3) Working with tracked changes, (4) Adding comments, or any other document tasks"</description>
-<location>project</location>
-</skill>
-
-<skill>
-<name>frontend-design</name>
-<description>Create distinctive, production-grade frontend interfaces with high design quality. Use this skill when the user asks to build web components, pages, artifacts, posters, or applications (examples include websites, landing pages, dashboards, React components, HTML/CSS layouts, or when styling/beautifying any web UI). Generates creative, polished code and UI design that avoids generic AI aesthetics.</description>
-<location>project</location>
-</skill>
-
-<skill>
-<name>internal-comms</name>
-<description>A set of resources to help me write all kinds of internal communications, using the formats that my company likes to use. Claude should use this skill whenever asked to write some sort of internal communications (status reports, leadership updates, 3P updates, company newsletters, FAQs, incident reports, project updates, etc.).</description>
-<location>project</location>
-</skill>
-
-<skill>
-<name>mcp-builder</name>
-<description>Guide for creating high-quality MCP (Model Context Protocol) servers that enable LLMs to interact with external services through well-designed tools. Use when building MCP servers to integrate external APIs or services, whether in Python (FastMCP) or Node/TypeScript (MCP SDK).</description>
-<location>project</location>
-</skill>
-
-<skill>
-<name>pdf</name>
-<description>Comprehensive PDF manipulation toolkit for extracting text and tables, creating new PDFs, merging/splitting documents, and handling forms. When Claude needs to fill in a PDF form or programmatically process, generate, or analyze PDF documents at scale.</description>
-<location>project</location>
-</skill>
-
-<skill>
-<name>pptx</name>
-<description>"Presentation creation, editing, and analysis. When Claude needs to work with presentations (.pptx files) for: (1) Creating new presentations, (2) Modifying or editing content, (3) Working with layouts, (4) Adding comments or speaker notes, or any other presentation tasks"</description>
-<location>project</location>
-</skill>
-
-<skill>
-<name>skill-creator</name>
-<description>Guide for creating effective skills. This skill should be used when users want to create a new skill (or update an existing skill) that extends Claude's capabilities with specialized knowledge, workflows, or tool integrations.</description>
-<location>project</location>
-</skill>
-
-<skill>
-<name>slack-gif-creator</name>
-<description>Knowledge and utilities for creating animated GIFs optimized for Slack. Provides constraints, validation tools, and animation concepts. Use when users request animated GIFs for Slack like "make me a GIF of X doing Y for Slack."</description>
-<location>project</location>
-</skill>
-
-<skill>
-<name>template</name>
-<description>Replace with description of the skill and when Claude should use it.</description>
-<location>project</location>
-</skill>
-
-<skill>
-<name>theme-factory</name>
-<description>Toolkit for styling artifacts with a theme. These artifacts can be slides, docs, reportings, HTML landing pages, etc. There are 10 pre-set themes with colors/fonts that you can apply to any artifact that has been creating, or can generate a new theme on-the-fly.</description>
-<location>project</location>
-</skill>
-
-<skill>
-<name>web-artifacts-builder</name>
-<description>Suite of tools for creating elaborate, multi-component claude.ai HTML artifacts using modern frontend web technologies (React, Tailwind CSS, shadcn/ui). Use for complex artifacts requiring state management, routing, or shadcn/ui components - not for simple single-file HTML/JSX artifacts.</description>
-<location>project</location>
-</skill>
-
-<skill>
-<name>webapp-testing</name>
-<description>Toolkit for interacting with and testing local web applications using Playwright. Supports verifying frontend functionality, debugging UI behavior, capturing browser screenshots, and viewing browser logs.</description>
-<location>project</location>
-</skill>
-
-<skill>
-<name>xlsx</name>
-<description>"Comprehensive spreadsheet creation, editing, and analysis with support for formulas, formatting, data analysis, and visualization. When Claude needs to work with spreadsheets (.xlsx, .xlsm, .csv, .tsv, etc) for: (1) Creating new spreadsheets with formulas and formatting, (2) Reading or analyzing data, (3) Modify existing spreadsheets while preserving formulas, (4) Data analysis and visualization in spreadsheets, or (5) Recalculating formulas"</description>
-<location>project</location>
-</skill>
-
-</available_skills>
+Invocation: `Bash("openskills read <skill-name>")`
 <!-- SKILLS_TABLE_END -->
-
-</skills_system>
