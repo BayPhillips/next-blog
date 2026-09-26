@@ -24,9 +24,13 @@ WORKDIR /app
 
 # Install dependencies based on the preferred package manager
 COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* .npmrc* ./
+# NOTE: --include=dev is required because some build environments set
+# NODE_ENV=production, which makes npm omit devDependencies by default.
+# devDependencies (TypeScript, @types/*, jest types, etc.) are needed for
+# `next build` type-checking.
 RUN \
   if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
-  elif [ -f package-lock.json ]; then npm ci; \
+  elif [ -f package-lock.json ]; then npm ci --include=dev; \
   elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm i --frozen-lockfile; \
   else echo "Lockfile not found." && exit 1; \
   fi
