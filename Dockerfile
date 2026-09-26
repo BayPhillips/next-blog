@@ -24,9 +24,14 @@ WORKDIR /app
 
 # Install dependencies based on the preferred package manager
 COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* .npmrc* ./
+# NOTE: --include=dev is required because some build environments set
+# NODE_ENV=production, which makes npm omit devDependencies by default.
+# devDependencies (TypeScript, @types/*, etc.) must still be installed —
+# `next build` requires the typescript package to be present to build a
+# TypeScript project even when type-checking is skipped (NEXT_SKIP_TYPECHECK).
 RUN \
   if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
-  elif [ -f package-lock.json ]; then npm ci; \
+  elif [ -f package-lock.json ]; then npm ci --include=dev; \
   elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm i --frozen-lockfile; \
   else echo "Lockfile not found." && exit 1; \
   fi
@@ -42,6 +47,10 @@ COPY . .
 # Learn more here: https://nextjs.org/telemetry
 # Uncomment the following line in case you want to disable telemetry during the build.
 # ENV NEXT_TELEMETRY_DISABLED=1
+
+# Skip `next build` type-checking for production image builds — types are
+# already checked by `npx tsc --noEmit` / CI checks and local `npm run build`.
+ENV NEXT_SKIP_TYPECHECK=1
 
 RUN \
   if [ -f yarn.lock ]; then yarn run build; \
