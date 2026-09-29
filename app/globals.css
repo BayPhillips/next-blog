@@ -3,6 +3,16 @@
 
 @import "tailwindcss";
 
+@theme {
+  /* Semantic surface colors so utilities like bg-popover resolve to the
+     themed background (Tailwind v4 has no tailwind.config colors here). */
+  --color-background: light-dark(hsl(0 0% 100%), hsl(240 10% 3.9%));
+  --color-foreground: light-dark(hsl(240 10% 3.9%), hsl(0 0% 100%));
+  --color-popover: light-dark(hsl(0 0% 100%), hsl(240 10% 3.9%));
+  --color-popover-foreground: light-dark(hsl(240 10% 3.9%), hsl(0 0% 100%));
+  --color-border: light-dark(hsl(220 13% 91%), hsl(240 4% 16%));
+}
+
 * {
   border-color: light-dark(hsl(220 13% 91%), hsl(240 4% 16%));
 }
