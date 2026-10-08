@@ -239,14 +239,14 @@ export default async function PostPage(props: Props) {
           <div className="flex items-center text-muted-foreground text-sm gap-4">
             {publishedDate && (
               <div className="flex items-center gap-1">
-                <CalendarDays className="h-4 w-4" />
+                <CalendarDays className="icon-inline" />
                 <time dateTime={publishedDate.toISOString()}>
                   {formatDate(publishedDate, 'long')}
                 </time>
               </div>
             )}
             <div className="flex items-center gap-1">
-              <Clock className="h-4 w-4" />
+              <Clock className="icon-inline" />
               <span>{readTime} min read</span>
             </div>
           </div>

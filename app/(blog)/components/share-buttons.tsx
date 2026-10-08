@@ -56,7 +56,7 @@ export default function ShareButtons({ url, title }: ShareButtonsProps) {
             href={link.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="p-2 rounded-full hover:bg-accent transition-colors"
+            className="hit-area relative p-2 rounded-full hover:bg-accent transition-colors"
             aria-label={`Share on ${link.name}`}
           >
             <link.icon className="w-6 h-6 text-muted-foreground hover:text-foreground" />
@@ -64,7 +64,7 @@ export default function ShareButtons({ url, title }: ShareButtonsProps) {
         ))}
         <button
           onClick={handleCopy}
-          className="p-2 rounded-full hover:bg-accent transition-colors relative group"
+          className="hit-area relative p-2 rounded-full hover:bg-accent transition-colors group"
           aria-label="Copy link"
         >
           <CopyIcon className="w-6 h-6 text-muted-foreground group-hover:text-foreground" />

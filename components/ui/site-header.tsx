@@ -7,8 +7,8 @@ import { ThemeToggle } from "./theme-toggle"
 
 export function SiteHeader({ settings }: { settings: SettingsQueryResult }) {
   return (
-    <header className="sticky inset-bs-0 z-50 w-full border-be bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-(--header-height) items-center justify-between">
+    <header className="content-grid sticky inset-bs-0 z-50 w-full border-be bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="flex h-(--header-height) items-center justify-between">
         {/* Logo */}
         <div className="me-4 flex items-center">
           <Link
