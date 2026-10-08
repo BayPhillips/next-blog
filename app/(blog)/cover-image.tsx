@@ -20,7 +20,7 @@ export default function CoverImage(props: CoverImageProps) {
       priority={priority}
     />
   ) : (
-    <div className="bg-muted" style={{ paddingTop: "50%" }} />
+    <div className="aspect-2/1 bg-muted" />
   );
 
   return (

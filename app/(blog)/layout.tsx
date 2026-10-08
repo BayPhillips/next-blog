@@ -60,7 +60,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const nunito = Nunito({
-  variable: "--font-sans",
+  variable: "--font-nunito",
   subsets: ["latin"],
   display: "swap",
 });
@@ -83,7 +83,7 @@ export default async function RootLayout({
   });
   return (
     <html lang="en" className={`${nunito.variable} ${lora.variable} font-sans min-h-screen`} suppressHydrationWarning>
-      <body className="min-h-screen bg-background font-sans antialiased dark:bg-dark-background">
+      <body className="min-h-screen bg-background font-sans antialiased">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
