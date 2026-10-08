@@ -52,11 +52,15 @@ export function SiteHeader({ settings }: { settings: SettingsQueryResult }) {
               <NavigationMenuItem>
                 <NavigationMenuTrigger arrowHidden={true}><MenuIcon /></NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <ul className="grid gap-4 p-4">
+                  <ul className="grid gap-1 p-2">
                     {settings?.navigation?.map((item) => (
                       <li key={item._key}>
                         <NavigationMenuLink asChild>
-                          <Link href={item.path || '#'} key={item._key}>
+                          <Link
+                            href={item.path || '#'}
+                            key={item._key}
+                            className="block rounded-md px-3 py-2.5 transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:bg-accent"
+                          >
                             {item.title || ''}
                           </Link>
                         </NavigationMenuLink>
