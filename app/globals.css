@@ -7,6 +7,16 @@
    instead of the OS media query. */
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Hover styles only where hover exists, so a tap on a touch screen doesn't
+   leave them stuck. Tailwind's own variant checks (hover: hover) alone. */
+@custom-variant hover {
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      @slot;
+    }
+  }
+}
+
 /* light-dark() picks a value from the active color-scheme. Next's CSS pipeline
    polyfills it with variables that are only set where color-scheme is declared
    in a stylesheet, so next-themes' inline style isn't enough: declare it for
@@ -27,25 +37,39 @@
   --font-sans: var(--font-nunito, ui-sans-serif), ui-sans-serif, system-ui, sans-serif;
   --font-serif: var(--font-lora, ui-serif), ui-serif, Georgia, serif;
 
-  --color-background: light-dark(hsl(0 0% 100%), hsl(240 10% 3.9%));
-  --color-foreground: light-dark(hsl(240 10% 3.9%), hsl(0 0% 100%));
+  /* Fluid sizes, 360px to 1280px wide. Bounds in rem so they follow the
+     reader's font size; max stays under 2.5x min for WCAG 1.4.4. */
+  --text-display: clamp(3.75rem, 2.869rem + 3.913vw, 6rem);
+  --text-display--line-height: 1;
+  --text-title: clamp(2.25rem, 1.957rem + 1.304vw, 3rem);
+  --text-title--line-height: 1.1;
+  --text-lead: clamp(1.125rem, 1.076rem + 0.217vw, 1.25rem);
+  --text-lead--line-height: 1.6;
+
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --default-transition-timing-function: var(--ease-out);
+
+  /* Grays carry the zinc hue; pure white/black use `none` so mixes don't drift. */
+  --color-background: light-dark(oklch(100% 0 none), oklch(14.1% 0.0044 285.8));
+  --color-foreground: light-dark(oklch(14.1% 0.0044 285.8), oklch(100% 0 none));
   --color-card: var(--color-background);
   --color-card-foreground: var(--color-foreground);
   --color-popover: var(--color-background);
   --color-popover-foreground: var(--color-foreground);
-  --color-primary: light-dark(hsl(240 5.9% 10%), hsl(0 0% 98%));
-  --color-primary-foreground: light-dark(hsl(0 0% 98%), hsl(240 5.9% 10%));
-  --color-secondary: light-dark(hsl(240 4.8% 95.9%), hsl(240 3.7% 15.9%));
-  --color-secondary-foreground: light-dark(hsl(240 5.9% 10%), hsl(0 0% 98%));
-  --color-muted: light-dark(hsl(240 4.8% 95.9%), hsl(240 3.7% 15.9%));
-  --color-muted-foreground: light-dark(hsl(240 3.8% 46.1%), hsl(240 5% 64.9%));
-  --color-accent: light-dark(hsl(240 4.8% 95.9%), hsl(240 3.7% 15.9%));
-  --color-accent-foreground: light-dark(hsl(240 5.9% 10%), hsl(0 0% 98%));
-  --color-destructive: light-dark(hsl(0 84.2% 60.2%), hsl(0 62.8% 30.6%));
-  --color-destructive-foreground: hsl(0 0% 98%);
-  --color-border: light-dark(hsl(220 13% 91%), hsl(240 4% 16%));
+  --color-primary: light-dark(oklch(21% 0.0059 285.9), oklch(98.5% 0 none));
+  --color-primary-foreground: light-dark(oklch(98.5% 0 none), oklch(21% 0.0059 285.9));
+  --color-secondary: light-dark(oklch(96.8% 0.0013 286), oklch(27.4% 0.0055 286));
+  --color-secondary-foreground: light-dark(oklch(21% 0.0059 285.9), oklch(98.5% 0 none));
+  --color-muted: light-dark(oklch(96.8% 0.0013 286), oklch(27.4% 0.0055 286));
+  --color-muted-foreground: light-dark(oklch(55.2% 0.0137 285.9), oklch(71.2% 0.0129 286.1));
+  --color-accent: light-dark(oklch(96.8% 0.0013 286), oklch(27.4% 0.0055 286));
+  --color-accent-foreground: light-dark(oklch(21% 0.0059 285.9), oklch(98.5% 0 none));
+  --color-destructive: light-dark(oklch(63.7% 0.2078 25.3), oklch(39.6% 0.1331 25.7));
+  --color-destructive-foreground: oklch(98.5% 0 none);
+  --color-border: light-dark(oklch(92.8% 0.0058 264.5), oklch(27.5% 0.006 286));
   --color-input: var(--color-border);
-  --color-ring: light-dark(hsl(240 10% 3.9%), hsl(240 4.9% 83.9%));
+  --color-ring: light-dark(oklch(14.1% 0.0044 285.8), oklch(87.1% 0.0055 286.3));
 }
 
 @utility container {
@@ -54,6 +78,15 @@
 }
 
 @layer base {
+  :root {
+    --header-height: 3.5rem;
+    /* In-page links land below the sticky header. */
+    scroll-padding-block-start: calc(var(--header-height) + 1rem);
+    scrollbar-gutter: stable;
+    text-wrap: pretty;
+    overflow-wrap: break-word;
+  }
+
   *,
   ::before,
   ::after {
@@ -66,14 +99,33 @@
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    *,
-    ::before,
-    ::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-      scroll-behavior: auto !important;
-    }
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
   }
+
+  time {
+    font-variant-numeric: tabular-nums;
+  }
+
+  button,
+  a,
+  [role="button"] {
+    touch-action: manipulation;
+  }
+
+  /* One focus ring for everything. Components that draw their own ring with
+     box-shadow use outline-hidden, which stays visible in forced-colors mode. */
+  :focus-visible {
+    outline: max(2px, 0.08em) solid currentColor;
+    outline-offset: 0.25em;
+  }
+}
+
+/* Intrinsic grid for card lists: as many 20rem columns as fit, no breakpoints.
+   auto-fill keeps card width steady when a page has fewer posts. */
+@utility grid-cols-cards {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
 }

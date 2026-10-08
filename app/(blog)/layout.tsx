@@ -1,7 +1,7 @@
 import "../globals.css";
 
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import {
   VisualEditing,
 } from "next-sanity/visual-editing";
@@ -59,6 +59,11 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
+// Lets the browser paint the right background before the CSS loads.
+export const viewport: Viewport = {
+  colorScheme: "light dark",
+};
+
 const nunito = Nunito({
   variable: "--font-nunito",
   subsets: ["latin"],
@@ -82,8 +87,8 @@ export default async function RootLayout({
     useCache: false, // Don't use cache during build
   });
   return (
-    <html lang="en" className={`${nunito.variable} ${lora.variable} font-sans min-h-screen`} suppressHydrationWarning>
-      <body className="min-h-screen bg-background font-sans antialiased">
+    <html lang="en" className={`${nunito.variable} ${lora.variable} font-sans min-h-svh`} suppressHydrationWarning>
+      <body className="min-h-svh bg-background font-sans antialiased">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -91,7 +96,7 @@ export default async function RootLayout({
           disableTransitionOnChange
           themes={["light", "dark", "system"]}
         >
-          <div className="relative flex min-h-screen flex-col">
+          <div className="relative flex min-h-svh flex-col">
             {(await draftMode()).isEnabled && <AlertBanner />}
             <SiteHeader settings={settings} />
             <main className="flex-1">

@@ -24,10 +24,10 @@ export default function AlertBanner() {
 
   return (
     <div className={cn(
-      "fixed left-0 right-0 top-0 z-50 w-full transition-opacity",
+      "fixed start-0 end-0 inset-bs-0 z-50 w-full transition-opacity",
       pending ? "animate-pulse opacity-75" : "opacity-100"
     )}>
-      <Alert className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <Alert className="border-be bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex flex-col items-center justify-between gap-2 sm:flex-row">
           <div className="flex flex-1 items-center gap-2">
             <Icons.eye className="h-4 w-4 flex-shrink-0" />

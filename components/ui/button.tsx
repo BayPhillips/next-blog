@@ -6,7 +6,7 @@ import { Loader2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors motion-safe:transition-[color,background-color,border-color,scale] active:scale-97 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
@@ -70,14 +70,14 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       >
         {isLoading ? (
           <>
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            <Loader2 className="me-2 h-4 w-4 animate-spin" />
             {loadingText || 'Loading...'}
           </>
         ) : (
           <>
-            {leftIcon && <span className="mr-2">{leftIcon}</span>}
+            {leftIcon && <span className="me-2">{leftIcon}</span>}
             {children}
-            {rightIcon && <span className="ml-2">{rightIcon}</span>}
+            {rightIcon && <span className="ms-2">{rightIcon}</span>}
           </>
         )}
       </Comp>

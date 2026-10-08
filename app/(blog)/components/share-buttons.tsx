@@ -47,7 +47,7 @@ export default function ShareButtons({ url, title }: ShareButtonsProps) {
   };
 
   return (
-    <div className="flex flex-col items-center gap-4 my-12 border-t border-border pt-8">
+    <div className="flex flex-col items-center gap-4 my-12 border-bs border-border pbs-8">
       <span className="text-muted-foreground text-sm font-medium">Share this post</span>
       <div className="flex gap-4">
         {shareLinks.map((link) => (
@@ -69,7 +69,7 @@ export default function ShareButtons({ url, title }: ShareButtonsProps) {
         >
           <CopyIcon className="w-6 h-6 text-muted-foreground group-hover:text-foreground" />
           {copied && (
-            <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-foreground text-background text-xs py-1 px-2 rounded">
+            <span className="absolute -inset-bs-8 left-1/2 transform -translate-x-1/2 bg-foreground text-background text-xs py-1 px-2 rounded">
               Copied!
             </span>
           )}

@@ -205,7 +205,7 @@ async function MorePosts({ currentPostId }: { currentPostId: string }) {
   }) as PostsQueryResult;
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
+    <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,20rem),1fr))] gap-8 mbs-12">
       {morePosts.map((post) => {
         return <PostCard key={post._id} post={post as unknown as Post} className="h-full" />;
       })}
@@ -233,7 +233,7 @@ export default async function PostPage(props: Props) {
   return (
     <>
       <article className="prose dark:prose-invert max-w-none">
-        <header className="mb-12">
+        <header className="mbe-12">
           <PageHeader className={'post-header'} title={post.title || 'Untitled'} description={''} />
           
           <div className="flex items-center text-muted-foreground text-sm gap-4">
@@ -252,7 +252,7 @@ export default async function PostPage(props: Props) {
           </div>
           <PostTags tags={post.tags || []} />
           {post.coverImage && (
-            <div className="cover-image relative aspect-video w-full mt-8 rounded-lg overflow-hidden">
+            <div className="cover-image relative aspect-video w-full mbs-8 rounded-lg overflow-clip">
               <Image
                 src={getImageUrl(post.coverImage)}
                 alt={post.coverImage.alt || post.title || 'Post cover image'}
@@ -271,7 +271,7 @@ export default async function PostPage(props: Props) {
           </div>
         )}
 
-        <footer className="mt-12 pt-8 border-t">
+        <footer className="mbs-12 pbs-8 border-bs">
           <div className="flex flex-wrap gap-4 justify-between items-center">
             <div className="flex items-center gap-4">
               <span className="text-sm text-muted-foreground">Share:</span>
@@ -311,7 +311,7 @@ export default async function PostPage(props: Props) {
       </article>
       <Separator className="my-12" />
       <aside>
-        <h2 className="text-2xl font-bold mb-8">More articles</h2>
+        <h2 className="text-2xl font-bold mbe-8">More articles</h2>
         <Suspense fallback={<div>Loading more posts...</div>}>
           <MorePosts currentPostId={post._id} />
         </Suspense>

@@ -78,14 +78,14 @@ export default function SourdoughCalculator() {
     <div className="space-y-6">
       {/* Loaf Configuration */}
       <Card>
-        <CardContent className="pt-6">
-          <h3 className="font-semibold text-lg mb-4">Loaf Configuration</h3>
+        <CardContent className="pbs-6">
+          <h3 className="font-semibold text-lg mbe-4">Loaf Configuration</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <Label htmlFor="loaf-size" className="text-base">
                 Loaf Size (per loaf)
               </Label>
-              <div className="mt-2 flex items-center gap-2">
+              <div className="mbs-2 flex items-center gap-2">
                 <Input
                   id="loaf-size"
                   type="number"
@@ -102,7 +102,7 @@ export default function SourdoughCalculator() {
               <Label htmlFor="num-loaves" className="text-base">
                 Number of Loaves
               </Label>
-              <div className="mt-2 flex items-center gap-2">
+              <div className="mbs-2 flex items-center gap-2">
                 <Input
                   id="num-loaves"
                   type="number"
@@ -115,7 +115,7 @@ export default function SourdoughCalculator() {
               </div>
             </div>
           </div>
-          <div className="mt-4 pt-4 border-t text-sm">
+          <div className="mbs-4 pbs-4 border-bs text-sm">
             <p>Total dough needed: <span className="font-semibold">{totalDoughWeight}g</span></p>
             <p>Flour required: <span className="font-semibold">{flourGrams}g</span></p>
           </div>
@@ -124,21 +124,21 @@ export default function SourdoughCalculator() {
 
       {/* Ingredients Table */}
       <Card>
-        <CardContent className="pt-6">
-          <h3 className="font-semibold text-lg mb-4">Ingredients (Baker's Percentages)</h3>
+        <CardContent className="pbs-6">
+          <h3 className="font-semibold text-lg mbe-4">Ingredients (Baker's Percentages)</h3>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b">
-                  <th className="text-left py-2 px-2 font-medium">Ingredient</th>
+                <tr className="border-be">
+                  <th className="text-start py-2 px-2 font-medium">Ingredient</th>
                   <th className="text-center py-2 px-2 font-medium w-24">%</th>
-                  <th className="text-right py-2 px-2 font-medium w-32">Weight (g)</th>
+                  <th className="text-end py-2 px-2 font-medium w-32">Weight (g)</th>
                   <th className="w-10"></th>
                 </tr>
               </thead>
               <tbody>
                 {ingredients.map((ingredient) => (
-                  <tr key={ingredient._key} className="border-b last:border-0">
+                  <tr key={ingredient._key} className="border-be last:border-0">
                     <td className="py-2 px-2">
                       <Input
                         value={ingredient.name}
@@ -167,7 +167,7 @@ export default function SourdoughCalculator() {
                       </div>
                     </td>
                     <td className="py-2 px-2">
-                      <p className="text-right font-mono font-medium">
+                      <p className="text-end font-mono font-medium">
                         {((ingredient.percentage / 100) * flourGrams).toFixed(1)}
                       </p>
                     </td>
@@ -190,7 +190,7 @@ export default function SourdoughCalculator() {
           </div>
 
           {/* Total Percentage */}
-          <div className="mt-4 pt-4 border-t flex justify-between items-center">
+          <div className="mbs-4 pbs-4 border-bs flex justify-between items-center">
             <span className="font-medium">Total Percentage:</span>
             <span className={`font-semibold ${totalPercentage > 200 ? 'text-destructive' : totalPercentage < 150 ? 'text-primary' : ''}`}>
               {totalPercentage.toFixed(1)}%
@@ -198,7 +198,7 @@ export default function SourdoughCalculator() {
           </div>
 
           {/* Add Ingredient Button */}
-          <Button onClick={addIngredient} variant="outline" className="mt-4 w-full">
+          <Button onClick={addIngredient} variant="outline" className="mbs-4 w-full">
             + Add Custom Ingredient
           </Button>
         </CardContent>
@@ -207,18 +207,18 @@ export default function SourdoughCalculator() {
       {/* Recipe Summary Card */}
       {flourGrams > 0 && (
         <Card className="bg-muted/50 border-primary/30">
-          <CardContent className="pt-6">
-            <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
+          <CardContent className="pbs-6">
+            <h3 className="font-semibold text-lg mbe-4 flex items-center gap-2">
               Recipe Summary
-              <span className="text-sm font-normal text-muted-foreground ml-auto">
+              <span className="text-sm font-normal text-muted-foreground ms-auto">
                 For {numberOfLoaves} loaf{numberOfLoaves > 1 ? 's' : ''} ({totalDoughWeight}g total)
               </span>
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {ingredients.map((ingredient) => (
-                <div key={ingredient._key} className="flex justify-between items-center py-2 border-b last:border-0">
+                <div key={ingredient._key} className="flex justify-between items-center py-2 border-be last:border-0">
                   <span className="font-medium">{ingredient.name}</span>
-                  <span className="font-mono text-right">
+                  <span className="font-mono text-end">
                     {((ingredient.percentage / 100) * flourGrams).toFixed(1)}g{' '}
                     <span className="text-sm text-muted-foreground">({ingredient.percentage}%)</span>
                   </span>
@@ -231,8 +231,8 @@ export default function SourdoughCalculator() {
 
       {/* Tips Section */}
       <Card>
-        <CardContent className="pt-6 text-sm text-muted-foreground">
-          <h4 className="font-semibold mb-2">Baker's Percentages Explained</h4>
+        <CardContent className="pbs-6 text-sm text-muted-foreground">
+          <h4 className="font-semibold mbe-2">Baker's Percentages Explained</h4>
           <ul className="list-disc list-inside space-y-1">
             <li>All percentages are calculated relative to flour = 100%</li>
             <li>Total should ideally be between 150-200% for most breads</li>

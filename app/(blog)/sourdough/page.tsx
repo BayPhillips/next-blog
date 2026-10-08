@@ -13,7 +13,7 @@ export default function SourdoughPage() {
       <PageHeader 
         title="Sourdough Calculator" 
         description="Create custom sourdough bread recipes using baker's percentages. Enter your flour amount and adjust ingredient ratios to calculate precise measurements."
-        className="mb-8"
+        className="mbe-8"
       />
       
       <SourdoughCalculator />

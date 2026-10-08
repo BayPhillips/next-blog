@@ -7,10 +7,10 @@ import { ThemeToggle } from "./theme-toggle"
 
 export function SiteHeader({ settings }: { settings: SettingsQueryResult }) {
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-14 items-center justify-between">
+    <header className="sticky inset-bs-0 z-50 w-full border-be bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container flex h-(--header-height) items-center justify-between">
         {/* Logo */}
-        <div className="mr-4 flex items-center">
+        <div className="me-4 flex items-center">
           <Link
             href="/"
             className="flex items-center gap-2 hover:opacity-80 transition-opacity"
@@ -19,7 +19,7 @@ export function SiteHeader({ settings }: { settings: SettingsQueryResult }) {
               <span className="inline-block h-6 w-6">
                 <LogoIcon className="h-full w-full" />
               </span>
-              <span className="font-bold inline-block align-middle ml-2">
+              <span className="font-bold inline-block align-middle ms-2">
                 {settings?.title || 'Blog'}
               </span>
             </span>

@@ -10,8 +10,8 @@ export default function NotFound() {
       <body className="bg-background text-foreground font-sans antialiased">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <div className="flex min-h-dvh flex-col items-center justify-center p-8 text-center">
-            <h1 className="mb-4 text-6xl font-bold">404</h1>
-            <p className="mb-8 text-xl text-muted-foreground">
+            <h1 className="mbe-4 text-6xl font-bold">404</h1>
+            <p className="mbe-8 text-xl text-muted-foreground">
               This page could not be found.
             </p>
             <Link

@@ -38,7 +38,7 @@ export default async function TagPage(props: Props) {
   return (
     <>
       <PageHeader title={`${toTitleCase(tag)} posts`} description={`Browse all posts tagged with ${tag}`} />
-      <div className="mb-32 grid grid-cols-1 gap-y-20 md:grid-cols-2 md:gap-x-16 md:gap-y-32 lg:gap-x-32">
+      <div className="mbe-32 grid grid-cols-1 gap-y-20 md:grid-cols-2 md:gap-x-16 md:gap-y-32 lg:gap-x-32">
         {posts.map((post) => {
           return (
             <PostCard key={post!._id} post={post as any} />

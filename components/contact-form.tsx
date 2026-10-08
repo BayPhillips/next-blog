@@ -109,7 +109,7 @@ export function ContactForm() {
               <FormControl>
                 <Textarea
                   placeholder="Your message"
-                  className="min-h-[120px]"
+                  className="min-h-[5lh]"
                   {...field}
                 />
               </FormControl>
@@ -121,7 +121,7 @@ export function ContactForm() {
         <Button type="submit" disabled={isSubmitting}>
           {isSubmitting ? (
             <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              <Loader2 className="me-2 h-4 w-4 animate-spin" />
               Sending...
             </>
           ) : (

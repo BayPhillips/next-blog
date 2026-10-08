@@ -13,8 +13,8 @@ export function PageHeader({
   ...props
 }: PageHeaderProps) {
   return (
-    <div className={cn("mb-8 space-y-2", className)} {...props}>
-      <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
+    <div className={cn("mbe-8 space-y-2", className)} {...props}>
+      <h1 className="text-title font-bold tracking-tight">
         {title}
       </h1>
       {description && (
