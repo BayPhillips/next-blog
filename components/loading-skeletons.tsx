@@ -2,7 +2,7 @@ export function PostCardSkeleton() {
   return (
     <article className="animate-pulse">
       <div className="border-b pb-8 mb-8">
-        <div className="flex items-center space-x-4 mb-4">
+        <div className="flex items-center gap-4 mb-4">
           <div className="w-10 h-10 bg-muted rounded-full"></div>
           <div className="flex-1">
             <div className="h-4 bg-muted rounded w-24 mb-2"></div>
@@ -16,7 +16,7 @@ export function PostCardSkeleton() {
           <div className="h-4 bg-muted rounded w-5/6"></div>
         </div>
         
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center gap-2">
           <div className="h-6 bg-muted rounded w-20"></div>
           <div className="h-6 bg-muted rounded w-24"></div>
         </div>

@@ -56,7 +56,7 @@ export default async function BlogPage(props: Props) {
       
       {totalPages > 1 && (
         <div className="mt-12 flex justify-center">
-          <nav className="flex items-center space-x-2">
+          <nav className="flex items-center gap-2">
             <Link
               href={`/posts?page=${Math.max(1, page - 1)}`}
               className={`inline-flex items-center justify-center rounded-md px-3 py-2 text-sm font-medium ${

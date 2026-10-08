@@ -13,7 +13,7 @@ export function SiteHeader({ settings }: { settings: SettingsQueryResult }) {
         <div className="mr-4 flex items-center">
           <Link
             href="/"
-            className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
+            className="flex items-center gap-2 hover:opacity-80 transition-opacity"
           >
             <span className="flex items-center">
               <span className="inline-block h-6 w-6">
@@ -27,7 +27,7 @@ export function SiteHeader({ settings }: { settings: SettingsQueryResult }) {
         </div>
 
         {/* Desktop Navigation Menu */}
-        <nav className="hidden md:flex items-center space-x-4">
+        <nav className="hidden md:flex items-center gap-4">
           <NavigationMenu>
             <NavigationMenuList>
               {settings?.navigation?.map((item) => (
@@ -45,12 +45,12 @@ export function SiteHeader({ settings }: { settings: SettingsQueryResult }) {
         </nav>
 
         {/* Mobile Navigation Menu */}
-        <nav className="md:hidden flex items-center space-x-2">
+        <nav className="md:hidden flex items-center gap-2">
           <ThemeToggle />
           <NavigationMenu>
             <NavigationMenuList>
               <NavigationMenuItem>
-                <NavigationMenuTrigger arrowHidden={true} className="w-[90]"><MenuIcon /></NavigationMenuTrigger>
+                <NavigationMenuTrigger arrowHidden={true}><MenuIcon /></NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <ul className="grid gap-4 p-4">
                     {settings?.navigation?.map((item) => (

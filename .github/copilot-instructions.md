@@ -52,7 +52,7 @@ This is a Next.js 15 blog application built with Sanity.io as the content manage
 ### Main Configuration Files
 - `next.config.js` - Next.js configuration with image optimization and security settings
 - `tsconfig.json` - TypeScript configuration with path aliases
-- `tailwind.config.ts` - Tailwind CSS configuration
+- `app/globals.css` - Tailwind CSS v4 theme and configuration
 - `sanity.config.ts` - Sanity Studio configuration
 - `package.json` - Scripts and dependencies
 

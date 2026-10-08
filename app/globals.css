@@ -1,28 +1,79 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap');
-
 @import "tailwindcss";
+@import "tw-animate-css";
+
+@plugin "@tailwindcss/typography";
+
+/* next-themes toggles a `.dark` class on <html>; make `dark:` follow it
+   instead of the OS media query. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* light-dark() picks a value from the active color-scheme. Next's CSS pipeline
+   polyfills it with variables that are only set where color-scheme is declared
+   in a stylesheet, so next-themes' inline style isn't enough: declare it for
+   the theme classes too. Without a class, follow the OS. */
+:root {
+  color-scheme: light dark;
+}
+
+:root.light {
+  color-scheme: light;
+}
+
+:root.dark {
+  color-scheme: dark;
+}
 
 @theme {
-  /* Semantic surface colors so utilities like bg-popover resolve to the
-     themed background (Tailwind v4 has no tailwind.config colors here). */
+  --font-sans: var(--font-nunito, ui-sans-serif), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-lora, ui-serif), ui-serif, Georgia, serif;
+
   --color-background: light-dark(hsl(0 0% 100%), hsl(240 10% 3.9%));
   --color-foreground: light-dark(hsl(240 10% 3.9%), hsl(0 0% 100%));
-  --color-popover: light-dark(hsl(0 0% 100%), hsl(240 10% 3.9%));
-  --color-popover-foreground: light-dark(hsl(240 10% 3.9%), hsl(0 0% 100%));
+  --color-card: var(--color-background);
+  --color-card-foreground: var(--color-foreground);
+  --color-popover: var(--color-background);
+  --color-popover-foreground: var(--color-foreground);
+  --color-primary: light-dark(hsl(240 5.9% 10%), hsl(0 0% 98%));
+  --color-primary-foreground: light-dark(hsl(0 0% 98%), hsl(240 5.9% 10%));
+  --color-secondary: light-dark(hsl(240 4.8% 95.9%), hsl(240 3.7% 15.9%));
+  --color-secondary-foreground: light-dark(hsl(240 5.9% 10%), hsl(0 0% 98%));
+  --color-muted: light-dark(hsl(240 4.8% 95.9%), hsl(240 3.7% 15.9%));
+  --color-muted-foreground: light-dark(hsl(240 3.8% 46.1%), hsl(240 5% 64.9%));
+  --color-accent: light-dark(hsl(240 4.8% 95.9%), hsl(240 3.7% 15.9%));
+  --color-accent-foreground: light-dark(hsl(240 5.9% 10%), hsl(0 0% 98%));
+  --color-destructive: light-dark(hsl(0 84.2% 60.2%), hsl(0 62.8% 30.6%));
+  --color-destructive-foreground: hsl(0 0% 98%);
   --color-border: light-dark(hsl(220 13% 91%), hsl(240 4% 16%));
+  --color-input: var(--color-border);
+  --color-ring: light-dark(hsl(240 10% 3.9%), hsl(240 4.9% 83.9%));
 }
 
-* {
-  border-color: light-dark(hsl(220 13% 91%), hsl(240 4% 16%));
-}
-
-body {
-  background-color: light-dark(hsl(0 0% 100%), hsl(240 10% 3.9%));
-  color: light-dark(hsl(240 10% 3.9%), hsl(0 0% 100%));
-  font-feature-settings: "rlig" 1, "calt" 1;
-}
-
-.container {
+@utility container {
   margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+@layer base {
+  *,
+  ::before,
+  ::after {
+    border-color: var(--color-border);
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 }

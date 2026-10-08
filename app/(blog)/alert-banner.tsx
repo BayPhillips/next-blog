@@ -29,7 +29,7 @@ export default function AlertBanner() {
     )}>
       <Alert className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex flex-col items-center justify-between gap-2 sm:flex-row">
-          <div className="flex flex-1 items-center space-x-2">
+          <div className="flex flex-1 items-center gap-2">
             <Icons.eye className="h-4 w-4 flex-shrink-0" />
             <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
               <AlertTitle className="text-sm font-medium">
