@@ -22,7 +22,7 @@ const ImageGrid = ({ images }: ImageGridProps) => {
               width={500}
               height={500}
               alt={image.altText}
-              className="rounded-lg shadow-md overflow-hidden"
+              className="rounded-lg shadow-md overflow-clip"
             />
         </a>
       )})}

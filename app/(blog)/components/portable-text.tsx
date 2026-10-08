@@ -33,53 +33,53 @@ import { Tweet } from "react-tweet";
 const components: PortableTextComponents = {
   block: {
     h1: ({ children }) => (
-      <h1 className="text-4xl font-bold tracking-tight sm:text-5xl mt-8 mb-4">
+      <h1 className="text-title font-bold tracking-tight mbs-8 mbe-4">
         {children}
       </h1>
     ),
     h2: ({ children }) => (
-      <h2 className="text-3xl font-semibold tracking-tight mt-8 mb-4">
+      <h2 className="text-3xl font-semibold tracking-tight mbs-8 mbe-4">
         {children}
       </h2>
     ),
     h3: ({ children }) => (
-      <h3 className="text-2xl font-semibold tracking-tight mt-6 mb-3">
+      <h3 className="text-2xl font-semibold tracking-tight mbs-6 mbe-3">
         {children}
       </h3>
     ),
     h4: ({ children }) => (
-      <h4 className="text-xl font-semibold tracking-tight mt-4 mb-2">
+      <h4 className="text-xl font-semibold tracking-tight mbs-4 mbe-2">
         {children}
       </h4>
     ),
     h5: ({ children }) => (
-      <h5 className="text-lg font-semibold tracking-tight mt-3 mb-2">
+      <h5 className="text-lg font-semibold tracking-tight mbs-3 mbe-2">
         {children}
       </h5>
     ),
     normal: ({ children }) => {
       if (Array.isArray(children) && children.length === 1 && children[0] === '') {
-        return <div className="pt-2" />;
+        return <div className="pbs-2" />;
       }
-      return <p className="leading-7 [&:not(:first-child)]:mt-4">{children}</p>;
+      return <p className="leading-7 [&:not(:first-child)]:mbs-4">{children}</p>;
     },
     blockquote: ({ children }) => (
-      <blockquote className="mt-6 border-l-2 pl-6 italic">
+      <blockquote className="mbs-6 border-s-2 ps-6 italic">
         {children}
       </blockquote>
     ),
   },
   list: {
     bullet: ({ children }) => (
-      <ul className="my-6 ml-6 list-disc [&>li]:mt-2">{children}</ul>
+      <ul className="my-6 ms-6 list-disc [&>li]:mbs-2">{children}</ul>
     ),
     number: ({ children }) => (
-      <ol className="my-6 ml-6 list-decimal [&>li]:mt-2">{children}</ol>
+      <ol className="my-6 ms-6 list-decimal [&>li]:mbs-2">{children}</ol>
     ),
   },
   listItem: {
-    bullet: ({ children }) => <li className="pl-2">{children}</li>,
-    number: ({ children }) => <li className="pl-2">{children}</li>,
+    bullet: ({ children }) => <li className="ps-2">{children}</li>,
+    number: ({ children }) => <li className="ps-2">{children}</li>,
   },
   marks: {
     strong: ({ children }) => (
@@ -117,7 +117,7 @@ const components: PortableTextComponents = {
         return null;
       }
       return (
-        <div className="my-6 overflow-hidden rounded-lg">
+        <div className="my-6 overflow-clip rounded-lg">
           <Image
             src={imageUrl}
             alt={value.alt || 'Image'}
@@ -126,7 +126,7 @@ const components: PortableTextComponents = {
             className="mx-auto max-h-[70vh] w-auto max-w-full object-contain"
           />
           {value.caption && (
-            <p className="mt-2 text-center text-sm text-muted-foreground">
+            <p className="mbs-2 text-center text-sm text-muted-foreground">
               {value.caption}
             </p>
           )}
@@ -135,7 +135,7 @@ const components: PortableTextComponents = {
     },
     code: ({ value }) => {
       return (
-        <div className="my-6 overflow-hidden rounded-lg border">
+        <div className="my-6 overflow-clip rounded-lg border">
           <div className="bg-muted px-4 py-2 font-mono text-sm font-medium">
             {value.language}
           </div>

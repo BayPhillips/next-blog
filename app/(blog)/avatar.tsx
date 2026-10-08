@@ -12,7 +12,7 @@ export default function Avatar({ name, picture }: Props) {
   return (
     <div className="flex items-center text-xl">
       {picture?.asset?._ref ? (
-        <div className="mr-4 h-12 w-12">
+        <div className="me-4 h-12 w-12">
           <Image
             alt={picture?.alt || ""}
             className="h-full rounded-full object-cover"
@@ -28,7 +28,7 @@ export default function Avatar({ name, picture }: Props) {
           />
         </div>
       ) : (
-        <div className="mr-1">By </div>
+        <div className="me-1">By </div>
       )}
       <div className="text-pretty text-xl font-bold">{name}</div>
     </div>

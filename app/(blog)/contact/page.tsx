@@ -39,7 +39,7 @@ interface ContactData {
 }
 
 const platformConfig: Record<string, { icon: React.ElementType; label: string; color: string }> = {
-  github:    { icon: Github,    label: "GitHub",       color: "hover:border-[#333] dark:hover:border-[#eee]" },
+  github:    { icon: Github,    label: "GitHub",       color: "hover:border-foreground" },
   twitter:   { icon: Twitter,   label: "Twitter / X",  color: "hover:border-[#1DA1F2]" },
   linkedin:  { icon: Linkedin,  label: "LinkedIn",     color: "hover:border-[#0A66C2]" },
   instagram: { icon: Instagram, label: "Instagram",    color: "hover:border-[#E1306C]" },
@@ -65,7 +65,7 @@ function SocialCard({ link }: { link: SocialLink }) {
       rel="noopener noreferrer"
       className={[
         "group flex items-center gap-3 rounded-xl border bg-card px-4 py-3",
-        "text-card-foreground transition-all duration-200",
+        "text-card-foreground transition-[border-color,box-shadow] duration-200",
         "hover:shadow-md",
         config.color,
       ].join(" ")}
@@ -92,12 +92,12 @@ export default async function ContactPage() {
   return (
     <article className="max-w-4xl">
       {/* Header */}
-      <header className="mb-12 space-y-3">
-        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
+      <header className="mbe-12 space-y-3">
+        <h1 className="text-title font-bold tracking-tight">
           {title}
         </h1>
         {description && (
-          <p className="text-lg text-muted-foreground sm:text-xl">
+          <p className="text-lead text-muted-foreground">
             {description}
           </p>
         )}
@@ -107,21 +107,21 @@ export default async function ContactPage() {
         {/* Email section */}
         {email && (
           <section>
-            <h2 className="mb-4 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+            <h2 className="mbe-4 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
               Email
             </h2>
             <a
               href={`mailto:${email}`}
-              className="group flex items-start gap-4 rounded-xl border bg-card p-5 transition-all duration-200 hover:border-primary/60 hover:shadow-md"
+              className="group flex items-start gap-4 rounded-xl border bg-card p-5 transition-[border-color,box-shadow] duration-200 hover:border-primary/60 hover:shadow-md"
             >
-              <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground transition-colors group-hover:bg-primary/10 group-hover:text-primary">
+              <span className="mbs-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground transition-colors group-hover:bg-primary/10 group-hover:text-primary">
                 <Mail className="h-4.5 w-4.5" />
               </span>
               <div className="min-w-0">
                 <p className="truncate text-sm font-semibold text-foreground">{email}</p>
-                <p className="mt-0.5 text-xs text-muted-foreground">Send an email</p>
+                <p className="mbs-0.5 text-xs text-muted-foreground">Send an email</p>
               </div>
-              <ArrowUpRight className="ml-auto mt-1 h-4 w-4 shrink-0 text-muted-foreground/40 opacity-0 transition-opacity group-hover:opacity-100" />
+              <ArrowUpRight className="ms-auto mbs-1 h-4 w-4 shrink-0 text-muted-foreground/40 opacity-0 transition-opacity group-hover:opacity-100" />
             </a>
           </section>
         )}
@@ -129,7 +129,7 @@ export default async function ContactPage() {
         {/* Social links section */}
         {socialLinks.length > 0 && (
           <section>
-            <h2 className="mb-4 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+            <h2 className="mbe-4 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
               Find me on
             </h2>
             <div className="flex flex-col gap-2">
@@ -143,7 +143,7 @@ export default async function ContactPage() {
 
       {/* Optional rich-text content */}
       {content.length > 0 && (
-        <div className="mt-12 border-t pt-10">
+        <div className="mbs-12 border-bs pbs-10">
           <PortableText value={content} />
         </div>
       )}

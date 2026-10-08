@@ -70,7 +70,7 @@ export function PostCard({ post, className }: PostCardProps) {
   const slug = typeof slugProp === 'string' ? slugProp : slugProp?.current || '';
   const postUrl = `/posts/${slug}`;
   return (
-    <Card className={cn("flex flex-col h-full overflow-hidden transition-all hover:shadow-md", className)}>
+    <Card className={cn("flex flex-col h-full overflow-clip transition-shadow hover:shadow-md", className)}>
       <Link href={postUrl} className="relative h-48 w-full block" tabIndex={-1} aria-hidden="true">
         {image && (
           <PostImage
@@ -97,9 +97,9 @@ export function PostCard({ post, className }: PostCardProps) {
       <CardContent>
         <p className="line-clamp-3 text-muted-foreground">{excerpt}</p>
       </CardContent>
-      <CardFooter className="flex flex-wrap gap-2 mt-auto">
+      <CardFooter className="flex flex-wrap gap-2 mbs-auto">
         <PostTags tags={post.tags || []} />
-        <Button variant="ghost" className="ml-auto" asChild>
+        <Button variant="ghost" className="ms-auto" asChild>
           <Link href={postUrl}>
             Read more
             <span className="sr-only">about {title}</span>

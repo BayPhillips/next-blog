@@ -17,8 +17,8 @@ interface HeroPostProps {
 function HeroPost({ post }: HeroPostProps) {
   // Ensure we have a valid slug object
   return (
-    <section className="hero mb-16">
-      <Card className="overflow-hidden border-none shadow-lg">
+    <section className="hero mbe-16">
+      <Card className="overflow-clip border-none shadow-lg">
         {post.coverImage?.asset?._ref && (
           <Link href={`/posts/${post.slug?.current}`} className="relative h-96 w-full block" tabIndex={-1} aria-hidden="true">
             <Image
@@ -39,7 +39,7 @@ function HeroPost({ post }: HeroPostProps) {
               {post.date ? formatDate(post.date) : 'No date'}
             </time>
           </div>
-          <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
+          <h1 className="text-title font-bold tracking-tight">
             <Link
               href={`/posts/${post.slug?.current}`}
               className="hover:underline"
@@ -53,7 +53,7 @@ function HeroPost({ post }: HeroPostProps) {
             </p>
           )}
         </CardHeader>
-        <CardFooter className="flex flex-wrap items-center gap-4 mt-auto">
+        <CardFooter className="flex flex-wrap items-center gap-4 mbs-auto">
           <PostTags tags={post.tags || []} />
           <Link href={`/posts/${post.slug?.current}`}>
             Read more
@@ -74,16 +74,16 @@ function RecentPosts({ posts }: RecentPostsProps) {
 
   return (
     <section className="py-12">
-      <div className="mb-8 flex items-center justify-between">
+      <div className="mbe-8 flex items-center justify-between">
         <h2 className="text-3xl font-bold tracking-tight">Latest Posts</h2>
         <Button variant="ghost" asChild>
           <Link href="/posts" className="flex items-center">
             View all
-            <ArrowRightIcon className="ml-2 h-4 w-4" />
+            <ArrowRightIcon className="ms-2 h-4 w-4" />
           </Link>
         </Button>
       </div>
-      <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-cards gap-8">
         {posts.map((post) => (
           <PostCard key={post._id} post={post} />
         ))}

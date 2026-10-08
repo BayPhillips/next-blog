@@ -17,7 +17,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={nuninto_sans.variable}>
-      <body className="min-h-screen">{children}</body>
+      <body className="min-h-svh">{children}</body>
     </html>
   );
 }

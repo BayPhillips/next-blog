@@ -37,7 +37,7 @@ export default async function BlogPage(props: Props) {
   return (
     <>
       <PageHeader title="All Posts" description="Browse all my posts" />
-      <div id="posts" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div id="posts" className="grid grid-cols-cards gap-8">
         {posts.map((post: any) => {
           // Transform the post data to match our Post type
           const postData = {
@@ -55,7 +55,7 @@ export default async function BlogPage(props: Props) {
       </div>
       
       {totalPages > 1 && (
-        <div className="mt-12 flex justify-center">
+        <div className="mbs-12 flex justify-center">
           <nav className="flex items-center gap-2">
             <Link
               href={`/posts?page=${Math.max(1, page - 1)}`}

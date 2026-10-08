@@ -49,7 +49,7 @@ export default async function AboutPage() {
   return (
     <article className="">
       {aboutData.coverImage?.asset?._ref && (
-        <div className="relative w-full h-64 md:h-96 mb-8 rounded-lg overflow-hidden">
+        <div className="relative w-full h-64 md:h-96 mbe-8 rounded-lg overflow-clip">
           <Image
             src={getImageUrl(aboutData.coverImage) || ''}
             alt={getImageAlt(aboutData.coverImage) || 'About page cover'}
@@ -62,7 +62,7 @@ export default async function AboutPage() {
       <PageHeader 
         title={aboutData.title || 'About Me'} 
         description={aboutData.excerpt}
-        className="mb-12"
+        className="mbe-12"
       />
       
       <div className="prose dark:prose-invert max-w-none">

@@ -8,7 +8,7 @@ export function Footer(props: { settings: SettingsQueryResult }) {
   const footer = settings?.footer || [];
 
   return (
-    <footer className="text-white py-12 mt-8 w-full">
+    <footer className="text-white py-12 mbs-8 w-full">
       <div className="max-w-screen-2xl mx-auto px-5">
         <div className="text-center">
           <p className="text-sm text-white">
