@@ -1036,8 +1036,7 @@ export type PaginatedPostsQueryResult = Array<{
 export type CountPostsQueryResult = number;
 
 // Query TypeMap
-import "@sanity/client";
-declare module "@sanity/client" {
+declare global {
   interface SanityQueries {
     '*[_type == "post" && defined(slug.current)]{"slug": slug.current}': PostSlugsResult;
     '*[_type == "settings"][0]': SettingsQueryResult;
@@ -1051,4 +1050,8 @@ declare module "@sanity/client" {
     '\n  *[_type == "post"] | order(date desc) [$start...$end] {\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{name, picture},\n  tags,\n  \n  }\n': PaginatedPostsQueryResult;
     '\n  count(*[_type == "post"])\n': CountPostsQueryResult;
   }
+}
+// Lets @sanity/client releases that predate the global registry read it too
+declare module "@sanity/client" {
+  interface SanityQueries extends globalThis.SanityQueries {}
 }
