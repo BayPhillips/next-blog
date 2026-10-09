@@ -16,7 +16,7 @@ export function SiteHeader({ settings }: { settings: SettingsQueryResult }) {
             className="flex items-center gap-2 hover:opacity-80 transition-opacity"
           >
             <span className="flex items-center">
-              <span className="inline-block h-6 w-6">
+              <span className="inline-block h-8 w-8">
                 <LogoIcon className="h-full w-full" />
               </span>
               <span className="font-bold inline-block align-middle ms-2">
