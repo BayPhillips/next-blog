@@ -7,7 +7,7 @@ Next.js 16 (App Router) blog for bayphillips.com with Sanity.io CMS. TypeScript,
 - Unit tests: `npm run test` (Jest + jsdom; tests in `__tests__/`); single test: `npm run test -- --testNamePattern='TestName'`
 - Coverage: `npm run test:coverage` (enforces 70% thresholds — a plain `npm run test` after adding files can fail coverage if thresholds dip)
 - E2E: `npm run test:e2e` (Playwright, specs in `tests/e2e/`; auto-starts dev server on :3000)
-- Lint: run `npx eslint app components lib hooks sanity tests __tests__` — `npm run lint` is broken (`next lint` was removed in Next 16; the script errors with "Invalid project directory"). Flat config is `eslint.config.js`; it only ignores `sanity.types.ts`, so avoid linting `.` (build dirs like `.next/` and `dist/` are not ignored and crash ESLint).
+- Lint: `npm run lint` (runs `eslint .`). Flat config is `eslint.config.js`; it ignores `sanity.types.ts` and build output (`.next/`, `dist/`, `public/studio/`).
 - Typecheck: `npx tsc --noEmit`
 
 ## Code Style
