@@ -87,10 +87,12 @@ const NavigationMenuViewport = React.forwardRef<
   React.ElementRef<typeof NavigationMenuPrimitive.Viewport>,
   React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Viewport>
 >(({ className, ...props }, ref) => (
-  <div className={cn("absolute start-0 inset-bs-full flex justify-center")}>
+  // On mobile the menu root is only as wide as the trigger, so anchor the panel
+  // to the trigger's end edge and size it from its links instead of the root.
+  <div className={cn("absolute end-0 inset-bs-full flex justify-end md:start-0 md:end-auto md:justify-center")}>
     <NavigationMenuPrimitive.Viewport
       className={cn(
-        "origin-top-center relative mbs-1.5 h-[var(--radix-navigation-menu-viewport-height)] w-full overflow-clip rounded-md border bg-popover text-popover-foreground shadow data-[state=open]:animate-in data-[state=closed]:animate-out motion-safe:data-[state=closed]:zoom-out-95 motion-safe:data-[state=open]:zoom-in-95 md:w-[var(--radix-navigation-menu-viewport-width)]",
+        "origin-top-center relative mbs-1.5 h-[var(--radix-navigation-menu-viewport-height)] w-max min-w-48 max-w-[calc(100vw-2rem)] overflow-clip rounded-md border bg-popover text-popover-foreground shadow data-[state=open]:animate-in data-[state=closed]:animate-out motion-safe:data-[state=closed]:zoom-out-95 motion-safe:data-[state=open]:zoom-in-95 md:w-[var(--radix-navigation-menu-viewport-width)] md:min-w-0 md:max-w-none",
         className
       )}
       ref={ref}

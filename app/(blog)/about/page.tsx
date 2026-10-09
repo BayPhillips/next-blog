@@ -37,9 +37,7 @@ export default async function AboutPage() {
 
   if (!aboutData) {
     return (
-      <div className="container py-12">
-        <p>No about page content found.</p>
-      </div>
+      <p>No about page content found.</p>
     )
   }
 
@@ -47,9 +45,9 @@ export default async function AboutPage() {
   const hasContent = content.length > 0;
 
   return (
-    <article className="">
+    <>
       {aboutData.coverImage?.asset?._ref && (
-        <div className="relative w-full h-64 md:h-96 mbe-8 rounded-lg overflow-clip">
+        <div className="breakout relative w-full h-64 md:h-96 mbe-8 rounded-lg overflow-clip">
           <Image
             src={getImageUrl(aboutData.coverImage) || ''}
             alt={getImageAlt(aboutData.coverImage) || 'About page cover'}
@@ -72,6 +70,6 @@ export default async function AboutPage() {
           <p>No content available yet. Please check back later.</p>
         )}
       </div>
-    </article>
+    </>
   )
 }

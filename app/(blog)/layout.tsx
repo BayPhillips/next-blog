@@ -64,9 +64,12 @@ export const viewport: Viewport = {
   colorScheme: "light dark",
 };
 
+// Load the real italic: globals.css sets font-synthesis: none, so a missing
+// style would render upright instead of being faked.
 const nunito = Nunito({
   variable: "--font-nunito",
   subsets: ["latin"],
+  style: ["normal", "italic"],
   display: "swap",
 });
 
@@ -99,10 +102,8 @@ export default async function RootLayout({
           <div className="relative flex min-h-svh flex-col">
             {(await draftMode()).isEnabled && <AlertBanner />}
             <SiteHeader settings={settings} />
-            <main className="flex-1">
-              <div className="container py-12">
-                {children}
-              </div>
+            <main className="content-grid flex-1 content-start py-12">
+              {children}
             </main>
             <SiteFooter settings={settings} />
           </div>

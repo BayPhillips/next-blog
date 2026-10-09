@@ -35,7 +35,7 @@ function HeroPost({ post }: HeroPostProps) {
         <CardHeader className="space-y-4">
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
             <time dateTime={post.date || ''} className="flex items-center gap-1">
-              <CalendarIcon className="h-4 w-4" />
+              <CalendarIcon className="icon-inline" />
               {post.date ? formatDate(post.date) : 'No date'}
             </time>
           </div>
@@ -79,7 +79,7 @@ function RecentPosts({ posts }: RecentPostsProps) {
         <Button variant="ghost" asChild>
           <Link href="/posts" className="flex items-center">
             View all
-            <ArrowRightIcon className="ms-2 h-4 w-4" />
+            <ArrowRightIcon className="ms-2 icon-inline" />
           </Link>
         </Button>
       </div>

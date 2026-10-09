@@ -70,9 +70,9 @@ function SocialCard({ link }: { link: SocialLink }) {
         config.color,
       ].join(" ")}
     >
-      <Icon className="h-5 w-5 shrink-0 text-muted-foreground transition-colors group-hover:text-foreground" />
+      <Icon className="icon-inline text-muted-foreground transition-colors group-hover:text-foreground" />
       <span className="flex-1 text-sm font-medium">{displayLabel}</span>
-      <ArrowUpRight className="h-3.5 w-3.5 shrink-0 text-muted-foreground/50 transition-opacity opacity-0 group-hover:opacity-100" />
+      <ArrowUpRight className="icon-inline text-muted-foreground/50 transition-opacity opacity-0 group-hover:opacity-100" />
     </a>
   )
 }
@@ -121,7 +121,7 @@ export default async function ContactPage() {
                 <p className="truncate text-sm font-semibold text-foreground">{email}</p>
                 <p className="mbs-0.5 text-xs text-muted-foreground">Send an email</p>
               </div>
-              <ArrowUpRight className="ms-auto mbs-1 h-4 w-4 shrink-0 text-muted-foreground/40 opacity-0 transition-opacity group-hover:opacity-100" />
+              <ArrowUpRight className="ms-auto mbs-1 icon-inline text-muted-foreground/40 opacity-0 transition-opacity group-hover:opacity-100" />
             </a>
           </section>
         )}

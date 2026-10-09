@@ -27,10 +27,10 @@ export default function AlertBanner() {
       "fixed start-0 end-0 inset-bs-0 z-50 w-full transition-opacity",
       pending ? "animate-pulse opacity-75" : "opacity-100"
     )}>
-      <Alert className="border-be bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex flex-col items-center justify-between gap-2 sm:flex-row">
+      <Alert className="content-grid rounded-none border-0 border-be px-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="flex flex-col items-center justify-between gap-2 sm:flex-row">
           <div className="flex flex-1 items-center gap-2">
-            <Icons.eye className="h-4 w-4 flex-shrink-0" />
+            <Icons.eye className="icon-inline" />
             <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
               <AlertTitle className="text-sm font-medium">
                 {pending ? "Disabling draft mode..." : "Preview Mode"}

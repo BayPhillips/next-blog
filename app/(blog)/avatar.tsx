@@ -12,7 +12,7 @@ export default function Avatar({ name, picture }: Props) {
   return (
     <div className="flex items-center text-xl">
       {picture?.asset?._ref ? (
-        <div className="me-4 h-12 w-12">
+        <div className="me-4 h-12 w-12 flex-none">
           <Image
             alt={picture?.alt || ""}
             className="h-full rounded-full object-cover"
