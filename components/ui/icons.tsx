@@ -17,14 +17,14 @@ export const EyeIcon = (props: LucideProps) => <Eye {...props} />
 EyeIcon.displayName = 'EyeIcon'
 
 // Pixel-art head of Bay, taken from his character sprite and snapped back to
-// its 32x37 pixel grid: one <rect> per run of same-colored pixels.
+// its 32x39 pixel grid: one <rect> per run of same-colored pixels.
 // The sprite's dark outline reads on light backgrounds and its cream sticker
 // border reads on dark ones, so it needs no theme-specific colors.
 // crispEdges keeps the pixels sharp.
 export const LogoIcon = ({ className, ...props }: React.SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 32 37"
+    viewBox="0 0 32 39"
     shapeRendering="crispEdges"
     aria-hidden="true"
     className={className}
@@ -540,10 +540,34 @@ export const LogoIcon = ({ className, ...props }: React.SVGProps<SVGSVGElement>)
     <rect x="22" y="34" width="1" height="1" fill="#290a04" />
     <rect x="23" y="34" width="1" height="1" fill="#e7d1b4" />
     <rect x="4" y="35" width="1" height="1" fill="#e7d1b4" />
-    <rect x="5" y="35" width="17" height="1" fill="#290a04" />
-    <rect x="22" y="35" width="1" height="1" fill="#13111a" />
-    <rect x="23" y="35" width="1" height="1" fill="#e7d1b4" />
-    <rect x="5" y="36" width="18" height="1" fill="#e7d1b4" />
+    <rect x="5" y="35" width="1" height="1" fill="#471e0f" />
+    <rect x="6" y="35" width="2" height="1" fill="#ae6850" />
+    <rect x="8" y="35" width="1" height="1" fill="#ef8f76" />
+    <rect x="9" y="35" width="1" height="1" fill="#fdab88" />
+    <rect x="10" y="35" width="1" height="1" fill="#ae6850" />
+    <rect x="11" y="35" width="2" height="1" fill="#c88770" />
+    <rect x="13" y="35" width="1" height="1" fill="#ef8f76" />
+    <rect x="14" y="35" width="1" height="1" fill="#fdab88" />
+    <rect x="15" y="35" width="1" height="1" fill="#c88770" />
+    <rect x="16" y="35" width="2" height="1" fill="#ae6850" />
+    <rect x="18" y="35" width="1" height="1" fill="#c88770" />
+    <rect x="19" y="35" width="1" height="1" fill="#6e3a22" />
+    <rect x="20" y="35" width="1" height="1" fill="#592b1a" />
+    <rect x="21" y="35" width="1" height="1" fill="#290a04" />
+    <rect x="22" y="35" width="1" height="1" fill="#e7d1b4" />
+    <rect x="5" y="36" width="1" height="1" fill="#e7d1b4" />
+    <rect x="6" y="36" width="2" height="1" fill="#290a04" />
+    <rect x="8" y="36" width="7" height="1" fill="#c88770" />
+    <rect x="15" y="36" width="1" height="1" fill="#ae6850" />
+    <rect x="16" y="36" width="3" height="1" fill="#834a2d" />
+    <rect x="19" y="36" width="2" height="1" fill="#4f1306" />
+    <rect x="21" y="36" width="1" height="1" fill="#e7d1b4" />
+    <rect x="6" y="37" width="2" height="1" fill="#e7d1b4" />
+    <rect x="8" y="37" width="8" height="1" fill="#290a04" />
+    <rect x="16" y="37" width="1" height="1" fill="#390d06" />
+    <rect x="17" y="37" width="4" height="1" fill="#290a04" />
+    <rect x="21" y="37" width="1" height="1" fill="#e7d1b4" />
+    <rect x="8" y="38" width="13" height="1" fill="#e7d1b4" />
   </svg>
 )
 LogoIcon.displayName = 'LogoIcon'
