@@ -8,7 +8,7 @@
     "build": "next build --webpack",
     "postbuild": "npx sanity manifest extract --path public/studio/static",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
     "presetup": "echo 'about to setup env variables, follow the guide here: https://github.com/vercel/next.js/tree/canary/examples/cms-sanity#using-the-sanity-cli'",
     "setup": "npx sanity@latest init --env .env.local",
     "postsetup": "echo 'create the read token by following the rest of the guide: https://github.com/vercel/next.js/tree/canary/examples/cms-sanity#creating-a-read-token'",
