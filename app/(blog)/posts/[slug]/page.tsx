@@ -73,17 +73,19 @@ export const revalidate = 60;
 
 export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
   try {
-    const result = await fetchSanityData<Array<{ slug: string }>>({
+    // Only prerender published posts. Preview environments read drafts, and a
+    // broken draft shouldn't fail the build; drafts still render on demand.
+    const result = await sanityFetch({
       query: postSlugs,
       stega: false,
-      useCache: false, // Don't use cache during build time
+      perspective: 'published',
     });
 
     if (!Array.isArray(result)) {
       return [];
     }
 
-    return result.map((post) => ({ slug: post.slug }));
+    return result.flatMap((post) => (post.slug ? [{ slug: post.slug }] : []));
   } catch (error) {
     console.error('Error generating static params:', error);
     return [];
