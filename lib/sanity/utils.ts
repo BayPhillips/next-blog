@@ -1,5 +1,5 @@
 import { createClient } from 'next-sanity';
-import imageUrlBuilder from '@sanity/image-url';
+import { createImageUrlBuilder } from '@sanity/image-url';
 // Define the image type that matches our Sanity image structure
 type SanityImage = {
   asset?: {
@@ -36,7 +36,7 @@ const client = createClient({
 });
 
 // Create a URL builder for Sanity images
-const builder = imageUrlBuilder(client);
+const builder = createImageUrlBuilder(client);
 
 /**
  * Get the image URL from a Sanity image object

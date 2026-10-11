@@ -125,7 +125,7 @@ export default function SourdoughCalculator() {
       {/* Ingredients Table */}
       <Card>
         <CardContent className="pbs-6">
-          <h3 className="font-semibold text-lg mbe-4">Ingredients (Baker's Percentages)</h3>
+          <h3 className="font-semibold text-lg mbe-4">Ingredients (Baker&apos;s Percentages)</h3>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
@@ -232,7 +232,7 @@ export default function SourdoughCalculator() {
       {/* Tips Section */}
       <Card>
         <CardContent className="pbs-6 text-sm text-muted-foreground">
-          <h4 className="font-semibold mbe-2">Baker's Percentages Explained</h4>
+          <h4 className="font-semibold mbe-2">Baker&apos;s Percentages Explained</h4>
           <ul className="list-disc list-inside space-y-1">
             <li>All percentages are calculated relative to flour = 100%</li>
             <li>Total should ideally be between 150-200% for most breads</li>
