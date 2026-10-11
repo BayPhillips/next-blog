@@ -42,3 +42,6 @@ next-env.d.ts
 .env.local
 
 public/studio/static
+# playwright
+/test-results/
+/playwright-report/
