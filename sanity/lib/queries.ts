@@ -49,6 +49,7 @@ export const moreStoriesQuery = defineQuery(`
 export const postQuery = defineQuery(`
   *[_type == "post" && slug.current == $slug] [0] {
     content,
+    "readTime": round(length(pt::text(content)) / 5 / 180),
     ${postFields}
   }
 `);

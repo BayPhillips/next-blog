@@ -855,7 +855,7 @@ export type MoreStoriesQueryResult = Array<{
 
 // Source: sanity/lib/queries.ts
 // Variable: postQuery
-// Query: *[_type == "post" && slug.current == $slug] [0] {    content,      _id,  "status": select(_originalId in path("drafts.**") => "draft", "published"),  "title": coalesce(title, "Untitled"),  "slug": slug.current,  excerpt,  coverImage,  "date": coalesce(date, _updatedAt),  "author": author->{name, picture},  tags,    }
+// Query: *[_type == "post" && slug.current == $slug] [0] {    content,    "readTime": round(length(pt::text(content)) / 5 / 180),      _id,  "status": select(_originalId in path("drafts.**") => "draft", "published"),  "title": coalesce(title, "Untitled"),  "slug": slug.current,  excerpt,  coverImage,  "date": coalesce(date, _updatedAt),  "author": author->{name, picture},  tags,    }
 export type PostQueryResult = {
   content: Array<
     | ({
@@ -906,6 +906,7 @@ export type PostQueryResult = {
         _key: string;
       }
   > | null;
+  readTime: number;
   _id: string;
   status: "draft" | "published";
   title: string | "Untitled";
@@ -1044,7 +1045,7 @@ declare global {
     '\n  *[_type == "contact"][0] {\n    _id,\n    _type,\n    title,\n    description,\n    email,\n    socialLinks[] {\n      _key,\n      platform,\n      url,\n      label\n    },\n    content\n  }\n': ContactQueryResult;
     '\n  *[_type == "post" && defined(slug.current)] | order(date desc, _updatedAt desc) [0] {\n    content,\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{name, picture},\n  tags,\n  \n  }\n': HeroQueryResult;
     '\n  *[_type == "post" && _id != $skip && defined(slug.current)] | order(date desc, _updatedAt desc) [0...$limit] {\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{name, picture},\n  tags,\n  \n  }\n': MoreStoriesQueryResult;
-    '\n  *[_type == "post" && slug.current == $slug] [0] {\n    content,\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{name, picture},\n  tags,\n  \n  }\n': PostQueryResult;
+    '\n  *[_type == "post" && slug.current == $slug] [0] {\n    content,\n    "readTime": round(length(pt::text(content)) / 5 / 180),\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{name, picture},\n  tags,\n  \n  }\n': PostQueryResult;
     '\n  *[_type == "post"] {\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{name, picture},\n  tags,\n  \n  }\n': PostsQueryResult;
     '\n  *[_type == "post" && $tag in tags] | order(date desc) {\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{name, picture},\n  tags,\n  \n  }\n': PostsByTagQueryResult;
     '\n  *[_type == "post"] | order(date desc) [$start...$end] {\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{name, picture},\n  tags,\n  \n  }\n': PaginatedPostsQueryResult;
