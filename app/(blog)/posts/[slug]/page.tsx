@@ -13,7 +13,7 @@ import { PostCard } from "@/components/post-card";
 import PortableText from "@/app/(blog)/components/portable-text";
 import { sanityFetch } from "@/sanity/lib/fetch";
 import { postQuery, moreStoriesQuery } from "@/sanity/lib/queries";
-import { fetchSanityData } from "@/lib/sanity/fetch";
+import { fetchSanityData, type PostWithReadTime } from "@/lib/sanity/fetch";
 import { resolveOpenGraphImage } from "@/sanity/lib/utils";
 
 // Import SanityDocument type from next-sanity
@@ -22,13 +22,6 @@ import { Post, PostsQueryResult } from "@/sanity.types";
 import { getImageUrl } from "@/lib/sanity/utils";
 import { PageHeader } from "@/components/ui/page-header";
 import PostTags from "../../components/post-tags";
-
-// Define a type for the post slugs query result
-interface PostSlugResult {
-  slug: {
-    current: string;
-  };
-}
 
 interface MoreStoriesQueryResult {
   _id: string;
@@ -75,46 +68,22 @@ const postSlugs = defineQuery(
   `*[_type == "post" && defined(slug.current)]{"slug": slug.current}`
 );
 
-// Define a type for the post slugs query result
-interface PostSlugResult {
-  slug: {
-    current: string;
-  };
-}
+// Sanity's API CDN caches for 60 seconds, so regenerating any sooner gains nothing.
+export const revalidate = 60;
 
-interface SanitySlugResult {
-  slug: string;
-}
-
-export const dynamic = 'force-static';
-export const revalidate = false; // Force static generation
-
-// Define the expected return type for generateStaticParams
-type StaticParams = Array<{ params: { slug: string } }>;
-
-export async function generateStaticParams(): Promise<StaticParams> {
+export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
   try {
-    const query = `*[_type == "post" && defined(slug.current)]{ "slug": slug.current }`;
-    
-    // Use cached fetch to ensure static generation
     const result = await fetchSanityData<Array<{ slug: string }>>({
-      query,
-      params: undefined,
+      query: postSlugs,
       stega: false,
       useCache: false, // Don't use cache during build time
     });
-    
-    // Ensure we have a valid result before mapping
+
     if (!Array.isArray(result)) {
       return [];
     }
 
-    // Map the result to the expected format for Next.js
-    return result.map((post) => ({
-      params: {
-        slug: post.slug,
-      },
-    }));
+    return result.map((post) => ({ slug: post.slug }));
   } catch (error) {
     console.error('Error generating static params:', error);
     return [];
@@ -215,7 +184,7 @@ async function MorePosts({ currentPostId }: { currentPostId: string }) {
 
 export default async function PostPage(props: Props) {
   const params = await props.params;
-  const post = await fetchSanityData<Post>({
+  const post = await fetchSanityData<PostWithReadTime>({
     query: postQuery,
     params: { slug: params.slug },
     stega: false,
@@ -227,7 +196,7 @@ export default async function PostPage(props: Props) {
   }
 
   const publishedDate = post.date ? new Date(post.date) : null;
-  const readTime = Math.ceil(((post.content?.length || 0) / 200) || 5);
+  const readTime = Math.max(1, post.readTime ?? 1);
   const postUrl = `${process.env.NEXT_PUBLIC_SITE_URL || 'https://bayphillips.com'}/posts/${typeof post.slug === 'string' ? post.slug : post.slug?.current || ''}`;
 
   return (
