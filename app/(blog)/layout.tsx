@@ -22,7 +22,6 @@ import { SettingsQueryResult } from "@/sanity.types";
 import { SiteHeader } from "@/components/ui/site-header"
 import { SiteFooter } from "@/components/ui/site-footer"
 import { Analytics } from "@vercel/analytics/react"
-import { Toaster } from "@/components/ui/toaster"
 import { ThemeProvider } from "@/components/theme-provider"
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -114,7 +113,6 @@ export default async function RootLayout({
           )}
           <Analytics />
           <SpeedInsights />
-          <Toaster />
         </ThemeProvider>
       </body>
     </html>

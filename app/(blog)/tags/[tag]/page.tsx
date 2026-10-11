@@ -1,9 +1,5 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import CoverImage from "@/app/(blog)/cover-image";
-import DateComponent from "@/app/(blog)/date";
-import PostTags from "@/app/(blog)/components/post-tags";
 import { sanityFetch } from "@/sanity/lib/fetch";
 import { postsByTagQuery } from "@/sanity/lib/queries";
 import type { Metadata } from "next";

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Next.js 15 blog application with Sanity.io CMS, built for bayphillips.com. Uses App Router, TypeScript, and Tailwind CSS. Hosted on Vercel.
+Next.js 16 blog application with Sanity.io CMS, built for bayphillips.com. Uses App Router, TypeScript, and Tailwind CSS. Hosted on Vercel.
 
 ## Commands
 
@@ -31,7 +31,7 @@ npm run setup            # Initialize Sanity project (first time only)
 
 ### Other
 ```bash
-npm run lint             # Run ESLint (may show TypeScript version warnings)
+npm run lint             # Run ESLint (`eslint .`)
 ```
 
 **Important**: Always run `npm run typegen` after modifying Sanity schemas. The build process runs this automatically via `prebuild` and `predev` hooks.
@@ -104,7 +104,7 @@ All schemas auto-imported via schema index file.
 - **Production**: Uses webpack (`next build --webpack`)
 - **Output**: Standalone mode (`output: 'standalone'` in next.config.js)
 - **Image Optimization**: Configured for Sanity CDN (`cdn.sanity.io`)
-- **Security Headers**: CORS, XSS protection, frame options, CSP configured
+- **Security Headers**: nosniff, frame options, referrer and permissions policies (no CSP yet)
 
 ### Environment Variables
 
@@ -120,6 +120,5 @@ Copy `.env.local.example` to `.env.local` and fill in values.
 
 - The project uses ES modules (`"type": "module"` in package.json)
 - TypeScript `strict` mode enabled with `noImplicitAny: false`
-- ESLint may show TypeScript version warnings - these can be ignored
 - Always run builds before committing to catch type errors
 - Studio accessible at `/studio` route in development and production
