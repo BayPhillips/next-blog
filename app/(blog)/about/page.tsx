@@ -53,7 +53,9 @@ export default async function AboutPage() {
             alt={getImageAlt(aboutData.coverImage) || 'About page cover'}
             fill
             className="object-cover"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 50vw"
+            sizes="(max-width: 1440px) 100vw, 1408px"
+            loading="eager"
+            fetchPriority="high"
           />
         </div>
       )}
