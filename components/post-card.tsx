@@ -31,6 +31,10 @@ export type SanityImage = {
 type PostCardProps = {
   post: Post
   className?: string
+  /** Preload the cover image. Set it on the first card when it's the largest thing on screen. */
+  priority?: boolean
+  /** Use h2 when the card list sits directly under the page's h1. */
+  headingLevel?: 'h2' | 'h3'
 }
 
 // Helper function to build the image URL from Sanity reference
@@ -45,7 +49,7 @@ const buildImageUrl = (asset: SanityImageAsset): string => {
   return `https://cdn.sanity.io/images/${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}/${process.env.NEXT_PUBLIC_SANITY_DATASET || 'production'}/${filePath}.${fileExtension}`;
 };
 
-export function PostCard({ post, className }: PostCardProps) {
+export function PostCard({ post, className, priority = false, headingLevel: Heading = 'h3' }: PostCardProps) {
   const { 
     title, 
     excerpt, 
@@ -77,16 +81,16 @@ export function PostCard({ post, className }: PostCardProps) {
             imageAsset={image}
             alt={coverImage?.alt || title || 'Post cover image'}
             className="w-full h-full"
-            priority={false}
+            priority={priority}
           />
         )}
       </Link>
       <CardHeader className="flex-1">
-        <h3 className="text-xl font-semibold leading-tight tracking-tight">
+        <Heading className="text-xl font-semibold leading-tight tracking-tight">
           <Link href={postUrl} className="hover:underline">
             {title}
           </Link>
-        </h3>
+        </Heading>
         <div className="flex items-center gap-4 text-sm text-muted-foreground">
           <div className="flex items-center gap-1">
             <CalendarDays className="icon-inline" />

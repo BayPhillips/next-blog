@@ -6,7 +6,7 @@ import {
   VisualEditing,
 } from "next-sanity/visual-editing";
 import { toPlainText } from "next-sanity";
-import { Nunito, Lora } from "next/font/google";
+import { Nunito } from "next/font/google";
 import { draftMode } from "next/headers";
 import { Suspense } from "react";
 
@@ -72,12 +72,6 @@ const nunito = Nunito({
   display: "swap",
 });
 
-const lora = Lora({
-  variable: "--font-lora",
-  subsets: ["latin"],
-  display: "swap",
-});
-
 export default async function RootLayout({
   children,
 }: {
@@ -89,7 +83,7 @@ export default async function RootLayout({
     useCache: false, // Don't use cache during build
   });
   return (
-    <html lang="en" className={`${nunito.variable} ${lora.variable} font-sans min-h-svh`} suppressHydrationWarning>
+    <html lang="en" className={`${nunito.variable} font-sans min-h-svh`} suppressHydrationWarning>
       <body className="min-h-svh bg-background font-sans antialiased">
         <ThemeProvider
           attribute="class"

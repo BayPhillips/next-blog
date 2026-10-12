@@ -25,10 +25,11 @@ function HeroPost({ post }: HeroPostProps) {
               src={getImageUrl(post.coverImage) || '/placeholder.svg'}
               alt={getImageAlt(post.coverImage) || post.title || 'Post cover'}
               className="object-cover w-full h-full"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
+              sizes="(max-width: 1184px) 100vw, 1152px"
               width={1200}
               height={630}
-              priority
+              loading="eager"
+              fetchPriority="high"
             />
           </Link>
         )}

@@ -968,6 +968,11 @@ export type PostsQueryResult = Array<{
 }>;
 
 // Source: sanity/lib/queries.ts
+// Variable: tagsQuery
+// Query: array::unique(*[_type == "post" && defined(slug.current)].tags[])
+export type TagsQueryResult = Array<string | null>;
+
+// Source: sanity/lib/queries.ts
 // Variable: postsByTagQuery
 // Query: *[_type == "post" && $tag in tags] | order(date desc) {      _id,  "status": select(_originalId in path("drafts.**") => "draft", "published"),  "title": coalesce(title, "Untitled"),  "slug": slug.current,  excerpt,  coverImage,  "date": coalesce(date, _updatedAt),  "author": author->{name, picture},  tags,    }
 export type PostsByTagQueryResult = Array<{
@@ -1047,6 +1052,7 @@ declare global {
     '\n  *[_type == "post" && _id != $skip && defined(slug.current)] | order(date desc, _updatedAt desc) [0...$limit] {\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{name, picture},\n  tags,\n  \n  }\n': MoreStoriesQueryResult;
     '\n  *[_type == "post" && slug.current == $slug] [0] {\n    content,\n    "readTime": round(length(pt::text(content)) / 5 / 180),\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{name, picture},\n  tags,\n  \n  }\n': PostQueryResult;
     '\n  *[_type == "post"] {\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{name, picture},\n  tags,\n  \n  }\n': PostsQueryResult;
+    '\n  array::unique(*[_type == "post" && defined(slug.current)].tags[])\n': TagsQueryResult;
     '\n  *[_type == "post" && $tag in tags] | order(date desc) {\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{name, picture},\n  tags,\n  \n  }\n': PostsByTagQueryResult;
     '\n  *[_type == "post"] | order(date desc) [$start...$end] {\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{name, picture},\n  tags,\n  \n  }\n': PaginatedPostsQueryResult;
     '\n  count(*[_type == "post"])\n': CountPostsQueryResult;

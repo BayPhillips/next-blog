@@ -11,6 +11,7 @@ const nextConfig = {
     fetches: { fullUrl: false },
   },
   images: {
+    formats: ['image/avif', 'image/webp'],
     remotePatterns: [
       {
         protocol: 'https',
@@ -19,6 +20,17 @@ const nextConfig = {
         pathname: '/images/**',
       },
     ],
+  },
+  async redirects() {
+    return [
+      {
+        // Old query-string pagination; pages are now static paths.
+        source: '/posts',
+        has: [{ type: 'query', key: 'page', value: '(?<page>\\d+)' }],
+        destination: '/posts/page/:page',
+        permanent: true,
+      },
+    ];
   },
   async headers() {
     return [
