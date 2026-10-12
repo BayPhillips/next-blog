@@ -1,0 +1,119 @@
+name: Lighthouse
+
+# Audits each Vercel preview against production and comments the results on
+# the PR. A weekly run on production keeps a history in the Actions tab.
+# See docs/performance.md.
+
+on:
+  deployment_status:
+  schedule:
+    - cron: '0 14 * * 1' # Mondays, 14:00 UTC
+  workflow_dispatch:
+    inputs:
+      url:
+        description: Site to audit
+        default: https://www.bayphillips.com
+
+concurrency:
+  group: lighthouse-${{ github.event.deployment.sha || github.ref }}
+  cancel-in-progress: true
+
+env:
+  PRODUCTION_URL: https://www.bayphillips.com
+
+jobs:
+  lighthouse:
+    # Vercel reports every deployment; only audit successful previews.
+    if: >-
+      github.event_name != 'deployment_status' ||
+      (github.event.deployment_status.state == 'success' &&
+       github.event.deployment.environment == 'Preview')
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+
+      - name: Pick the site to audit
+        id: target
+        env:
+          PREVIEW_URL: ${{ github.event.deployment_status.environment_url }}
+          INPUT_URL: ${{ inputs.url }}
+          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
+        run: |
+          url="${PREVIEW_URL:-${INPUT_URL:-$PRODUCTION_URL}}"
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+          # Protected previews redirect to a Vercel login page, which would be
+          # audited instead of the site. Fail clearly rather than report junk.
+          status=$(curl -s -o /dev/null -w '%{http_code}' -H "x-vercel-protection-bypass: ${VERCEL_AUTOMATION_BYPASS_SECRET}" "$url")
+          if [ "$status" != "200" ]; then
+            echo "::error::$url returned HTTP $status. If Vercel Deployment Protection is on, add the project's Protection Bypass for Automation secret as the VERCEL_AUTOMATION_BYPASS_SECRET repository secret."
+            exit 1
+          fi
+
+      - name: Audit ${{ steps.target.outputs.url }}
+        env:
+          LHCI_BASE_URL: ${{ steps.target.outputs.url }}
+          LHCI_OUTPUT_DIR: .lighthouseci/target
+          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
+        run: npx lhci autorun --config=lighthouserc.cjs
+
+      - name: Audit production for comparison
+        if: steps.target.outputs.url != env.PRODUCTION_URL
+        env:
+          LHCI_BASE_URL: ${{ env.PRODUCTION_URL }}
+          LHCI_OUTPUT_DIR: .lighthouseci/production
+        run: npx lhci autorun --config=lighthouserc.cjs
+
+      - name: Summarize
+        id: summary
+        env:
+          TARGET_URL: ${{ steps.target.outputs.url }}
+        run: |
+          {
+            echo '<!-- lighthouse-ci -->'
+            echo "### Lighthouse results for $TARGET_URL"
+            echo
+            node scripts/lighthouse-summary.mjs .lighthouseci/target .lighthouseci/production production
+            echo
+            echo "Full HTML reports are in the [workflow run artifacts]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)."
+          } > lighthouse-summary.md
+          cat lighthouse-summary.md >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lighthouse-reports
+          path: .lighthouseci/
+          retention-days: 30
+          include-hidden-files: true
+
+      - name: Comment on the pull request
+        if: github.event_name == 'deployment_status'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SHA: ${{ github.event.deployment.sha }}
+        run: |
+          pr=$(gh api "repos/$GITHUB_REPOSITORY/commits/$SHA/pulls" --jq '.[0].number // empty')
+          if [ -z "$pr" ]; then
+            echo "No open pull request for $SHA; results are in the job summary."
+            exit 0
+          fi
+          # Keep one comment per PR, updated on every preview deploy.
+          existing=$(gh api "repos/$GITHUB_REPOSITORY/issues/$pr/comments" --paginate \
+            --jq '.[] | select(.user.login == "github-actions[bot]" and (.body | startswith("<!-- lighthouse-ci -->"))) | .id' | head -n1)
+          if [ -n "$existing" ]; then
+            gh api -X PATCH "repos/$GITHUB_REPOSITORY/issues/comments/$existing" -F body=@lighthouse-summary.md > /dev/null
+          else
+            gh api "repos/$GITHUB_REPOSITORY/issues/$pr/comments" -F body=@lighthouse-summary.md > /dev/null
+          fi
