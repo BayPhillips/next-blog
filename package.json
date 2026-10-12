@@ -17,6 +17,9 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "test:e2e": "playwright test",
+    "perf": "rm -rf .lighthouseci && lhci autorun --config=lighthouserc.cjs; node scripts/lighthouse-summary.mjs",
+    "perf:desktop": "LHCI_PRESET=desktop npm run perf",
+    "perf:prod": "LHCI_BASE_URL=https://www.bayphillips.com npm run perf",
     "security:audit": "npm audit --audit-level=moderate",
     "security:fix": "npm audit fix",
     "deps:check": "npm outdated",
@@ -58,6 +61,7 @@
     "typescript": "^5.9.3"
   },
   "devDependencies": {
+    "@lhci/cli": "^0.15.1",
     "@playwright/test": "^1.63.0",
     "@sanity/cli": "^8.16.0",
     "@testing-library/dom": "^10.4.1",

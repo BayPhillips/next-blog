@@ -45,3 +45,6 @@ public/studio/static
 # playwright
 /test-results/
 /playwright-report/
+
+# lighthouse ci
+/.lighthouseci/

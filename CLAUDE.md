@@ -23,6 +23,14 @@ npm run test:coverage    # Run Jest with coverage report
 npm run test:e2e         # Run Playwright end-to-end tests
 ```
 
+### Performance
+```bash
+npm run perf             # Lighthouse CI against the local production build (run `npm run build` first)
+npm run perf:desktop     # Same, with desktop settings
+npm run perf:prod        # Lighthouse CI against https://www.bayphillips.com
+```
+See `docs/performance.md`. CI audits every Vercel preview and comments a comparison with production on the PR.
+
 ### Sanity
 ```bash
 npm run typegen          # Generate TypeScript types from Sanity schemas
