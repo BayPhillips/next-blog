@@ -229,8 +229,9 @@ export default async function PostPage(props: Props) {
                 alt={post.coverImage.alt || post.title || 'Post cover image'}
                 fill
                 className="object-cover"
-                priority
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                loading="eager"
+                fetchPriority="high"
+                sizes="(max-width: 1184px) 100vw, 1152px"
               />
             </div>
           )}
