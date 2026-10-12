@@ -35,9 +35,12 @@ module.exports = {
         // Only score what we can act on; PWA is gone in Lighthouse 12 anyway.
         onlyCategories: ['performance', 'accessibility', 'best-practices', 'seo'],
         ...(bypassSecret ? { extraHeaders: { 'x-vercel-protection-bypass': bypassSecret } } : {}),
-        // Vercel serves previews with `x-robots-tag: noindex`, which would sink
-        // the SEO score and make every preview look worse than production.
-        ...(/\.vercel\.app$/.test(new URL(baseUrl).hostname) ? { skipAudits: ['is-crawlable'] } : {}),
+        // Vercel serves previews with `x-robots-tag: noindex`, and Lighthouse
+        // fetches robots.txt without the bypass header so it gets the login
+        // page. Both would sink the SEO score of every preview.
+        ...(/\.vercel\.app$/.test(new URL(baseUrl).hostname)
+          ? { skipAudits: ['is-crawlable', 'robots-txt'] }
+          : {}),
       },
     },
     assert: {
