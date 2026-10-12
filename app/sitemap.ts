@@ -33,7 +33,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   for (let i = 1; i <= totalPages; i++) {
     routes.push({
-      url: `https://bayphillips.com/posts/?page=${i}`,
+      url: i === 1 ? 'https://bayphillips.com/posts' : `https://bayphillips.com/posts/page/${i}`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.6,

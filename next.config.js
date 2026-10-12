@@ -21,6 +21,17 @@ const nextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        // Old query-string pagination; pages are now static paths.
+        source: '/posts',
+        has: [{ type: 'query', key: 'page', value: '(?<page>\\d+)' }],
+        destination: '/posts/page/:page',
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {

@@ -60,6 +60,10 @@ export const postsQuery = defineQuery(`
   }
 `);
 
+export const tagsQuery = defineQuery(`
+  array::unique(*[_type == "post" && defined(slug.current)].tags[])
+`);
+
 export const postsByTagQuery = defineQuery(`
   *[_type == "post" && $tag in tags] | order(date desc) {
     ${postFields}
