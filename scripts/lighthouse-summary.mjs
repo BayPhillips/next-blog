@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 // Turns Lighthouse CI's filesystem output into a Markdown table.
 //
-//   node scripts/lighthouse-summary.mjs <reportsDir> [baselineReportsDir]
+//   node scripts/lighthouse-summary.mjs <reportsDir> [baselineReportsDir] [baselineLabel]
 //
 // With a baseline (e.g. production), each cell also shows the change from it.
 
 import { readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 
-const [reportsDir = '.lighthouseci/reports', baselineDir] = process.argv.slice(2);
+const [reportsDir = '.lighthouseci/reports', baselineDir, baselineLabel = 'the baseline'] = process.argv.slice(2);
 
 const columns = [
   { label: 'Perf', get: (lhr) => lhr.categories.performance?.score, kind: 'score' },
@@ -89,7 +89,7 @@ lines.push('');
 const formFactor = anyLhr?.configSettings?.formFactor ?? 'mobile';
 lines.push(
   `<sub>Median of each URL's runs · ${formFactor} · Lighthouse ${anyLhr?.lighthouseVersion ?? '?'}` +
-    (baseline ? ' · changes are against production; smaller changes are hidden as noise' : '') +
+    (baseline ? ` · changes are against ${baselineLabel}; smaller changes are hidden as noise` : '') +
     '</sub>',
 );
 

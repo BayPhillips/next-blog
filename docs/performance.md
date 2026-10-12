@@ -5,16 +5,16 @@ The site is benchmarked with [Lighthouse CI](https://github.com/GoogleChrome/lig
 ## Running locally
 
 ```bash
-npm run build && npm run perf   # local production server, mobile throttling
-npm run perf:desktop            # same, desktop settings
-npm run perf:prod               # audit https://www.bayphillips.com
+npm run perf:build && npm run perf   # local production server, mobile throttling
+npm run perf:desktop                 # same, desktop settings
+npm run perf:prod                    # audit https://www.bayphillips.com
 ```
 
 To audit any deployment, set `LHCI_BASE_URL`, for example `LHCI_BASE_URL=https://example.vercel.app npm run perf`.
 
 Each run prints a summary table. The full HTML reports are written to `.lighthouseci/reports/`; open one to see Lighthouse's specific suggestions.
 
-Local results run on your machine and use `.env.local`, which reads Sanity drafts. Use them to compare before and after a change, not as absolute numbers.
+`perf:build` builds with the `published` Sanity perspective, as production does. A plain `npm run build` uses `.env.local`, which reads drafts and adds invisible stega markers to every string; that makes the HTML about four times larger and the numbers misleading. Local results come from your machine, so use them to compare before and after a change, not as absolute numbers.
 
 ## In CI
 

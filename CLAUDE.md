@@ -25,7 +25,7 @@ npm run test:e2e         # Run Playwright end-to-end tests
 
 ### Performance
 ```bash
-npm run perf             # Lighthouse CI against the local production build (run `npm run build` first)
+npm run perf             # Lighthouse CI against the local production build (run `npm run perf:build` first)
 npm run perf:desktop     # Same, with desktop settings
 npm run perf:prod        # Lighthouse CI against https://www.bayphillips.com
 ```

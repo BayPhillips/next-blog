@@ -84,7 +84,7 @@ jobs:
             echo '<!-- lighthouse-ci -->'
             echo "### Lighthouse results for $TARGET_URL"
             echo
-            node scripts/lighthouse-summary.mjs .lighthouseci/target .lighthouseci/production
+            node scripts/lighthouse-summary.mjs .lighthouseci/target .lighthouseci/production production
             echo
             echo "Full HTML reports are in the [workflow run artifacts]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)."
           } > lighthouse-summary.md

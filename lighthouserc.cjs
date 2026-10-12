@@ -3,7 +3,7 @@
 // Environment variables:
 //   LHCI_BASE_URL   Audit a deployed site (e.g. a Vercel preview). When unset,
 //                   LHCI starts the local production server (`npm start`), so
-//                   run `npm run build` first.
+//                   run `npm run perf:build` first.
 //   LHCI_PRESET     "mobile" (default, throttled like PageSpeed Insights) or "desktop".
 //   LHCI_POST_SLUG  Post page to audit. Defaults to a long, image-heavy post.
 //   LHCI_RUNS       Runs per URL; the median run is reported. Defaults to 3.
@@ -25,7 +25,9 @@ module.exports = {
       ...(process.env.LHCI_BASE_URL
         ? {}
         : {
-            startServerCommand: 'npm start',
+            // Match production: the drafts perspective in .env.local adds stega
+            // markers that roughly quadruple the HTML.
+            startServerCommand: 'NEXT_PUBLIC_SANITY_PERSPECTIVE=published npm start',
             startServerReadyPattern: 'Ready in',
           }),
       settings: {
@@ -33,6 +35,9 @@ module.exports = {
         // Only score what we can act on; PWA is gone in Lighthouse 12 anyway.
         onlyCategories: ['performance', 'accessibility', 'best-practices', 'seo'],
         ...(bypassSecret ? { extraHeaders: { 'x-vercel-protection-bypass': bypassSecret } } : {}),
+        // Vercel serves previews with `x-robots-tag: noindex`, which would sink
+        // the SEO score and make every preview look worse than production.
+        ...(/\.vercel\.app$/.test(new URL(baseUrl).hostname) ? { skipAudits: ['is-crawlable'] } : {}),
       },
     },
     assert: {

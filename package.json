@@ -17,6 +17,7 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "test:e2e": "playwright test",
+    "perf:build": "NEXT_PUBLIC_SANITY_PERSPECTIVE=published npm run build",
     "perf": "rm -rf .lighthouseci && lhci autorun --config=lighthouserc.cjs; node scripts/lighthouse-summary.mjs",
     "perf:desktop": "LHCI_PRESET=desktop npm run perf",
     "perf:prod": "LHCI_BASE_URL=https://www.bayphillips.com npm run perf",
