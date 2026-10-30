@@ -63,13 +63,23 @@ export const viewport: Viewport = {
   colorScheme: "light dark",
 };
 
-// Load the real italic: globals.css sets font-synthesis: none, so a missing
-// style would render upright instead of being faked.
 const nunito = Nunito({
   variable: "--font-nunito",
   subsets: ["latin"],
-  style: ["normal", "italic"],
+  style: "normal",
   display: "swap",
+});
+
+// Load the real italic: globals.css sets font-synthesis: none, so a missing
+// style would render upright instead of being faked. Both faces register as
+// the same "Nunito" family, but the italic isn't preloaded: only post bodies
+// use it, so other pages never download it.
+const nunitoItalic = Nunito({
+  variable: "--font-nunito-italic",
+  subsets: ["latin"],
+  style: "italic",
+  display: "swap",
+  preload: false,
 });
 
 export default async function RootLayout({
@@ -83,7 +93,7 @@ export default async function RootLayout({
     useCache: false, // Don't use cache during build
   });
   return (
-    <html lang="en" className={`${nunito.variable} font-sans min-h-svh`} suppressHydrationWarning>
+    <html lang="en" className={`${nunito.variable} ${nunitoItalic.variable} font-sans min-h-svh`} suppressHydrationWarning>
       <body className="min-h-svh bg-background font-sans antialiased">
         <ThemeProvider
           attribute="class"

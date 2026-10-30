@@ -1,13 +1,5 @@
 import "../globals.css";
 
-import { Nunito_Sans } from "next/font/google";
-
-const nuninto_sans = Nunito_Sans({
-  variable: "--font-nunito-sans",
-  subsets: ["latin"],
-  display: "swap",
-});
-
 export { metadata, viewport } from "next-sanity/studio";
 
 export default function RootLayout({
@@ -16,7 +8,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={nuninto_sans.variable}>
+    <html lang="en">
       <body className="min-h-svh">{children}</body>
     </html>
   );
