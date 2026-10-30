@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation"
 import { useSyncExternalStore, useTransition } from "react"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
-import { Icons } from "@/components/ui/icons"
+import { EyeIcon } from "@/components/ui/icons"
 import { cn } from "@/lib/utils"
 import { disableDraftMode } from "./actions"
 
@@ -30,7 +30,7 @@ export default function AlertBanner() {
       <Alert className="content-grid rounded-none border-0 border-be px-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="flex flex-col items-center justify-between gap-2 sm:flex-row">
           <div className="flex flex-1 items-center gap-2">
-            <Icons.eye className="icon-inline" />
+            <EyeIcon className="icon-inline" />
             <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
               <AlertTitle className="text-sm font-medium">
                 {pending ? "Disabling draft mode..." : "Preview Mode"}

@@ -2,7 +2,8 @@ import { SettingsQueryResult } from "@/sanity.types"
 import Link from "next/link"
 import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuLink, navigationMenuTriggerStyle, NavigationMenuTrigger, NavigationMenuContent } from "./navigation-menu"
 import { cn } from "@/lib/utils"
-import { LogoIcon, MenuIcon } from "./icons"
+import Image from "next/image"
+import { MenuIcon } from "./icons"
 import { ThemeToggle } from "./theme-toggle"
 
 export function SiteHeader({ settings }: { settings: SettingsQueryResult }) {
@@ -17,7 +18,9 @@ export function SiteHeader({ settings }: { settings: SettingsQueryResult }) {
           >
             <span className="flex items-center">
               <span className="inline-block h-8 w-8">
-                <LogoIcon className="h-full w-full" />
+                {/* A static file rather than inline SVG: its ~540 rects would otherwise
+                    be sent twice in every page (HTML and RSC payload) instead of cached once. */}
+                <Image src="/logo.svg" alt="" width={32} height={32} className="h-full w-full" loading="eager" unoptimized />
               </span>
               <span className="font-bold inline-block align-middle ms-2">
                 {settings?.title || 'Blog'}
@@ -50,7 +53,7 @@ export function SiteHeader({ settings }: { settings: SettingsQueryResult }) {
           <NavigationMenu>
             <NavigationMenuList>
               <NavigationMenuItem>
-                <NavigationMenuTrigger arrowHidden={true}><MenuIcon /></NavigationMenuTrigger>
+                <NavigationMenuTrigger arrowHidden={true} aria-label="Menu"><MenuIcon aria-hidden="true" /></NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <ul className="grid gap-1 p-2">
                     {settings?.navigation?.map((item) => (
