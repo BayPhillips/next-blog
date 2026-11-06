@@ -24,7 +24,7 @@ Next.js 16 (App Router) blog for bayphillips.com with Sanity.io CMS. TypeScript,
 - Route groups: `app/(blog)/` = public site, `app/(sanity)/studio/` = CMS studio at `/studio`
 - Shared UI components: `components/ui/` (shadcn/Radix, barrel at `components/ui/index.ts`); use `next/dynamic` for dynamic imports
 - Env (`.env.local`, see `.env.local.example`): `NEXT_PUBLIC_SANITY_PROJECT_ID`, `NEXT_PUBLIC_SANITY_DATASET`, `SANITY_API_READ_TOKEN`
-- Vercel deploy builds with Turbopack (see `vercel.json`); `next.config.js` sets standalone output, Sanity CDN image host, security headers
+- Vercel deploy builds with Turbopack (see `vercel.json`); `next.config.js` sets standalone output only when `NEXT_DOCKER_BUILD=1` (Dockerfile sets it; standalone breaks Vercel Turbopack builds), Sanity CDN image host, security headers
 
 ## Available Skills
 
