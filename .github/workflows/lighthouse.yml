@@ -32,7 +32,7 @@ jobs:
     timeout-minutes: 5
     outputs:
       url: ${{ steps.target.outputs.url }}
-      isProduction: ${{ steps.target.outputs.isProduction }}
+      names: ${{ steps.target.outputs.names }}
     steps:
       - name: Pick the site to audit
         id: target
@@ -44,10 +44,11 @@ jobs:
         run: |
           url="${PREVIEW_URL:-${INPUT_URL:-$PRODUCTION_URL}}"
           echo "url=$url" >> "$GITHUB_OUTPUT"
+          # Auditing production against itself is pointless; skip the baseline.
           if [ "${url%/}" = "${PRODUCTION_URL%/}" ]; then
-            echo "isProduction=true" >> "$GITHUB_OUTPUT"
+            echo 'names=["target"]' >> "$GITHUB_OUTPUT"
           else
-            echo "isProduction=false" >> "$GITHUB_OUTPUT"
+            echo 'names=["target","production"]' >> "$GITHUB_OUTPUT"
           fi
           # Protected previews redirect to a Vercel login page, which would be
           # audited instead of the site. Fail clearly rather than report junk.
@@ -62,13 +63,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        name: [target, production]
-    # Auditing production against itself is pointless; skip the baseline.
-    if: matrix.name == 'target' || needs.resolve.outputs.isProduction != 'true'
+        name: ${{ fromJSON(needs.resolve.outputs.names) }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
-      LHCI_BASE_URL: ${{ matrix.name == 'target' && needs.resolve.outputs.url || env.PRODUCTION_URL }}
       LHCI_OUTPUT_DIR: .lighthouseci/out
       LHCI_RUNS: '2'
       VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
@@ -84,7 +82,9 @@ jobs:
       - name: Install @lhci/cli
         run: npm install --no-save --ignore-scripts --no-audit --no-fund "@lhci/cli@$(node -p "require('./package.json').devDependencies['@lhci/cli']")"
 
-      - name: Audit ${{ env.LHCI_BASE_URL }}
+      - name: Audit ${{ matrix.name == 'target' && needs.resolve.outputs.url || env.PRODUCTION_URL }}
+        env:
+          LHCI_BASE_URL: ${{ matrix.name == 'target' && needs.resolve.outputs.url || env.PRODUCTION_URL }}
         run: npx lhci autorun --config=lighthouserc.cjs
 
       - uses: actions/upload-artifact@v4
