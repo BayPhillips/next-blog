@@ -102,8 +102,6 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
-    env:
-      TARGET_URL: ${{ needs.resolve.outputs.url }}
     steps:
       - uses: actions/checkout@v4
 
@@ -113,6 +111,8 @@ jobs:
           path: .lighthouseci/
 
       - name: Summarize
+        env:
+          TARGET_URL: ${{ needs.resolve.outputs.url }}
         run: |
           mv .lighthouseci/lighthouse-target .lighthouseci/target
           if [ -d .lighthouseci/lighthouse-production ]; then
