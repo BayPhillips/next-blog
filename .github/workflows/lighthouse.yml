@@ -22,37 +22,33 @@ env:
   PRODUCTION_URL: https://www.bayphillips.com
 
 jobs:
-  lighthouse:
+  resolve:
     # Vercel reports every deployment; only audit successful previews.
     if: >-
       github.event_name != 'deployment_status' ||
       (github.event.deployment_status.state == 'success' &&
        github.event.deployment.environment == 'Preview')
     runs-on: ubuntu-latest
-    timeout-minutes: 30
-    permissions:
-      contents: read
-      pull-requests: write
+    timeout-minutes: 5
+    outputs:
+      url: ${{ steps.target.outputs.url }}
+      isProduction: ${{ steps.target.outputs.isProduction }}
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci --ignore-scripts --no-audit --no-fund
-
       - name: Pick the site to audit
         id: target
         env:
           PREVIEW_URL: ${{ github.event.deployment_status.environment_url }}
           INPUT_URL: ${{ inputs.url }}
+          PRODUCTION_URL: ${{ env.PRODUCTION_URL }}
           VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
         run: |
           url="${PREVIEW_URL:-${INPUT_URL:-$PRODUCTION_URL}}"
           echo "url=$url" >> "$GITHUB_OUTPUT"
+          if [ "${url%/}" = "${PRODUCTION_URL%/}" ]; then
+            echo "isProduction=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "isProduction=false" >> "$GITHUB_OUTPUT"
+          fi
           # Protected previews redirect to a Vercel login page, which would be
           # audited instead of the site. Fail clearly rather than report junk.
           status=$(curl -s -o /dev/null -w '%{http_code}' -H "x-vercel-protection-bypass: ${VERCEL_AUTOMATION_BYPASS_SECRET}" "$url")
@@ -61,42 +57,76 @@ jobs:
             exit 1
           fi
 
-      - name: Audit ${{ steps.target.outputs.url }}
-        env:
-          LHCI_BASE_URL: ${{ steps.target.outputs.url }}
-          LHCI_OUTPUT_DIR: .lighthouseci/target
-          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
-        run: npx lhci autorun --config=lighthouserc.cjs
+  audit:
+    needs: resolve
+    strategy:
+      fail-fast: false
+      matrix:
+        name: [target, production]
+    # Auditing production against itself is pointless; skip the baseline.
+    if: matrix.name == 'target' || needs.resolve.outputs.isProduction != 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      LHCI_BASE_URL: ${{ matrix.name == 'target' && needs.resolve.outputs.url || env.PRODUCTION_URL }}
+      LHCI_OUTPUT_DIR: .lighthouseci/out
+      LHCI_RUNS: '2'
+      VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
+    steps:
+      - uses: actions/checkout@v4
 
-      - name: Audit production for comparison
-        if: steps.target.outputs.url != env.PRODUCTION_URL
-        env:
-          LHCI_BASE_URL: ${{ env.PRODUCTION_URL }}
-          LHCI_OUTPUT_DIR: .lighthouseci/production
-        run: npx lhci autorun --config=lighthouserc.cjs
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
 
-      - name: Summarize
-        id: summary
-        env:
-          TARGET_URL: ${{ steps.target.outputs.url }}
-        run: |
-          {
-            echo '<!-- lighthouse-ci -->'
-            echo "### Lighthouse results for $TARGET_URL"
-            echo
-            node scripts/lighthouse-summary.mjs .lighthouseci/target .lighthouseci/production production
-            echo
-            echo "Full HTML reports are in the [workflow run artifacts]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)."
-          } > lighthouse-summary.md
-          cat lighthouse-summary.md >> "$GITHUB_STEP_SUMMARY"
+      # The audits and the summary script only need @lhci/cli; installing the
+      # full dev tree (Next, Sanity, Playwright, …) would dominate the job.
+      - name: Install @lhci/cli
+        run: npm install --no-save --ignore-scripts --no-audit --no-fund "@lhci/cli@$(node -p "require('./package.json').devDependencies['@lhci/cli']")"
+
+      - name: Audit ${{ env.LHCI_BASE_URL }}
+        run: npx lhci autorun --config=lighthouserc.cjs
 
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: lighthouse-reports
+          name: lighthouse-${{ matrix.name }}
           path: .lighthouseci/
           retention-days: 30
           include-hidden-files: true
+
+  report:
+    needs: audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      pull-requests: write
+    env:
+      TARGET_URL: ${{ needs.resolve.outputs.url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: lighthouse-*
+          path: .lighthouseci/
+
+      - name: Summarize
+        run: |
+          mv .lighthouseci/lighthouse-target .lighthouseci/target
+          if [ -d .lighthouseci/lighthouse-production ]; then
+            mv .lighthouseci/lighthouse-production .lighthouseci/production
+          fi
+          {
+            echo '<!-- lighthouse-ci -->'
+            echo "### Lighthouse results for $TARGET_URL"
+            echo
+            node scripts/lighthouse-summary.mjs .lighthouseci/target/out .lighthouseci/production/out production
+            echo
+            echo "Full HTML reports are in the [workflow run artifacts]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)."
+          } > lighthouse-summary.md
+          cat lighthouse-summary.md >> "$GITHUB_STEP_SUMMARY"
 
       - name: Comment on the pull request
         if: github.event_name == 'deployment_status'
