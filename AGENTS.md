@@ -3,7 +3,7 @@
 Next.js 16 (App Router) blog for bayphillips.com with Sanity.io CMS. TypeScript, Tailwind CSS v4, deployed on Vercel. Node 22 (`.nvmrc`).
 
 ## Build/Lint/Test
-- Dev: `npm run dev` (Turbopack); build: `npm run build` (webpack — `prebuild` runs Sanity `typegen`, `postbuild` extracts the studio manifest)
+- Dev: `npm run dev` (Turbopack); build: `npm run build` (Turbopack — `prebuild` runs Sanity `typegen`, `postbuild` extracts the studio manifest)
 - Unit tests: `npm run test` (Jest + jsdom; tests in `__tests__/`); single test: `npm run test -- --testNamePattern='TestName'`
 - Coverage: `npm run test:coverage` (enforces 70% thresholds — a plain `npm run test` after adding files can fail coverage if thresholds dip)
 - E2E: `npm run test:e2e` (Playwright, specs in `tests/e2e/`; auto-starts dev server on :3000)
@@ -24,7 +24,7 @@ Next.js 16 (App Router) blog for bayphillips.com with Sanity.io CMS. TypeScript,
 - Route groups: `app/(blog)/` = public site, `app/(sanity)/studio/` = CMS studio at `/studio`
 - Shared UI components: `components/ui/` (shadcn/Radix, barrel at `components/ui/index.ts`); use `next/dynamic` for dynamic imports
 - Env (`.env.local`, see `.env.local.example`): `NEXT_PUBLIC_SANITY_PROJECT_ID`, `NEXT_PUBLIC_SANITY_DATASET`, `SANITY_API_READ_TOKEN`
-- Vercel deploy builds with `NEXT_TURBOPACK_BUILD=0` (see `vercel.json`); `next.config.js` sets standalone output, Sanity CDN image host, security headers
+- Vercel deploy builds with Turbopack (see `vercel.json`); `next.config.js` sets standalone output, Sanity CDN image host, security headers
 
 ## Available Skills
 

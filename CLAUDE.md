@@ -11,7 +11,7 @@ Next.js 16 blog application with Sanity.io CMS, built for bayphillips.com. Uses 
 ### Development
 ```bash
 npm run dev              # Start dev server with Turbopack
-npm run build            # Production build (uses webpack, not Turbopack)
+npm run build            # Production build (Turbopack)
 npm start                # Start production server
 ```
 
@@ -109,7 +109,7 @@ All schemas auto-imported via schema index file.
 ### Build Configuration
 
 - **Development**: Uses Turbopack (`next dev --turbopack`)
-- **Production**: Uses webpack (`next build --webpack`)
+- **Production**: Uses Turbopack (`next build`)
 - **Output**: Standalone mode (`output: 'standalone'` in next.config.js)
 - **Image Optimization**: Configured for Sanity CDN (`cdn.sanity.io`)
 - **Security Headers**: nosniff, frame options, referrer and permissions policies (no CSP yet)
