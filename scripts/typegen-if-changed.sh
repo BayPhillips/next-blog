@@ -8,10 +8,10 @@ set -eu
 
 hash_inputs() {
   {
-    find sanity/schemas -type f -exec shasum {} +
-    grep -rl defineQuery app sanity lib --include='*.ts' --include='*.tsx' 2>/dev/null | sort | xargs shasum
-    shasum sanity.cli.ts
-  } | sort | shasum | cut -d' ' -f1
+    find sanity/schemas -type f -exec cksum {} +
+    grep -rl defineQuery app sanity lib --include='*.ts' --include='*.tsx' 2>/dev/null | sort | xargs cksum
+    cksum sanity.cli.ts
+  } | sort | cksum | cut -d' ' -f1
 }
 
 stamp=.typegen-stamp
