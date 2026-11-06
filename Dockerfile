@@ -52,6 +52,9 @@ COPY . .
 # already checked by `npx tsc --noEmit` / CI checks and local `npm run build`.
 ENV NEXT_SKIP_TYPECHECK=1
 
+# Enable `output: 'standalone'` in next.config.js for the image build.
+ENV NEXT_DOCKER_BUILD=1
+
 RUN \
   if [ -f yarn.lock ]; then yarn run build; \
   elif [ -f package-lock.json ]; then npm run build; \

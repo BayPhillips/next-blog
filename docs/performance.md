@@ -1,6 +1,6 @@
 # Performance benchmarking
 
-The site is benchmarked with [Lighthouse CI](https://github.com/GoogleChrome/lighthouse-ci). It audits five representative pages: the home page, the post list, one post, the about page and a tag page. Each page runs 3 times and the median run is reported. Settings live in [`lighthouserc.cjs`](../lighthouserc.cjs).
+The site is benchmarked with [Lighthouse CI](https://github.com/GoogleChrome/lighthouse-ci). It audits five representative pages: the home page, the post list, one post, the about page and a tag page. Each page runs 3 times locally (2 times in CI) and the median run is reported. Settings live in [`lighthouserc.cjs`](../lighthouserc.cjs).
 
 ## Running locally
 

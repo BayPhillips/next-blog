@@ -4,9 +4,9 @@
   "scripts": {
     "predev": "npm run typegen",
     "dev": "next dev --turbopack",
-    "prebuild": "npm run typegen",
-    "build": "next build --webpack",
-    "postbuild": "npx sanity manifest extract --path public/studio/static",
+    "prebuild": "sh scripts/typegen-if-changed.sh",
+    "build": "next build",
+    "postbuild": "sanity manifest extract --path public/studio/static",
     "start": "next start",
     "lint": "eslint .",
     "presetup": "echo 'about to setup env variables, follow the guide here: https://github.com/vercel/next.js/tree/canary/examples/cms-sanity#using-the-sanity-cli'",

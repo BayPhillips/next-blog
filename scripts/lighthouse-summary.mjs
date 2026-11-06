@@ -6,7 +6,7 @@
 // With a baseline (e.g. production), each cell also shows the change from it.
 
 import { readFileSync, existsSync } from 'node:fs';
-import { join } from 'node:path';
+import { basename, join, resolve } from 'node:path';
 
 const [reportsDir = '.lighthouseci/reports', baselineDir, baselineLabel = 'the baseline'] = process.argv.slice(2);
 
@@ -54,7 +54,9 @@ function loadRuns(dir) {
   const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
   const runs = new Map();
   for (const entry of manifest.filter((e) => e.isRepresentativeRun)) {
-    const lhr = JSON.parse(readFileSync(entry.jsonPath, 'utf8'));
+    // jsonPath is absolute as recorded on the machine that ran LHCI; the files
+    // travel with the manifest, so resolve them inside this directory instead.
+    const lhr = JSON.parse(readFileSync(resolve(dir, basename(entry.jsonPath)), 'utf8'));
     runs.set(new URL(entry.url).pathname, lhr);
   }
   return runs;
